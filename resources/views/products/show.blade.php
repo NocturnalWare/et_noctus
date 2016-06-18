@@ -18,15 +18,13 @@
 		<div class="well col-xs-12 col-md-2" style="color:#000;">
 			<span v-text="products.description"></span>
 			<br><br>
-				
-			<input  value="{{$product->id}}" name="product">
-			<span v-if="products.onesize === 1" >
+			<span v-if="products.onesize === 1">
 				One Size Only $<span v-text="parseInt(products.prices.onesize)/100"></span>
 			</span>
 			<input v-if="products.onesize === 1" type="hidden" value="onesize" name="size" class="size" />
-			<select v-if="products.onesize === 0" class="col-sm-12 form-control">
+			<select v-if="products.onesize === 0" class="col-sm-12 form-control" v-model="formObj.size">
 				<option v-if="products.inventories.xsmall > 0 && products.prices.xsmall > 0" value="xsmall" v-text="'X-Small $'+parseInt(products.prices.xsmall)/100"></option>
-				<option v-if="products.inventories.small > 0 && products.prices.small > 0" value="xsmall" v-text="'Small $'+parseInt(products.prices.small)/100"></option>
+				<option v-if="products.inventories.small > 0 && products.prices.small > 0" value="small" v-text="'Small $'+parseInt(products.prices.small)/100"></option>
 				<option v-if="products.inventories.medium > 0 && products.prices.medium > 0" value="medium" v-text="'Medium $'+parseInt(products.prices.medium)/100"></option>
 				<option v-if="products.inventories.large > 0 && products.prices.large > 0" value="large" v-text="'Large $'+parseInt(products.prices.large)/100"></option>
 				<option v-if="products.inventories.xlarge > 0 && products.prices.xlarge > 0" value="xlarge" v-text="'X-Large $'+parseInt(products.prices.xlarge)/100"></option>
@@ -34,6 +32,7 @@
 				<option v-if="products.inventories.xxxlarge > 0 && products.prices.xxxlarge > 0" value="xxxlarge" v-text="'XXX-Large $'+parseInt(products.prices.xxxlarge)/100"></option>
 			</select>
 			<br>
+			<button @click="testSize">sizer</button>
 			<div id="checkCart"></div> 
 			<br>
 			@if($product->id !== 39)
@@ -70,10 +69,13 @@
 		    el: '#productShow',
 		    data:{
 		    	products: etnoc.products,
+		    	formObj:{'product':etnoc.products.id, 'size':'', 'color':'base'},
+		    	cart: etnoc.cart,
 		    },
 		    methods:{
-		    	thisworks: function(){
-		    		console.log('oh yeah. this fuckin works.', warehouse.$data.thisworks);
+		    	testSize: function(){
+		    		console.log(this.$http.get('/someUrl'));
+		    		console.log('oh yeah. this fuckin works.', this.formObj);
 		    	},
 		    },
 		    ready: function(){

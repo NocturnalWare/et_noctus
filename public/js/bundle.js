@@ -1,4 +1,1373 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/*!
+ * vue-resource v0.8.0
+ * https://github.com/vuejs/vue-resource
+ * Released under the MIT License.
+ */
+
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+};
+
+/**
+ * Promises/A+ polyfill v1.1.4 (https://github.com/bramstein/promis)
+ */
+
+var RESOLVED = 0;
+var REJECTED = 1;
+var PENDING = 2;
+
+function Promise$2(executor) {
+
+    this.state = PENDING;
+    this.value = undefined;
+    this.deferred = [];
+
+    var promise = this;
+
+    try {
+        executor(function (x) {
+            promise.resolve(x);
+        }, function (r) {
+            promise.reject(r);
+        });
+    } catch (e) {
+        promise.reject(e);
+    }
+}
+
+Promise$2.reject = function (r) {
+    return new Promise$2(function (resolve, reject) {
+        reject(r);
+    });
+};
+
+Promise$2.resolve = function (x) {
+    return new Promise$2(function (resolve, reject) {
+        resolve(x);
+    });
+};
+
+Promise$2.all = function all(iterable) {
+    return new Promise$2(function (resolve, reject) {
+        var count = 0,
+            result = [];
+
+        if (iterable.length === 0) {
+            resolve(result);
+        }
+
+        function resolver(i) {
+            return function (x) {
+                result[i] = x;
+                count += 1;
+
+                if (count === iterable.length) {
+                    resolve(result);
+                }
+            };
+        }
+
+        for (var i = 0; i < iterable.length; i += 1) {
+            Promise$2.resolve(iterable[i]).then(resolver(i), reject);
+        }
+    });
+};
+
+Promise$2.race = function race(iterable) {
+    return new Promise$2(function (resolve, reject) {
+        for (var i = 0; i < iterable.length; i += 1) {
+            Promise$2.resolve(iterable[i]).then(resolve, reject);
+        }
+    });
+};
+
+var p$1 = Promise$2.prototype;
+
+p$1.resolve = function resolve(x) {
+    var promise = this;
+
+    if (promise.state === PENDING) {
+        if (x === promise) {
+            throw new TypeError('Promise settled with itself.');
+        }
+
+        var called = false;
+
+        try {
+            var then = x && x['then'];
+
+            if (x !== null && (typeof x === 'undefined' ? 'undefined' : _typeof(x)) === 'object' && typeof then === 'function') {
+                then.call(x, function (x) {
+                    if (!called) {
+                        promise.resolve(x);
+                    }
+                    called = true;
+                }, function (r) {
+                    if (!called) {
+                        promise.reject(r);
+                    }
+                    called = true;
+                });
+                return;
+            }
+        } catch (e) {
+            if (!called) {
+                promise.reject(e);
+            }
+            return;
+        }
+
+        promise.state = RESOLVED;
+        promise.value = x;
+        promise.notify();
+    }
+};
+
+p$1.reject = function reject(reason) {
+    var promise = this;
+
+    if (promise.state === PENDING) {
+        if (reason === promise) {
+            throw new TypeError('Promise settled with itself.');
+        }
+
+        promise.state = REJECTED;
+        promise.value = reason;
+        promise.notify();
+    }
+};
+
+p$1.notify = function notify() {
+    var promise = this;
+
+    nextTick(function () {
+        if (promise.state !== PENDING) {
+            while (promise.deferred.length) {
+                var deferred = promise.deferred.shift(),
+                    onResolved = deferred[0],
+                    onRejected = deferred[1],
+                    resolve = deferred[2],
+                    reject = deferred[3];
+
+                try {
+                    if (promise.state === RESOLVED) {
+                        if (typeof onResolved === 'function') {
+                            resolve(onResolved.call(undefined, promise.value));
+                        } else {
+                            resolve(promise.value);
+                        }
+                    } else if (promise.state === REJECTED) {
+                        if (typeof onRejected === 'function') {
+                            resolve(onRejected.call(undefined, promise.value));
+                        } else {
+                            reject(promise.value);
+                        }
+                    }
+                } catch (e) {
+                    reject(e);
+                }
+            }
+        }
+    });
+};
+
+p$1.then = function then(onResolved, onRejected) {
+    var promise = this;
+
+    return new Promise$2(function (resolve, reject) {
+        promise.deferred.push([onResolved, onRejected, resolve, reject]);
+        promise.notify();
+    });
+};
+
+p$1.catch = function (onRejected) {
+    return this.then(undefined, onRejected);
+};
+
+var PromiseObj = window.Promise || Promise$2;
+
+function Promise$1(executor, context) {
+
+    if (executor instanceof PromiseObj) {
+        this.promise = executor;
+    } else {
+        this.promise = new PromiseObj(executor.bind(context));
+    }
+
+    this.context = context;
+}
+
+Promise$1.all = function (iterable, context) {
+    return new Promise$1(PromiseObj.all(iterable), context);
+};
+
+Promise$1.resolve = function (value, context) {
+    return new Promise$1(PromiseObj.resolve(value), context);
+};
+
+Promise$1.reject = function (reason, context) {
+    return new Promise$1(PromiseObj.reject(reason), context);
+};
+
+Promise$1.race = function (iterable, context) {
+    return new Promise$1(PromiseObj.race(iterable), context);
+};
+
+var p = Promise$1.prototype;
+
+p.bind = function (context) {
+    this.context = context;
+    return this;
+};
+
+p.then = function (fulfilled, rejected) {
+
+    if (fulfilled && fulfilled.bind && this.context) {
+        fulfilled = fulfilled.bind(this.context);
+    }
+
+    if (rejected && rejected.bind && this.context) {
+        rejected = rejected.bind(this.context);
+    }
+
+    this.promise = this.promise.then(fulfilled, rejected);
+
+    return this;
+};
+
+p.catch = function (rejected) {
+
+    if (rejected && rejected.bind && this.context) {
+        rejected = rejected.bind(this.context);
+    }
+
+    this.promise = this.promise.catch(rejected);
+
+    return this;
+};
+
+p.finally = function (callback) {
+
+    return this.then(function (value) {
+        callback.call(this);
+        return value;
+    }, function (reason) {
+        callback.call(this);
+        return PromiseObj.reject(reason);
+    });
+};
+
+p.success = function (callback) {
+
+    warn('The `success` method has been deprecated. Use the `then` method instead.');
+
+    return this.then(function (response) {
+        return callback.call(this, response.data, response.status, response) || response;
+    });
+};
+
+p.error = function (callback) {
+
+    warn('The `error` method has been deprecated. Use the `catch` method instead.');
+
+    return this.catch(function (response) {
+        return callback.call(this, response.data, response.status, response) || response;
+    });
+};
+
+p.always = function (callback) {
+
+    warn('The `always` method has been deprecated. Use the `finally` method instead.');
+
+    var cb = function cb(response) {
+        return callback.call(this, response.data, response.status, response) || response;
+    };
+
+    return this.then(cb, cb);
+};
+
+var debug = false;
+var util = {};
+var array = [];
+function Util (Vue) {
+    util = Vue.util;
+    debug = Vue.config.debug || !Vue.config.silent;
+}
+
+var isArray = Array.isArray;
+
+function warn(msg) {
+    if (typeof console !== 'undefined' && debug) {
+        console.warn('[VueResource warn]: ' + msg);
+    }
+}
+
+function error(msg) {
+    if (typeof console !== 'undefined') {
+        console.error(msg);
+    }
+}
+
+function nextTick(cb, ctx) {
+    return util.nextTick(cb, ctx);
+}
+
+function trim(str) {
+    return str.replace(/^\s*|\s*$/g, '');
+}
+
+function toLower(str) {
+    return str ? str.toLowerCase() : '';
+}
+
+function isString(val) {
+    return typeof val === 'string';
+}
+
+function isFunction(val) {
+    return typeof val === 'function';
+}
+
+function isObject(obj) {
+    return obj !== null && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
+}
+
+function isPlainObject(obj) {
+    return isObject(obj) && Object.getPrototypeOf(obj) == Object.prototype;
+}
+
+function when(value, fulfilled, rejected) {
+
+    var promise = Promise$1.resolve(value);
+
+    if (arguments.length < 2) {
+        return promise;
+    }
+
+    return promise.then(fulfilled, rejected);
+}
+
+function options(fn, obj, opts) {
+
+    opts = opts || {};
+
+    if (isFunction(opts)) {
+        opts = opts.call(obj);
+    }
+
+    return merge(fn.bind({ $vm: obj, $options: opts }), fn, { $options: opts });
+}
+
+function each(obj, iterator) {
+
+    var i, key;
+
+    if (typeof obj.length == 'number') {
+        for (i = 0; i < obj.length; i++) {
+            iterator.call(obj[i], obj[i], i);
+        }
+    } else if (isObject(obj)) {
+        for (key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                iterator.call(obj[key], obj[key], key);
+            }
+        }
+    }
+
+    return obj;
+}
+
+function extend(target) {
+
+    var args = array.slice.call(arguments, 1);
+
+    args.forEach(function (arg) {
+        _merge(target, arg);
+    });
+
+    return target;
+}
+
+function merge(target) {
+
+    var args = array.slice.call(arguments, 1);
+
+    args.forEach(function (arg) {
+        _merge(target, arg, true);
+    });
+
+    return target;
+}
+
+function _merge(target, source, deep) {
+    for (var key in source) {
+        if (deep && (isPlainObject(source[key]) || isArray(source[key]))) {
+            if (isPlainObject(source[key]) && !isPlainObject(target[key])) {
+                target[key] = {};
+            }
+            if (isArray(source[key]) && !isArray(target[key])) {
+                target[key] = [];
+            }
+            _merge(target[key], source[key], deep);
+        } else if (source[key] !== undefined) {
+            target[key] = source[key];
+        }
+    }
+}
+
+function root (options, next) {
+
+    var url = next(options);
+
+    if (isString(options.root) && !url.match(/^(https?:)?\//)) {
+        url = options.root + '/' + url;
+    }
+
+    return url;
+}
+
+function query (options, next) {
+
+    var urlParams = Object.keys(Url.options.params),
+        query = {},
+        url = next(options);
+
+    each(options.params, function (value, key) {
+        if (urlParams.indexOf(key) === -1) {
+            query[key] = value;
+        }
+    });
+
+    query = Url.params(query);
+
+    if (query) {
+        url += (url.indexOf('?') == -1 ? '?' : '&') + query;
+    }
+
+    return url;
+}
+
+function legacy (options, next) {
+
+    var variables = [],
+        url = next(options);
+
+    url = url.replace(/(\/?):([a-z]\w*)/gi, function (match, slash, name) {
+
+        warn('The `:' + name + '` parameter syntax has been deprecated. Use the `{' + name + '}` syntax instead.');
+
+        if (options.params[name]) {
+            variables.push(name);
+            return slash + encodeUriSegment(options.params[name]);
+        }
+
+        return '';
+    });
+
+    variables.forEach(function (key) {
+        delete options.params[key];
+    });
+
+    return url;
+}
+
+function encodeUriSegment(value) {
+
+    return encodeUriQuery(value, true).replace(/%26/gi, '&').replace(/%3D/gi, '=').replace(/%2B/gi, '+');
+}
+
+function encodeUriQuery(value, spaces) {
+
+    return encodeURIComponent(value).replace(/%40/gi, '@').replace(/%3A/gi, ':').replace(/%24/g, '$').replace(/%2C/gi, ',').replace(/%20/g, spaces ? '%20' : '+');
+}
+
+/**
+ * URL Template v2.0.6 (https://github.com/bramstein/url-template)
+ */
+
+function expand(url, params, variables) {
+
+    var tmpl = parse(url),
+        expanded = tmpl.expand(params);
+
+    if (variables) {
+        variables.push.apply(variables, tmpl.vars);
+    }
+
+    return expanded;
+}
+
+function parse(template) {
+
+    var operators = ['+', '#', '.', '/', ';', '?', '&'],
+        variables = [];
+
+    return {
+        vars: variables,
+        expand: function expand(context) {
+            return template.replace(/\{([^\{\}]+)\}|([^\{\}]+)/g, function (_, expression, literal) {
+                if (expression) {
+
+                    var operator = null,
+                        values = [];
+
+                    if (operators.indexOf(expression.charAt(0)) !== -1) {
+                        operator = expression.charAt(0);
+                        expression = expression.substr(1);
+                    }
+
+                    expression.split(/,/g).forEach(function (variable) {
+                        var tmp = /([^:\*]*)(?::(\d+)|(\*))?/.exec(variable);
+                        values.push.apply(values, getValues(context, operator, tmp[1], tmp[2] || tmp[3]));
+                        variables.push(tmp[1]);
+                    });
+
+                    if (operator && operator !== '+') {
+
+                        var separator = ',';
+
+                        if (operator === '?') {
+                            separator = '&';
+                        } else if (operator !== '#') {
+                            separator = operator;
+                        }
+
+                        return (values.length !== 0 ? operator : '') + values.join(separator);
+                    } else {
+                        return values.join(',');
+                    }
+                } else {
+                    return encodeReserved(literal);
+                }
+            });
+        }
+    };
+}
+
+function getValues(context, operator, key, modifier) {
+
+    var value = context[key],
+        result = [];
+
+    if (isDefined(value) && value !== '') {
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+            value = value.toString();
+
+            if (modifier && modifier !== '*') {
+                value = value.substring(0, parseInt(modifier, 10));
+            }
+
+            result.push(encodeValue(operator, value, isKeyOperator(operator) ? key : null));
+        } else {
+            if (modifier === '*') {
+                if (Array.isArray(value)) {
+                    value.filter(isDefined).forEach(function (value) {
+                        result.push(encodeValue(operator, value, isKeyOperator(operator) ? key : null));
+                    });
+                } else {
+                    Object.keys(value).forEach(function (k) {
+                        if (isDefined(value[k])) {
+                            result.push(encodeValue(operator, value[k], k));
+                        }
+                    });
+                }
+            } else {
+                var tmp = [];
+
+                if (Array.isArray(value)) {
+                    value.filter(isDefined).forEach(function (value) {
+                        tmp.push(encodeValue(operator, value));
+                    });
+                } else {
+                    Object.keys(value).forEach(function (k) {
+                        if (isDefined(value[k])) {
+                            tmp.push(encodeURIComponent(k));
+                            tmp.push(encodeValue(operator, value[k].toString()));
+                        }
+                    });
+                }
+
+                if (isKeyOperator(operator)) {
+                    result.push(encodeURIComponent(key) + '=' + tmp.join(','));
+                } else if (tmp.length !== 0) {
+                    result.push(tmp.join(','));
+                }
+            }
+        }
+    } else {
+        if (operator === ';') {
+            result.push(encodeURIComponent(key));
+        } else if (value === '' && (operator === '&' || operator === '?')) {
+            result.push(encodeURIComponent(key) + '=');
+        } else if (value === '') {
+            result.push('');
+        }
+    }
+
+    return result;
+}
+
+function isDefined(value) {
+    return value !== undefined && value !== null;
+}
+
+function isKeyOperator(operator) {
+    return operator === ';' || operator === '&' || operator === '?';
+}
+
+function encodeValue(operator, value, key) {
+
+    value = operator === '+' || operator === '#' ? encodeReserved(value) : encodeURIComponent(value);
+
+    if (key) {
+        return encodeURIComponent(key) + '=' + value;
+    } else {
+        return value;
+    }
+}
+
+function encodeReserved(str) {
+    return str.split(/(%[0-9A-Fa-f]{2})/g).map(function (part) {
+        if (!/%[0-9A-Fa-f]/.test(part)) {
+            part = encodeURI(part);
+        }
+        return part;
+    }).join('');
+}
+
+function template (options) {
+
+    var variables = [],
+        url = expand(options.url, options.params, variables);
+
+    variables.forEach(function (key) {
+        delete options.params[key];
+    });
+
+    return url;
+}
+
+/**
+ * Service for URL templating.
+ */
+
+var ie = document.documentMode;
+var el = document.createElement('a');
+
+function Url(url, params) {
+
+    var self = this || {},
+        options = url,
+        transform;
+
+    if (isString(url)) {
+        options = { url: url, params: params };
+    }
+
+    options = merge({}, Url.options, self.$options, options);
+
+    Url.transforms.forEach(function (handler) {
+        transform = factory(handler, transform, self.$vm);
+    });
+
+    return transform(options);
+}
+
+/**
+ * Url options.
+ */
+
+Url.options = {
+    url: '',
+    root: null,
+    params: {}
+};
+
+/**
+ * Url transforms.
+ */
+
+Url.transforms = [template, legacy, query, root];
+
+/**
+ * Encodes a Url parameter string.
+ *
+ * @param {Object} obj
+ */
+
+Url.params = function (obj) {
+
+    var params = [],
+        escape = encodeURIComponent;
+
+    params.add = function (key, value) {
+
+        if (isFunction(value)) {
+            value = value();
+        }
+
+        if (value === null) {
+            value = '';
+        }
+
+        this.push(escape(key) + '=' + escape(value));
+    };
+
+    serialize(params, obj);
+
+    return params.join('&').replace(/%20/g, '+');
+};
+
+/**
+ * Parse a URL and return its components.
+ *
+ * @param {String} url
+ */
+
+Url.parse = function (url) {
+
+    if (ie) {
+        el.href = url;
+        url = el.href;
+    }
+
+    el.href = url;
+
+    return {
+        href: el.href,
+        protocol: el.protocol ? el.protocol.replace(/:$/, '') : '',
+        port: el.port,
+        host: el.host,
+        hostname: el.hostname,
+        pathname: el.pathname.charAt(0) === '/' ? el.pathname : '/' + el.pathname,
+        search: el.search ? el.search.replace(/^\?/, '') : '',
+        hash: el.hash ? el.hash.replace(/^#/, '') : ''
+    };
+};
+
+function factory(handler, next, vm) {
+    return function (options) {
+        return handler.call(vm, options, next);
+    };
+}
+
+function serialize(params, obj, scope) {
+
+    var array = isArray(obj),
+        plain = isPlainObject(obj),
+        hash;
+
+    each(obj, function (value, key) {
+
+        hash = isObject(value) || isArray(value);
+
+        if (scope) {
+            key = scope + '[' + (plain || hash ? key : '') + ']';
+        }
+
+        if (!scope && array) {
+            params.add(value.name, value.value);
+        } else if (hash) {
+            serialize(params, value, key);
+        } else {
+            params.add(key, value);
+        }
+    });
+}
+
+function xdrClient (request) {
+    return new Promise$1(function (resolve) {
+
+        var xdr = new XDomainRequest(),
+            response = { request: request },
+            handler;
+
+        request.cancel = function () {
+            xdr.abort();
+        };
+
+        xdr.open(request.method, Url(request), true);
+
+        handler = function handler(event) {
+
+            response.data = xdr.responseText;
+            response.status = xdr.status;
+            response.statusText = xdr.statusText || '';
+
+            resolve(response);
+        };
+
+        xdr.timeout = 0;
+        xdr.onload = handler;
+        xdr.onabort = handler;
+        xdr.onerror = handler;
+        xdr.ontimeout = function () {};
+        xdr.onprogress = function () {};
+
+        xdr.send(request.data);
+    });
+}
+
+var originUrl = Url.parse(location.href);
+var supportCors = 'withCredentials' in new XMLHttpRequest();
+
+function cors (request, next) {
+
+    if (request.crossOrigin === null) {
+        request.crossOrigin = crossOrigin(request);
+    }
+
+    if (request.crossOrigin) {
+
+        if (!supportCors) {
+            request.client = xdrClient;
+        }
+
+        request.emulateHTTP = false;
+    }
+
+    next();
+}
+
+function crossOrigin(request) {
+
+    var requestUrl = Url.parse(Url(request));
+
+    return requestUrl.protocol !== originUrl.protocol || requestUrl.host !== originUrl.host;
+}
+
+function mime (request, next) {
+
+    if (request.emulateJSON && isPlainObject(request.data)) {
+        request.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+        request.data = Url.params(request.data);
+    }
+
+    if (isObject(request.data) && /FormData/i.test(request.data.toString())) {
+        delete request.headers['Content-Type'];
+    }
+
+    if (isPlainObject(request.data)) {
+        request.data = JSON.stringify(request.data);
+    }
+
+    next(function (response) {
+
+        try {
+            response.data = JSON.parse(response.data);
+        } catch (e) {}
+    });
+}
+
+function jsonpClient (request) {
+    return new Promise$1(function (resolve) {
+
+        var callback = '_jsonp' + Math.random().toString(36).substr(2),
+            response = { request: request, data: null },
+            handler,
+            script;
+
+        request.params[request.jsonp] = callback;
+        request.cancel = function () {
+            handler({ type: 'cancel' });
+        };
+
+        script = document.createElement('script');
+        script.src = Url(request);
+        script.type = 'text/javascript';
+        script.async = true;
+
+        window[callback] = function (data) {
+            response.data = data;
+        };
+
+        handler = function handler(event) {
+
+            if (event.type === 'load' && response.data !== null) {
+                response.status = 200;
+            } else if (event.type === 'error') {
+                response.status = 404;
+            } else {
+                response.status = 0;
+            }
+
+            resolve(response);
+
+            delete window[callback];
+            document.body.removeChild(script);
+        };
+
+        script.onload = handler;
+        script.onerror = handler;
+
+        document.body.appendChild(script);
+    });
+}
+
+function jsonp (request, next) {
+
+    if (request.method == 'JSONP') {
+        request.client = jsonpClient;
+    }
+
+    next();
+}
+
+function before (request, next) {
+
+    if (isFunction(request.beforeSend)) {
+        request.beforeSend.call(this, request);
+    }
+
+    next();
+}
+
+/**
+ * HTTP method override Interceptor.
+ */
+
+function method (request, next) {
+
+    if (request.emulateHTTP && /^(PUT|PATCH|DELETE)$/i.test(request.method)) {
+        request.headers['X-HTTP-Method-Override'] = request.method;
+        request.method = 'POST';
+    }
+
+    next();
+}
+
+function header (request, next) {
+
+    request.method = request.method.toUpperCase();
+    request.headers = extend({}, Http.headers.common, !request.crossOrigin ? Http.headers.custom : {}, Http.headers[request.method.toLowerCase()], request.headers);
+
+    if (isPlainObject(request.data) && /^(GET|JSONP)$/i.test(request.method)) {
+        extend(request.params, request.data);
+        delete request.data;
+    }
+
+    next();
+}
+
+/**
+ * Timeout Interceptor.
+ */
+
+function timeout (request, next) {
+
+    var timeout;
+
+    if (request.timeout) {
+        timeout = setTimeout(function () {
+            request.cancel();
+        }, request.timeout);
+    }
+
+    next(function (response) {
+
+        clearTimeout(timeout);
+    });
+}
+
+function xhrClient (request) {
+    return new Promise$1(function (resolve) {
+
+        var xhr = new XMLHttpRequest(),
+            response = { request: request },
+            handler;
+
+        request.cancel = function () {
+            xhr.abort();
+        };
+
+        xhr.open(request.method, Url(request), true);
+
+        handler = function handler(event) {
+
+            response.data = 'response' in xhr ? xhr.response : xhr.responseText;
+            response.status = xhr.status === 1223 ? 204 : xhr.status; // IE9 status bug
+            response.statusText = trim(xhr.statusText || '');
+            response.allHeaders = xhr.getAllResponseHeaders();
+
+            resolve(response);
+        };
+
+        xhr.timeout = 0;
+        xhr.onload = handler;
+        xhr.onabort = handler;
+        xhr.onerror = handler;
+        xhr.ontimeout = function () {};
+        xhr.onprogress = function () {};
+
+        if (isPlainObject(request.xhr)) {
+            extend(xhr, request.xhr);
+        }
+
+        if (isPlainObject(request.upload)) {
+            extend(xhr.upload, request.upload);
+        }
+
+        each(request.headers || {}, function (value, header) {
+            xhr.setRequestHeader(header, value);
+        });
+
+        xhr.send(request.data);
+    });
+}
+
+function Client (context) {
+
+    var reqHandlers = [sendRequest],
+        resHandlers = [];
+
+    if (!isObject(context)) {
+        context = null;
+    }
+
+    function Client(request) {
+        return new Promise$1(function (resolve) {
+
+            function exec() {
+                reqHandlers.pop().call(context, request, next);
+            }
+
+            function next(response) {
+                when(response, function (response) {
+
+                    if (isFunction(response)) {
+
+                        resHandlers.unshift(response);
+                    } else if (isObject(response)) {
+
+                        processResponse(response);
+
+                        resHandlers.forEach(function (handler) {
+                            handler.call(context, response);
+                        });
+
+                        resolve(response);
+
+                        return;
+                    }
+
+                    exec();
+                });
+            }
+
+            exec();
+        }, context);
+    }
+
+    Client.use = function (handler) {
+        reqHandlers.push(handler);
+    };
+
+    return Client;
+}
+
+function sendRequest(request, resolve) {
+
+    var client = request.client || xhrClient;
+
+    resolve(client(request));
+}
+
+function processResponse(response) {
+
+    var headers = response.headers || response.allHeaders;
+
+    if (isString(headers)) {
+        headers = parseHeaders(headers);
+    }
+
+    if (isObject(headers)) {
+        response.headers = function (name) {
+            return name ? headers[toLower(name)] : headers;
+        };
+    }
+
+    response.ok = response.status >= 200 && response.status < 300;
+
+    return response;
+}
+
+function parseHeaders(str) {
+
+    var headers = {},
+        value,
+        name,
+        i;
+
+    each(str.split('\n'), function (row) {
+
+        i = row.indexOf(':');
+        name = trim(toLower(row.slice(0, i)));
+        value = trim(row.slice(i + 1));
+
+        if (headers[name]) {
+
+            if (isArray(headers[name])) {
+                headers[name].push(value);
+            } else {
+                headers[name] = [headers[name], value];
+            }
+        } else {
+
+            headers[name] = value;
+        }
+    });
+
+    return headers;
+}
+
+/**
+ * Service for sending network requests.
+ */
+
+var jsonType = { 'Content-Type': 'application/json' };
+
+function Http(url, options) {
+
+    var self = this || {},
+        client = Client(self.$vm),
+        request,
+        promise;
+
+    Http.interceptors.forEach(function (handler) {
+        client.use(handler);
+    });
+
+    options = isObject(url) ? url : extend({ url: url }, options);
+    request = merge({}, Http.options, self.$options, options);
+    promise = client(request).then(function (response) {
+
+        return response.ok ? response : Promise$1.reject(response);
+    }, function (response) {
+
+        if (response instanceof Error) {
+            error(response);
+        }
+
+        return Promise$1.reject(response);
+    });
+
+    if (request.success) {
+        promise.success(request.success);
+    }
+
+    if (request.error) {
+        promise.error(request.error);
+    }
+
+    return promise;
+}
+
+Http.options = {
+    method: 'get',
+    data: '',
+    params: {},
+    headers: {},
+    xhr: null,
+    upload: null,
+    jsonp: 'callback',
+    beforeSend: null,
+    crossOrigin: null,
+    emulateHTTP: false,
+    emulateJSON: false,
+    timeout: 0
+};
+
+Http.headers = {
+    put: jsonType,
+    post: jsonType,
+    patch: jsonType,
+    delete: jsonType,
+    common: { 'Accept': 'application/json, text/plain, */*' },
+    custom: { 'X-Requested-With': 'XMLHttpRequest' }
+};
+
+Http.interceptors = [before, timeout, jsonp, method, mime, header, cors];
+
+['get', 'put', 'post', 'patch', 'delete', 'jsonp'].forEach(function (method) {
+
+    Http[method] = function (url, data, success, options) {
+
+        if (isFunction(data)) {
+            options = success;
+            success = data;
+            data = undefined;
+        }
+
+        if (isObject(success)) {
+            options = success;
+            success = undefined;
+        }
+
+        return this(url, extend({ method: method, data: data, success: success }, options));
+    };
+});
+
+function Resource(url, params, actions, options) {
+
+    var self = this || {},
+        resource = {};
+
+    actions = extend({}, Resource.actions, actions);
+
+    each(actions, function (action, name) {
+
+        action = merge({ url: url, params: params || {} }, options, action);
+
+        resource[name] = function () {
+            return (self.$http || Http)(opts(action, arguments));
+        };
+    });
+
+    return resource;
+}
+
+function opts(action, args) {
+
+    var options = extend({}, action),
+        params = {},
+        data,
+        success,
+        error;
+
+    switch (args.length) {
+
+        case 4:
+
+            error = args[3];
+            success = args[2];
+
+        case 3:
+        case 2:
+
+            if (isFunction(args[1])) {
+
+                if (isFunction(args[0])) {
+
+                    success = args[0];
+                    error = args[1];
+
+                    break;
+                }
+
+                success = args[1];
+                error = args[2];
+            } else {
+
+                params = args[0];
+                data = args[1];
+                success = args[2];
+
+                break;
+            }
+
+        case 1:
+
+            if (isFunction(args[0])) {
+                success = args[0];
+            } else if (/^(POST|PUT|PATCH)$/i.test(options.method)) {
+                data = args[0];
+            } else {
+                params = args[0];
+            }
+
+            break;
+
+        case 0:
+
+            break;
+
+        default:
+
+            throw 'Expected up to 4 arguments [params, data, success, error], got ' + args.length + ' arguments';
+    }
+
+    options.data = data;
+    options.params = extend({}, options.params, params);
+
+    if (success) {
+        options.success = success;
+    }
+
+    if (error) {
+        options.error = error;
+    }
+
+    return options;
+}
+
+Resource.actions = {
+
+    get: { method: 'GET' },
+    save: { method: 'POST' },
+    query: { method: 'GET' },
+    update: { method: 'PUT' },
+    remove: { method: 'DELETE' },
+    delete: { method: 'DELETE' }
+
+};
+
+function plugin(Vue) {
+
+    if (plugin.installed) {
+        return;
+    }
+
+    Util(Vue);
+
+    Vue.url = Url;
+    Vue.http = Http;
+    Vue.resource = Resource;
+    Vue.Promise = Promise$1;
+
+    Object.defineProperties(Vue.prototype, {
+
+        $url: {
+            get: function get() {
+                return options(Vue.url, this, this.$options.url);
+            }
+        },
+
+        $http: {
+            get: function get() {
+                return options(Vue.http, this, this.$options.http);
+            }
+        },
+
+        $resource: {
+            get: function get() {
+                return Vue.resource.bind(this);
+            }
+        },
+
+        $promise: {
+            get: function get() {
+                var _this = this;
+
+                return function (executor) {
+                    return new Vue.Promise(executor, _this);
+                };
+            }
+        }
+
+    });
+}
+
+if (typeof window !== 'undefined' && window.Vue) {
+    window.Vue.use(plugin);
+}
+
+module.exports = plugin;
+},{}],2:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -584,7 +1953,7 @@ if ("undefined" == typeof jQuery) throw new Error("Bootstrap's JavaScript requir
   });
 }(jQuery);
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2990,11 +4359,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 var Vue = require('./vue.min.js');
 var jQuery = require('./jquery.min.js');
+var VueResource = require('vue-resource');
 
 window.jQuery = jQuery;
 window.Vue = Vue;
@@ -3017,7 +4387,414 @@ var warehouse = new Vue({
 
 });
 
-},{"./jquery.min.js":2,"./vue.min.js":4}],4:[function(require,module,exports){
+},{"./jquery.min.js":3,"./vue.min.js":6,"vue-resource":1}],5:[function(require,module,exports){
+"use strict";
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+/*!
+ * vue-resource v0.8.0
+ * https://github.com/vuejs/vue-resource
+ * Released under the MIT License.
+ */
+
+!function (t, e) {
+  "object" == (typeof exports === "undefined" ? "undefined" : _typeof(exports)) && "undefined" != typeof module ? module.exports = e() : "function" == typeof define && define.amd ? define(e) : t.VueResource = e();
+}(undefined, function () {
+  "use strict";
+  function t(t) {
+    this.state = nt, this.value = void 0, this.deferred = [];var e = this;try {
+      t(function (t) {
+        e.resolve(t);
+      }, function (t) {
+        e.reject(t);
+      });
+    } catch (n) {
+      e.reject(n);
+    }
+  }function e(t, e) {
+    t instanceof ot ? this.promise = t : this.promise = new ot(t.bind(e)), this.context = e;
+  }function n(t) {
+    ut = t.util, at = t.config.debug || !t.config.silent;
+  }function r(t) {
+    "undefined" != typeof console && at && console.warn("[VueResource warn]: " + t);
+  }function o(t) {
+    "undefined" != typeof console && console.error(t);
+  }function i(t, e) {
+    return ut.nextTick(t, e);
+  }function a(t) {
+    return t.replace(/^\s*|\s*$/g, "");
+  }function u(t) {
+    return t ? t.toLowerCase() : "";
+  }function c(t) {
+    return "string" == typeof t;
+  }function s(t) {
+    return "function" == typeof t;
+  }function f(t) {
+    return null !== t && "object" === ("undefined" == typeof t ? "undefined" : Z(t));
+  }function l(t) {
+    return f(t) && Object.getPrototypeOf(t) == Object.prototype;
+  }function h(t, n, r) {
+    var o = e.resolve(t);return arguments.length < 2 ? o : o.then(n, r);
+  }function d(t, e, n) {
+    return n = n || {}, s(n) && (n = n.call(e)), v(t.bind({ $vm: e, $options: n }), t, { $options: n });
+  }function p(t, e) {
+    var n, r;if ("number" == typeof t.length) for (n = 0; n < t.length; n++) {
+      e.call(t[n], t[n], n);
+    } else if (f(t)) for (r in t) {
+      t.hasOwnProperty(r) && e.call(t[r], t[r], r);
+    }return t;
+  }function m(t) {
+    var e = ct.slice.call(arguments, 1);return e.forEach(function (e) {
+      y(t, e);
+    }), t;
+  }function v(t) {
+    var e = ct.slice.call(arguments, 1);return e.forEach(function (e) {
+      y(t, e, !0);
+    }), t;
+  }function y(t, e, n) {
+    for (var r in e) {
+      n && (l(e[r]) || st(e[r])) ? (l(e[r]) && !l(t[r]) && (t[r] = {}), st(e[r]) && !st(t[r]) && (t[r] = []), y(t[r], e[r], n)) : void 0 !== e[r] && (t[r] = e[r]);
+    }
+  }function g(t, e) {
+    var n = e(t);return c(t.root) && !n.match(/^(https?:)?\//) && (n = t.root + "/" + n), n;
+  }function b(t, e) {
+    var n = Object.keys(U.options.params),
+        r = {},
+        o = e(t);return p(t.params, function (t, e) {
+      -1 === n.indexOf(e) && (r[e] = t);
+    }), r = U.params(r), r && (o += (-1 == o.indexOf("?") ? "?" : "&") + r), o;
+  }function w(t, e) {
+    var n = [],
+        o = e(t);return o = o.replace(/(\/?):([a-z]\w*)/gi, function (e, o, i) {
+      return r("The `:" + i + "` parameter syntax has been deprecated. Use the `{" + i + "}` syntax instead."), t.params[i] ? (n.push(i), o + T(t.params[i])) : "";
+    }), n.forEach(function (e) {
+      delete t.params[e];
+    }), o;
+  }function T(t) {
+    return j(t, !0).replace(/%26/gi, "&").replace(/%3D/gi, "=").replace(/%2B/gi, "+");
+  }function j(t, e) {
+    return encodeURIComponent(t).replace(/%40/gi, "@").replace(/%3A/gi, ":").replace(/%24/g, "$").replace(/%2C/gi, ",").replace(/%20/g, e ? "%20" : "+");
+  }function x(t, e, n) {
+    var r = E(t),
+        o = r.expand(e);return n && n.push.apply(n, r.vars), o;
+  }function E(t) {
+    var e = ["+", "#", ".", "/", ";", "?", "&"],
+        n = [];return { vars: n, expand: function expand(r) {
+        return t.replace(/\{([^\{\}]+)\}|([^\{\}]+)/g, function (t, o, i) {
+          if (o) {
+            var a = null,
+                u = [];if (-1 !== e.indexOf(o.charAt(0)) && (a = o.charAt(0), o = o.substr(1)), o.split(/,/g).forEach(function (t) {
+              var e = /([^:\*]*)(?::(\d+)|(\*))?/.exec(t);u.push.apply(u, O(r, a, e[1], e[2] || e[3])), n.push(e[1]);
+            }), a && "+" !== a) {
+              var c = ",";return "?" === a ? c = "&" : "#" !== a && (c = a), (0 !== u.length ? a : "") + u.join(c);
+            }return u.join(",");
+          }return $(i);
+        });
+      } };
+  }function O(t, e, n, r) {
+    var o = t[n],
+        i = [];if (P(o) && "" !== o) {
+      if ("string" == typeof o || "number" == typeof o || "boolean" == typeof o) o = o.toString(), r && "*" !== r && (o = o.substring(0, parseInt(r, 10))), i.push(S(e, o, C(e) ? n : null));else if ("*" === r) Array.isArray(o) ? o.filter(P).forEach(function (t) {
+        i.push(S(e, t, C(e) ? n : null));
+      }) : Object.keys(o).forEach(function (t) {
+        P(o[t]) && i.push(S(e, o[t], t));
+      });else {
+        var a = [];Array.isArray(o) ? o.filter(P).forEach(function (t) {
+          a.push(S(e, t));
+        }) : Object.keys(o).forEach(function (t) {
+          P(o[t]) && (a.push(encodeURIComponent(t)), a.push(S(e, o[t].toString())));
+        }), C(e) ? i.push(encodeURIComponent(n) + "=" + a.join(",")) : 0 !== a.length && i.push(a.join(","));
+      }
+    } else ";" === e ? i.push(encodeURIComponent(n)) : "" !== o || "&" !== e && "?" !== e ? "" === o && i.push("") : i.push(encodeURIComponent(n) + "=");return i;
+  }function P(t) {
+    return void 0 !== t && null !== t;
+  }function C(t) {
+    return ";" === t || "&" === t || "?" === t;
+  }function S(t, e, n) {
+    return e = "+" === t || "#" === t ? $(e) : encodeURIComponent(e), n ? encodeURIComponent(n) + "=" + e : e;
+  }function $(t) {
+    return t.split(/(%[0-9A-Fa-f]{2})/g).map(function (t) {
+      return (/%[0-9A-Fa-f]/.test(t) || (t = encodeURI(t)), t
+      );
+    }).join("");
+  }function R(t) {
+    var e = [],
+        n = x(t.url, t.params, e);return e.forEach(function (e) {
+      delete t.params[e];
+    }), n;
+  }function U(t, e) {
+    var n,
+        r = this || {},
+        o = t;return c(t) && (o = { url: t, params: e }), o = v({}, U.options, r.$options, o), U.transforms.forEach(function (t) {
+      n = A(t, n, r.$vm);
+    }), n(o);
+  }function A(t, e, n) {
+    return function (r) {
+      return t.call(n, r, e);
+    };
+  }function H(t, e, n) {
+    var r,
+        o = st(e),
+        i = l(e);p(e, function (e, a) {
+      r = f(e) || st(e), n && (a = n + "[" + (i || r ? a : "") + "]"), !n && o ? t.add(e.name, e.value) : r ? H(t, e, a) : t.add(a, e);
+    });
+  }function k(t) {
+    return new e(function (e) {
+      var n,
+          r = new XDomainRequest(),
+          o = { request: t };t.cancel = function () {
+        r.abort();
+      }, r.open(t.method, U(t), !0), n = function n(t) {
+        o.data = r.responseText, o.status = r.status, o.statusText = r.statusText || "", e(o);
+      }, r.timeout = 0, r.onload = n, r.onabort = n, r.onerror = n, r.ontimeout = function () {}, r.onprogress = function () {}, r.send(t.data);
+    });
+  }function q(t, e) {
+    null === t.crossOrigin && (t.crossOrigin = I(t)), t.crossOrigin && (dt || (t.client = k), t.emulateHTTP = !1), e();
+  }function I(t) {
+    var e = U.parse(U(t));return e.protocol !== ht.protocol || e.host !== ht.host;
+  }function L(t, e) {
+    t.emulateJSON && l(t.data) && (t.headers["Content-Type"] = "application/x-www-form-urlencoded", t.data = U.params(t.data)), f(t.data) && /FormData/i.test(t.data.toString()) && delete t.headers["Content-Type"], l(t.data) && (t.data = JSON.stringify(t.data)), e(function (t) {
+      try {
+        t.data = JSON.parse(t.data);
+      } catch (e) {}
+    });
+  }function D(t) {
+    return new e(function (e) {
+      var n,
+          r,
+          o = "_jsonp" + Math.random().toString(36).substr(2),
+          i = { request: t, data: null };t.params[t.jsonp] = o, t.cancel = function () {
+        n({ type: "cancel" });
+      }, r = document.createElement("script"), r.src = U(t), r.type = "text/javascript", r.async = !0, window[o] = function (t) {
+        i.data = t;
+      }, n = function n(t) {
+        "load" === t.type && null !== i.data ? i.status = 200 : "error" === t.type ? i.status = 404 : i.status = 0, e(i), delete window[o], document.body.removeChild(r);
+      }, r.onload = n, r.onerror = n, document.body.appendChild(r);
+    });
+  }function J(t, e) {
+    "JSONP" == t.method && (t.client = D), e();
+  }function M(t, e) {
+    s(t.beforeSend) && t.beforeSend.call(this, t), e();
+  }function N(t, e) {
+    t.emulateHTTP && /^(PUT|PATCH|DELETE)$/i.test(t.method) && (t.headers["X-HTTP-Method-Override"] = t.method, t.method = "POST"), e();
+  }function X(t, e) {
+    t.method = t.method.toUpperCase(), t.headers = m({}, _.headers.common, t.crossOrigin ? {} : _.headers.custom, _.headers[t.method.toLowerCase()], t.headers), l(t.data) && /^(GET|JSONP)$/i.test(t.method) && (m(t.params, t.data), delete t.data), e();
+  }function V(t, e) {
+    var n;t.timeout && (n = setTimeout(function () {
+      t.cancel();
+    }, t.timeout)), e(function (t) {
+      clearTimeout(n);
+    });
+  }function F(t) {
+    return new e(function (e) {
+      var n,
+          r = new XMLHttpRequest(),
+          o = { request: t };t.cancel = function () {
+        r.abort();
+      }, r.open(t.method, U(t), !0), n = function n(t) {
+        o.data = "response" in r ? r.response : r.responseText, o.status = 1223 === r.status ? 204 : r.status, o.statusText = a(r.statusText || ""), o.allHeaders = r.getAllResponseHeaders(), e(o);
+      }, r.timeout = 0, r.onload = n, r.onabort = n, r.onerror = n, r.ontimeout = function () {}, r.onprogress = function () {}, l(t.xhr) && m(r, t.xhr), l(t.upload) && m(r.upload, t.upload), p(t.headers || {}, function (t, e) {
+        r.setRequestHeader(e, t);
+      }), r.send(t.data);
+    });
+  }function G(t) {
+    function n(n) {
+      return new e(function (e) {
+        function i() {
+          r.pop().call(t, n, a);
+        }function a(n) {
+          h(n, function (n) {
+            if (s(n)) o.unshift(n);else if (f(n)) return B(n), o.forEach(function (e) {
+              e.call(t, n);
+            }), void e(n);i();
+          });
+        }i();
+      }, t);
+    }var r = [z],
+        o = [];return f(t) || (t = null), n.use = function (t) {
+      r.push(t);
+    }, n;
+  }function z(t, e) {
+    var n = t.client || F;e(n(t));
+  }function B(t) {
+    var e = t.headers || t.allHeaders;return c(e) && (e = W(e)), f(e) && (t.headers = function (t) {
+      return t ? e[u(t)] : e;
+    }), t.ok = t.status >= 200 && t.status < 300, t;
+  }function W(t) {
+    var e,
+        n,
+        r,
+        o = {};return p(t.split("\n"), function (t) {
+      r = t.indexOf(":"), n = a(u(t.slice(0, r))), e = a(t.slice(r + 1)), o[n] ? st(o[n]) ? o[n].push(e) : o[n] = [o[n], e] : o[n] = e;
+    }), o;
+  }function _(t, n) {
+    var r,
+        i,
+        a = this || {},
+        u = G(a.$vm);return _.interceptors.forEach(function (t) {
+      u.use(t);
+    }), n = f(t) ? t : m({ url: t }, n), r = v({}, _.options, a.$options, n), i = u(r).then(function (t) {
+      return t.ok ? t : e.reject(t);
+    }, function (t) {
+      return t instanceof Error && o(t), e.reject(t);
+    }), r.success && i.success(r.success), r.error && i.error(r.error), i;
+  }function K(t, e, n, r) {
+    var o = this || {},
+        i = {};return n = m({}, K.actions, n), p(n, function (n, a) {
+      n = v({ url: t, params: e || {} }, r, n), i[a] = function () {
+        return (o.$http || _)(Q(n, arguments));
+      };
+    }), i;
+  }function Q(t, e) {
+    var n,
+        r,
+        o,
+        i = m({}, t),
+        a = {};switch (e.length) {case 4:
+        o = e[3], r = e[2];case 3:case 2:
+        if (!s(e[1])) {
+          a = e[0], n = e[1], r = e[2];break;
+        }if (s(e[0])) {
+          r = e[0], o = e[1];break;
+        }r = e[1], o = e[2];case 1:
+        s(e[0]) ? r = e[0] : /^(POST|PUT|PATCH)$/i.test(i.method) ? n = e[0] : a = e[0];break;case 0:
+        break;default:
+        throw "Expected up to 4 arguments [params, data, success, error], got " + e.length + " arguments";}return i.data = n, i.params = m({}, i.params, a), r && (i.success = r), o && (i.error = o), i;
+  }function Y(t) {
+    Y.installed || (n(t), t.url = U, t.http = _, t.resource = K, t.Promise = e, Object.defineProperties(t.prototype, { $url: { get: function get() {
+          return d(t.url, this, this.$options.url);
+        } }, $http: { get: function get() {
+          return d(t.http, this, this.$options.http);
+        } }, $resource: { get: function get() {
+          return t.resource.bind(this);
+        } }, $promise: { get: function get() {
+          var e = this;return function (n) {
+            return new t.Promise(n, e);
+          };
+        } } }));
+  }var Z = "function" == typeof Symbol && "symbol" == _typeof(Symbol.iterator) ? function (t) {
+    return typeof t === "undefined" ? "undefined" : _typeof(t);
+  } : function (t) {
+    return t && "function" == typeof Symbol && t.constructor === Symbol ? "symbol" : typeof t === "undefined" ? "undefined" : _typeof(t);
+  },
+      tt = 0,
+      et = 1,
+      nt = 2;t.reject = function (e) {
+    return new t(function (t, n) {
+      n(e);
+    });
+  }, t.resolve = function (e) {
+    return new t(function (t, n) {
+      t(e);
+    });
+  }, t.all = function (e) {
+    return new t(function (n, r) {
+      function o(t) {
+        return function (r) {
+          a[t] = r, i += 1, i === e.length && n(a);
+        };
+      }var i = 0,
+          a = [];0 === e.length && n(a);for (var u = 0; u < e.length; u += 1) {
+        t.resolve(e[u]).then(o(u), r);
+      }
+    });
+  }, t.race = function (e) {
+    return new t(function (n, r) {
+      for (var o = 0; o < e.length; o += 1) {
+        t.resolve(e[o]).then(n, r);
+      }
+    });
+  };var rt = t.prototype;rt.resolve = function (t) {
+    var e = this;if (e.state === nt) {
+      if (t === e) throw new TypeError("Promise settled with itself.");var n = !1;try {
+        var r = t && t.then;if (null !== t && "object" === ("undefined" == typeof t ? "undefined" : Z(t)) && "function" == typeof r) return void r.call(t, function (t) {
+          n || e.resolve(t), n = !0;
+        }, function (t) {
+          n || e.reject(t), n = !0;
+        });
+      } catch (o) {
+        return void (n || e.reject(o));
+      }e.state = tt, e.value = t, e.notify();
+    }
+  }, rt.reject = function (t) {
+    var e = this;if (e.state === nt) {
+      if (t === e) throw new TypeError("Promise settled with itself.");e.state = et, e.value = t, e.notify();
+    }
+  }, rt.notify = function () {
+    var t = this;i(function () {
+      if (t.state !== nt) for (; t.deferred.length;) {
+        var e = t.deferred.shift(),
+            n = e[0],
+            r = e[1],
+            o = e[2],
+            i = e[3];try {
+          t.state === tt ? o("function" == typeof n ? n.call(void 0, t.value) : t.value) : t.state === et && ("function" == typeof r ? o(r.call(void 0, t.value)) : i(t.value));
+        } catch (a) {
+          i(a);
+        }
+      }
+    });
+  }, rt.then = function (e, n) {
+    var r = this;return new t(function (t, o) {
+      r.deferred.push([e, n, t, o]), r.notify();
+    });
+  }, rt["catch"] = function (t) {
+    return this.then(void 0, t);
+  };var ot = window.Promise || t;e.all = function (t, n) {
+    return new e(ot.all(t), n);
+  }, e.resolve = function (t, n) {
+    return new e(ot.resolve(t), n);
+  }, e.reject = function (t, n) {
+    return new e(ot.reject(t), n);
+  }, e.race = function (t, n) {
+    return new e(ot.race(t), n);
+  };var it = e.prototype;it.bind = function (t) {
+    return this.context = t, this;
+  }, it.then = function (t, e) {
+    return t && t.bind && this.context && (t = t.bind(this.context)), e && e.bind && this.context && (e = e.bind(this.context)), this.promise = this.promise.then(t, e), this;
+  }, it["catch"] = function (t) {
+    return t && t.bind && this.context && (t = t.bind(this.context)), this.promise = this.promise["catch"](t), this;
+  }, it["finally"] = function (t) {
+    return this.then(function (e) {
+      return t.call(this), e;
+    }, function (e) {
+      return t.call(this), ot.reject(e);
+    });
+  }, it.success = function (t) {
+    return r("The `success` method has been deprecated. Use the `then` method instead."), this.then(function (e) {
+      return t.call(this, e.data, e.status, e) || e;
+    });
+  }, it.error = function (t) {
+    return r("The `error` method has been deprecated. Use the `catch` method instead."), this["catch"](function (e) {
+      return t.call(this, e.data, e.status, e) || e;
+    });
+  }, it.always = function (t) {
+    r("The `always` method has been deprecated. Use the `finally` method instead.");var e = function e(_e) {
+      return t.call(this, _e.data, _e.status, _e) || _e;
+    };return this.then(e, e);
+  };var at = !1,
+      ut = {},
+      ct = [],
+      st = Array.isArray,
+      ft = document.documentMode,
+      lt = document.createElement("a");U.options = { url: "", root: null, params: {} }, U.transforms = [R, w, b, g], U.params = function (t) {
+    var e = [],
+        n = encodeURIComponent;return e.add = function (t, e) {
+      s(e) && (e = e()), null === e && (e = ""), this.push(n(t) + "=" + n(e));
+    }, H(e, t), e.join("&").replace(/%20/g, "+");
+  }, U.parse = function (t) {
+    return ft && (lt.href = t, t = lt.href), lt.href = t, { href: lt.href, protocol: lt.protocol ? lt.protocol.replace(/:$/, "") : "", port: lt.port, host: lt.host, hostname: lt.hostname, pathname: "/" === lt.pathname.charAt(0) ? lt.pathname : "/" + lt.pathname, search: lt.search ? lt.search.replace(/^\?/, "") : "", hash: lt.hash ? lt.hash.replace(/^#/, "") : "" };
+  };var ht = U.parse(location.href),
+      dt = "withCredentials" in new XMLHttpRequest(),
+      pt = { "Content-Type": "application/json" };return _.options = { method: "get", data: "", params: {}, headers: {}, xhr: null, upload: null, jsonp: "callback", beforeSend: null, crossOrigin: null, emulateHTTP: !1, emulateJSON: !1, timeout: 0 }, _.headers = { put: pt, post: pt, patch: pt, "delete": pt, common: { Accept: "application/json, text/plain, */*" }, custom: { "X-Requested-With": "XMLHttpRequest" } }, _.interceptors = [M, V, J, N, L, X, q], ["get", "put", "post", "patch", "delete", "jsonp"].forEach(function (t) {
+    _[t] = function (e, n, r, o) {
+      return s(n) && (o = r, r = n, n = void 0), f(r) && (o = r, r = void 0), this(e, m({ method: t, data: n, success: r }, o));
+    };
+  }), K.actions = { get: { method: "GET" }, save: { method: "POST" }, query: { method: "GET" }, update: { method: "PUT" }, remove: { method: "DELETE" }, "delete": { method: "DELETE" } }, "undefined" != typeof window && window.Vue && window.Vue.use(Y), Y;
+});
+
+},{}],6:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -4984,6 +6761,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[3,4,2,1]);
+},{}]},{},[4,6,5,3,2]);
 
 //# sourceMappingURL=bundle.js.map
