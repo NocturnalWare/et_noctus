@@ -23,7 +23,7 @@
       <ul class="nav navbar-nav navbar-right" style="text-align:center;padding-top:10px;">
         @if(\Session::get('cart_id'))
         <li id="hideCartIcon">
-          <a href="{{route('cart.index')}}" style="background-color:#000;color:#fff;" class="nav-button-etnoc btn btn-lg">
+          <a href="" style="background-color:#000;color:#fff;" class="nav-button-etnoc btn btn-lg">
               <b>Cart
                 @if(\Session::get('cart_quantity'))
                   <span class="badge" style="background-color:#fff;color:#000">{{\Session::get('cart_quantity')}}</span>
@@ -33,7 +33,7 @@
         </li>
         @endif
           <li id='showCartIcon' class="hidden">
-          <a href="{{route('cart.index')}}" style="background-color:#000;color:#fff;" class="nav-button-etnoc btn btn-lg">
+          <a href="" style="background-color:#000;color:#fff;" class="nav-button-etnoc btn btn-lg">
               <b>Cart
                 @if(\Session::get('cart_quantity'))
                   <span class="badge ajaxCart" style="background-color:#fff;color:#000">{{\Session::get('cart_quantity')}}</span>
@@ -47,11 +47,10 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu" style="border-bottom:1px solid #fff;text-align:center;background-color:#000;color:#fff" aria-labelledby="dLabel">
-            <a class="row" href="{{route('products.index')}}" style="color:#fff"><li class="col-sm-12 btn btn-lg">Everything</li></a>
-            @foreach(\App\ProductCategory::all() as $shop)
-              <a class="row" href="{{route('productsort', $shop->name)}}" style="color:#fff"><li class="col-sm-12 btn btn-lg">{{$shop->name}}</li></a>
+            <a class="row" href="{{ route('products.index') }}" style="color:#fff"><li class="col-sm-12 btn btn-lg">Everything</li></a>
+
+              <a class="row" href="" style="color:#fff"><li class="col-sm-12 btn btn-lg"></li></a>
               <br>
-            @endforeach
           </ul>
         </li>
 
@@ -63,15 +62,15 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu" style="border-bottom:1px solid #fff;text-align:center;background-color:#000;color:#fff" aria-labelledby="dLabel">
-              <a href="{{route('bands.show', 'adventurer')}}" style="color:#fff"><li class="btn btn-lg">Adventurer</li></a><br>
-              <a href="{{route('bands.show', 'storiesuntold')}}" style="color:#fff"><li class="btn btn-lg">Stories Untold</li></a><br>
-              <a href="{{route('bands.show', 'theillustrator')}}" style="color:#fff"><li class="btn btn-lg">The Illustrator</li></a><br>
-              <a href="{{route('bands.show', 'thebansheepilot')}}" style="color:#fff"><li class="btn btn-lg">The Banshee Pilot</li></a><br>
-              <a href="{{route('bands.show', 'shapesandcolors')}}" style="color:#fff"><li class="btn btn-lg">Shapes & Colors</li></a><br>
+              <a href="" style="color:#fff"><li class="btn btn-lg">Adventurer</li></a><br>
+              <a href="" style="color:#fff"><li class="btn btn-lg">Stories Untold</li></a><br>
+              <a href="" style="color:#fff"><li class="btn btn-lg">The Illustrator</li></a><br>
+              <a href="" style="color:#fff"><li class="btn btn-lg">The Banshee Pilot</li></a><br>
+              <a href="" style="color:#fff"><li class="btn btn-lg">Shapes & Colors</li></a><br>
           </ul>
         </li>
         <li>
-          <a href="{{route('blogs.index')}}" style="color:#fff" class="nav-button-etnoc btn btn-lg">
+          <a href="" style="color:#fff" class="nav-button-etnoc btn btn-lg">
             <b>Spotlight</b>
           </a>
 
@@ -86,9 +85,6 @@
 
         <li>
           @if(\Auth::check())
-          @if(Auth::check())
-            @include('layouts.adminnav')
-          @endif
           @else
           <a style="background-color:#000;color:#fff" type="button" class="dropdown nav-button-etnoc btn btn-lg" data-toggle="modal" data-target="#Login">
                 <b>Login</b>
@@ -112,7 +108,7 @@
         <h4 class="modal-title" id="FeedbackLabel" style="color:#fff">Send us a message!</h4>
       </div>
       <div class="modal-body" style="background-color:#000;padding:30px">
-        <form action="{{route('sendFeedback')}}" method="post">
+        <form action="" method="post">
           <input type="hidden" name="_token" value="{{csrf_token()}}" style="color:#000000;">
          <div class="row">
             <div class="small-12 large-12 columns">
@@ -140,7 +136,6 @@
   <div class="modal-dialog" role="document" >
     <div class="modal-content" style="background-color:transparent">
       <div class="modal-body" style="background-color:transparent;border-radius:20px;">
-        @include('auth.login')
     </div>
   </div>
 </div>

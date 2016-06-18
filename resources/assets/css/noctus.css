@@ -1,0 +1,22 @@
+html, body {
+	height: 100%;
+	font-family: 'Arimo', sans-serif;
+	color: #fff;
+	background-color: #000;
+	background-image: url('.././images/background.png');
+	background-position: center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.en-content-box{
+  background-color:#000;
+  color:#fff;
+  padding:30px;
+  margin-top:3%;
+  opacity:.9;
+  border-radius:4px;
+}

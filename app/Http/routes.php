@@ -15,4 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('product', ['uses' => 'Product\ProductController@index']);
+Route::get('products', ['as' => 'products.index', 'uses' => 'Product\ProductController@index']);
+Route::get('products/{product}', ['as' => 'products.show', 'uses' => 'Product\ProductController@index']);
