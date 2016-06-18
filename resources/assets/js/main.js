@@ -11,3 +11,12 @@ new Vue({
     },
 
 });
+
+new Vue({
+    el: '#wareHouse',
+    data:{},
+    ready: function(){
+    	console.warn('thisworks')
+    },
+
+});

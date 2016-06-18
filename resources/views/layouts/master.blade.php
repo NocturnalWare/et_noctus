@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="http://159.203.77.45/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="http://159.203.77.45/bootstrap/css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="http://localhost/et_noctus/public/css/final.css">
-  <link href='https://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
   
   <title>#StayAwakeToCreate</title>
@@ -19,10 +18,12 @@
 
   @include('layouts.publicnav')
 
-  <div class="div-sm-12" style="margin-top:20px;">
+  <div id="wareHouse"></div>
+  <div class="div-sm-12" style="margin-top:70px;">
     @yield('content')
   </div>
   @include('layouts.javascript')
+  @yield('javascript')
 </body>
 
 

@@ -3005,6 +3005,15 @@ new Vue({
 
 });
 
+new Vue({
+    el: '#wareHouse',
+    data: {},
+    ready: function ready() {
+        console.warn('thisworks');
+    }
+
+});
+
 },{"./jquery.min.js":2,"./vue.min.js":4}],4:[function(require,module,exports){
 (function (global){
 "use strict";
