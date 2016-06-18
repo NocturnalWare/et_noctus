@@ -2997,6 +2997,7 @@ var Vue = require('./vue.min.js');
 var jQuery = require('./jquery.min.js');
 
 window.jQuery = jQuery;
+window.Vue = Vue;
 
 new Vue({
     el: '#Login',
@@ -3005,12 +3006,12 @@ new Vue({
 
 });
 
-new Vue({
+var warehouse = new Vue({
     el: '#wareHouse',
-    data: {},
-    ready: function ready() {
-        console.warn('thisworks');
-    }
+    data: {
+        thisworks: {}
+    },
+    ready: function ready() {}
 
 });
 

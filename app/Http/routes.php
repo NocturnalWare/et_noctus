@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/', ['as' => 'welcome', 'uses' => function () {
     return view('welcome');
-});
+}]);
 
 Route::get('products', ['as' => 'products.index', 'uses' => 'Product\ProductController@index']);
 Route::get('products/{product}', ['as' => 'products.show', 'uses' => 'Product\ProductController@show']);

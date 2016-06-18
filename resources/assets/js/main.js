@@ -2,6 +2,7 @@ var Vue    = require('./vue.min.js');
 var jQuery = require('./jquery.min.js');
 
 window.jQuery = jQuery;
+window.Vue = Vue;
 
 
 new Vue({
@@ -12,9 +13,11 @@ new Vue({
 
 });
 
-new Vue({
+var warehouse = new Vue({
     el: '#wareHouse',
-    data:{},
+    data:{
+    	thisworks: etnoc,
+    },
     ready: function(){
     	console.warn('thisworks')
     },
