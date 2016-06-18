@@ -3009,9 +3009,11 @@ new Vue({
 var warehouse = new Vue({
     el: '#wareHouse',
     data: {
-        thisworks: {}
+        thisworks: etnoc
     },
-    ready: function ready() {}
+    ready: function ready() {
+        console.warn('thisworks');
+    }
 
 });
 
