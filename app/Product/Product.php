@@ -9,7 +9,7 @@ class Product extends Model
     protected $rules = [];
     protected $fillable = [];
     protected $table = 'products';
-    protected $with = ['variants', 'inventories'];
+    protected $with = ['variants', 'inventories', 'prices'];
 
     public function variants(){
     	return $this->hasMany(ProductVariant::class, 'product_id', 'id');

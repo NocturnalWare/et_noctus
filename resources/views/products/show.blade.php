@@ -9,34 +9,20 @@
 
 <center>
 	<div id="productShow">
-			<span v-text="products.name">@{{name}}</span> <br><br><br><br><br><br>
-
-		</div>
-
-
-
-
-
-
-
-
-
-
-
-		<br><br><br><br><br><br>
-		<legend style="margin-top:70px;text-align:center;color:#fff" class="product-header-etnoc">{{$product->name}}</legend>
 		<div class="col-xs-12 col-md-7">
+			<legend>
+				<h3 v-text="products.name"></h3>
+			</legend>
 			<img class="img-responsive" src="http://54.149.181.47/etnoc/{{$product->main_image}}" />
 		</div>
 		<div class="well col-xs-12 col-md-2" style="color:#000;">
-			{{$product->description}}
+			<span v-text="products.description"></span>
 			<br><br>
 			<input type="hidden" value="{{$product->id}}" name="product" class="product" />
 
-			@if($product->onesize == 1)One Size Only ${{substr($product->prices->onesize,0,-2)}}.{{substr($product->prices->onesize,-2)}}
-				<input type="hidden" value="onesize" name="size" class="size" />
-				@else
-				<select class="size col-sm-12" name="size" style="color:#000000;">
+				One Size Only $<span v-if="products.prices.onesize" v-text="parseInt(products.prices.onesize)/100"></span>
+				<input v-if="producs.prices.onesize > 0" type="hidden" value="onesize" name="size" class="size" />
+				<select v-if="producs.prices.onesize !== 0" class="size col-sm-12" name="size" style="color:#000000;">
 					@if($product->xsmall == 1 && $product->inventories->xsmall)
 						<option value="xsmall">X-Small ${{substr($product->prices->xsmall,0,-2)}}.{{substr($product->prices->xsmall,-2)}}</option>
 					@endif
@@ -64,7 +50,6 @@
 						<option value="xxxlarge">XXX-Large ${{substr($product->prices->xxxlarge,0,-2)}}.{{substr($product->prices->xxxlarge,-2)}}</option>
 					@endif
 				</select>
-			@endif	
 				<br>
 				<div id="checkCart"></div> 
 				<br>
@@ -89,6 +74,8 @@
 						</div>
 					</div>
 				</div>
+		</div>
+		</div>
 		</div>
 	</center>
 	<div class="col-md-3"></div>
