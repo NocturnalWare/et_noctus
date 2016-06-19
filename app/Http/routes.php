@@ -11,12 +11,15 @@
 |
 */
 
-Route::get('/', ['as' => 'welcome', 'uses' => function () {
-    return view('welcome');
-}]);
+Route::group(['middleware' => 'cart'], function () {
 
-Route::get('products', ['as' => 'products.index', 'uses' => 'Product\ProductController@index']);
-Route::get('products/{product}', ['as' => 'products.show', 'uses' => 'Product\ProductController@show']);
-Route::get('cart', ['as' => 'cart.index', 'uses' => 'Product\ProductController@index']);
-Route::post('cart', ['as' => 'cart.store', 'uses' => 'Carts\CartsController@store']);
-Route::get('cart/check', ['as' => 'cart.check', 'uses' => 'Product\ProductController@show']);
+	Route::get('/', ['as' => 'welcome', 'uses' => function () {
+	    return view('welcome');
+	}]);
+
+	Route::get('products', ['as' => 'products.index', 'uses' => 'Product\ProductController@index']);
+	Route::get('products/{product}', ['as' => 'products.show', 'uses' => 'Product\ProductController@show']);
+	Route::get('cart', ['as' => 'cart.index', 'uses' => 'Product\ProductController@index']);
+	Route::post('cart', ['as' => 'cart.store', 'uses' => 'Carts\CartsController@store']);
+	Route::get('cart/check', ['as' => 'cart.check', 'uses' => 'Product\ProductController@show']);
+});

@@ -18,9 +18,9 @@
 
   @include('layouts.publicnav')
 
-  <div id="wareHouse"></div>
   <div class="div-sm-12" style="margin-top:70px;">
-
+    {{$cart_quantity}}
+  <div id="wareHouse"></div>
     @yield('content')
 
   </div>
