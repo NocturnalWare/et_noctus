@@ -21,12 +21,10 @@
   <div id="wareHouse"></div>
   <div class="div-sm-12" style="margin-top:70px;">
 
-    <div id="testVue">
-      <button class="btn btn-sm btn-warning" @click="thisworks"> thisworks</button>
-    </div>
-
     @yield('content')
+
   </div>
+  @include('layouts.set-cart-id')
   @include('layouts.jsvars')
   @include('layouts.javascript')
   @yield('javascript')

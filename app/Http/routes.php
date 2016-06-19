@@ -18,5 +18,5 @@ Route::get('/', ['as' => 'welcome', 'uses' => function () {
 Route::get('products', ['as' => 'products.index', 'uses' => 'Product\ProductController@index']);
 Route::get('products/{product}', ['as' => 'products.show', 'uses' => 'Product\ProductController@show']);
 Route::get('cart', ['as' => 'cart.index', 'uses' => 'Product\ProductController@index']);
-Route::get('cart/add', ['as' => 'cart.add', 'uses' => 'Product\ProductController@show']);
+Route::post('cart', ['as' => 'cart.store', 'uses' => 'Product\ProductController@show']);
 Route::get('cart/check', ['as' => 'cart.check', 'uses' => 'Product\ProductController@show']);

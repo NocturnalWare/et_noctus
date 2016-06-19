@@ -5,14 +5,20 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateSalesTable extends Migration
 {
-    /**
+        /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        //
+        Schema::create('sales', function(Blueprint $table)
+        {
+            $table->increments('id');
+            $table->integer('cart_id');
+            $table->integer('customer_id');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -22,6 +28,6 @@ class CreateSalesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('sales');
     }
 }

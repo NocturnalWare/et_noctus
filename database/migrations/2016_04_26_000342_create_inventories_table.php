@@ -11,8 +11,20 @@ class CreateInventoriesTable extends Migration
      * @return void
      */
     public function up()
-    {
-        //
+        Schema::create('inventories', function(Blueprint $table)
+        {
+            $table->increments('id');
+            $table->integer('product_id');
+            $table->integer('xsmall')->nullable();
+            $table->integer('small')->nullable();
+            $table->integer('medium')->nullable();
+            $table->integer('large')->nullable();
+            $table->integer('xlarge')->nullable();
+            $table->integer('xxlarge')->nullable();
+            $table->integer('xxxlarge')->nullable();
+            $table->integer('onesize')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -22,6 +34,6 @@ class CreateInventoriesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('inventories');
     }
 }

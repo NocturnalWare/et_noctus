@@ -69,12 +69,12 @@
 		    el: '#productShow',
 		    data:{
 		    	products: etnoc.products,
-		    	formObj:{'product':etnoc.products.id, 'size':'', 'color':'base'},
+		    	formObj:{'product':etnoc.products.id, 'size':'', 'color':'base', '_token':'{{csrf_token()}}' },
 		    	cart: etnoc.cart,
 		    },
 		    methods:{
 		    	testSize: function(){
-		    		console.log(this.$http.get('/someUrl'));
+		    		console.log(this.$http.post("{{route('cart.store')}}", this.formObj));
 		    		console.log('oh yeah. this fuckin works.', this.formObj);
 		    	},
 		    },
@@ -116,7 +116,7 @@
 			
 		// jQuery('#cart').on('click', function(){
 		// 	var $post = {};
-	 //    	var url = "{{route('cart.add')}}";
+	 //    	var url = "{{route('cart.store')}}";
 	 //        $post.size = jQuery(this).parent().find('.size').val(); 
 	 //        $post.product = jQuery(this).parent().find('.product').val(); 
 	 //        $post._token = "{{csrf_token()}}";

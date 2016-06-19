@@ -3,21 +3,21 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePromotionsTable extends Migration
+class CreatePromotionCodesTable extends Migration
 {
-    /**
+        /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('promotions', function(Blueprint $table)
+        Schema::create('prices', function(Blueprint $table)
         {
             $table->increments('id');
-            $table->string('promotion_name');
-            $table->float('price_percent')->nullable();
-            $table->float('price_flat')->nullable();
+            $table->integer('promotion_id');
+            $table->string('code');
+            $table->string('email');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreatePromotionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('promotions');
+        Schema::drop('prices');
     }
 }
