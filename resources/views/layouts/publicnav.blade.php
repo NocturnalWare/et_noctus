@@ -21,23 +21,15 @@
         <li class="btn btn-sm mobile-nav-button-etnoc"></li>
       </ul>
       <ul class="nav navbar-nav navbar-right" style="text-align:center;padding-top:10px;">
-        @if(\Session::get('cart_id'))
-        <li id="hideCartIcon">
+        <li>
           <a href="" style="background-color:#000;color:#fff;" class="nav-button-etnoc btn btn-lg">
-              <b>Cart
-                @if(\Session::get('cart_quantity'))
-                  <span class="badge" style="background-color:#fff;color:#000">{{\Session::get('cart_quantity')}}</span>
-                @endif
-              </b>
-          </a>
-        </li>
-        @endif
-          <li id='showCartIcon' class="hidden">
-          <a href="" style="background-color:#000;color:#fff;" class="nav-button-etnoc btn btn-lg">
-              <b>Cart
-                @if(\Session::get('cart_quantity'))
-                  <span class="badge ajaxCart" style="background-color:#fff;color:#000">{{\Session::get('cart_quantity')}}</span>
-                @endif
+              <b>
+                <div id="cartIcon">
+                  <span class="badge" style="background-color:#fff;color:#000">
+                    <span v-text="cart"></span>
+                  </span>
+                  Cart
+                </div>
               </b>
           </a>
         </li>
@@ -80,7 +72,6 @@
           <a style="background-color:#000;color:#fff" type="button" class="dropdown nav-button-etnoc btn btn-lg" data-toggle="modal" data-target="#Feedback">
             <b>Contact</b>
           </a>
-
         </li>
 
         <li>

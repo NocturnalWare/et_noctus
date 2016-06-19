@@ -17,8 +17,8 @@ class SetCart
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if(empty(Session::get('cart_id'))){
-            Session::set('cart_id', str_random(32));
+        if(empty(\Session::get('cart_id'))){
+            \Session::set('cart_id', str_random(32));
         }
 
         view()->share('cart_quantity', \App\Carts\Cart::where('cart_id', \Session::get('cart_id'))->sum('quantity'));

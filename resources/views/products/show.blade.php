@@ -31,11 +31,10 @@
 				<option v-if="products.inventories.xxxlarge > 0 && products.prices.xxxlarge > 0" value="xxxlarge" v-text="'XXX-Large $'+parseInt(products.prices.xxxlarge)/100"></option>
 			</select>
 			<br>
-			<button @click="testSize">sizer</button>
 			<div id="checkCart"></div> 
 			<br>
 			@if($product->id !== 39)
-				<button id="cart" type="button" class="col-sm-12 btn btn-sm btn-default"><i class="fa fa-plus"></i> Add to Cart</button>
+				<button @click="addToCart" type="button" class="col-sm-12 btn btn-sm btn-default"><i class="fa fa-plus"></i> Add to Cart</button>
 			@else
 				<h3> This item is sold out :( </h3>
 			@endif
@@ -57,36 +56,24 @@
 			</div>
 		</div>
 		</div>
-		</div>
 	</center>
 	<div class="col-md-3"></div>
 
 	@section('javascript')
 		<script>
-
-
-		var warehouse = new Vue({
-		    el: '#wareHouse',
-		    data:{
-		    	thisworks: etnoc.cart,
-		    },
-		    ready: function(){
-		    	console.warn('thisworks')
-		    },
-
-		});
-
-		new Vue({
+		
+		var productShow = new Vue({
 		    el: '#productShow',
 		    data:{
 		    	products: etnoc.products,
 		    	formObj:{'product_id':etnoc.products.id, 'cart_id':"{{ Session::get('cart_id') }}", 'quantity':'1', 'size': etnoc.products.onesize === 1 ? 'onesize' : '', 'color':'base', '_token':'{{csrf_token()}}' },
 		    },
 		    methods:{
-		    	testSize: function(){
-		    		let response = this.$http.post("{{route('cart.store')}}", this.formObj);
+		    	addToCart: function(){
+		    		cartIcon.$log();
+		    		var response = this.$http.post("{{route('cart.store')}}", this.formObj);
 					response.then(function(response){
-						console.log(response.data);
+						cartIcon.$set('cart', response.data);
 					});
 		    	},
 		    },

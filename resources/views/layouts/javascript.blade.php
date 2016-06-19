@@ -38,3 +38,15 @@
 
 <script type="text/javascript" src="http://localhost/et_noctus/public/js/bundle.js"></script>
 
+<script>  
+  var cartIcon = new Vue({
+      el: '#cartIcon',
+      data:{
+        cart: etnoc.cart_quantity,
+      },
+      methods:{
+      },
+      ready: function(){
+      },
+  });
+</script>

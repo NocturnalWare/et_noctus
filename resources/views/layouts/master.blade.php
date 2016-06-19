@@ -24,7 +24,6 @@
     @yield('content')
 
   </div>
-  @include('layouts.set-cart-id')
   @include('layouts.jsvars')
   @include('layouts.javascript')
   @yield('javascript')
