@@ -14,14 +14,3 @@ new Vue({
     },
 
 });
-
-var warehouse = new Vue({
-    el: '#wareHouse',
-    data:{
-    	thisworks: etnoc,
-    },
-    ready: function(){
-    	console.warn('thisworks')
-    },
-
-});

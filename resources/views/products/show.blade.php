@@ -21,7 +21,6 @@
 			<span v-if="products.onesize === 1">
 				One Size Only $<span v-text="parseInt(products.prices.onesize)/100"></span>
 			</span>
-			<input v-if="products.onesize === 1" type="hidden" value="onesize" name="size" class="size" />
 			<select v-if="products.onesize === 0" class="col-sm-12 form-control" v-model="formObj.size">
 				<option v-if="products.inventories.xsmall > 0 && products.prices.xsmall > 0" value="xsmall" v-text="'X-Small $'+parseInt(products.prices.xsmall)/100"></option>
 				<option v-if="products.inventories.small > 0 && products.prices.small > 0" value="small" v-text="'Small $'+parseInt(products.prices.small)/100"></option>
@@ -65,17 +64,30 @@
 	@section('javascript')
 		<script>
 
+
+		var warehouse = new Vue({
+		    el: '#wareHouse',
+		    data:{
+		    	thisworks: etnoc.cart,
+		    },
+		    ready: function(){
+		    	console.warn('thisworks')
+		    },
+
+		});
+
 		new Vue({
 		    el: '#productShow',
 		    data:{
 		    	products: etnoc.products,
-		    	formObj:{'product':etnoc.products.id, 'size':'', 'color':'base', '_token':'{{csrf_token()}}' },
-		    	cart: etnoc.cart,
+		    	formObj:{'product_id':etnoc.products.id, 'cart_id':"{{ Session::get('cart_id') }}", 'quantity':'1', 'size': etnoc.products.onesize === 1 ? 'onesize' : '', 'color':'base', '_token':'{{csrf_token()}}' },
 		    },
 		    methods:{
 		    	testSize: function(){
-		    		console.log(this.$http.post("{{route('cart.store')}}", this.formObj));
-		    		console.log('oh yeah. this fuckin works.', this.formObj);
+		    		let response = this.$http.post("{{route('cart.store')}}", this.formObj);
+					response.then(function(response){
+						console.log(response.data);
+					});
 		    	},
 		    },
 		    ready: function(){

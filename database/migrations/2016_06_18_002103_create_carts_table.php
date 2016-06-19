@@ -19,6 +19,7 @@ class CreateCartsTable extends Migration
             $table->string('cart_id');
             $table->string('size');
             $table->string('color');
+            $table->integer('quantity')->default(1);
             $table->timestamps();
         });
     }

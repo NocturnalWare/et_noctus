@@ -12,12 +12,14 @@ class CreatePromotionCodesTable extends Migration
      */
     public function up()
     {
-        Schema::create('prices', function(Blueprint $table)
+        Schema::create('promotion_codes', function(Blueprint $table)
         {
             $table->increments('id');
             $table->integer('promotion_id');
             $table->string('code');
-            $table->string('email');
+            $table->string('email')->nullable();
+            $table->string('owner')->nullable();
+            $table->integer('used')->default(0);
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreatePromotionCodesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('prices');
+        Schema::drop('promotion_codes');
     }
 }

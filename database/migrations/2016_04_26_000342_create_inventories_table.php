@@ -11,6 +11,7 @@ class CreateInventoriesTable extends Migration
      * @return void
      */
     public function up()
+    {
         Schema::create('inventories', function(Blueprint $table)
         {
             $table->increments('id');
