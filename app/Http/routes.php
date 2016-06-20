@@ -18,6 +18,7 @@ Route::group(['middleware' => 'cart'], function () {
 	}]);
 
 	Route::get('products', ['as' => 'products.index', 'uses' => 'Product\ProductController@index']);
+	Route::get('products/sort/{category}', ['as' => 'products.sort', 'uses' => 'Product\ProductController@sortindex']);
 	Route::get('products/{product}', ['as' => 'products.show', 'uses' => 'Product\ProductController@show']);
 	Route::get('cart', ['as' => 'cart.index', 'uses' => 'Product\ProductController@index']);
 	Route::post('cart', ['as' => 'cart.store', 'uses' => 'Carts\CartsController@store']);

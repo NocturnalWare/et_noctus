@@ -11,13 +11,22 @@ use App\Product\Product;
 class ProductController extends Controller
 {
     public function index(){
-    	$products = Product::all();
+    	$products = Product::orderBy('id', 'desc')->get();
     	
     	\JavaScript::put([
     		'products' => $products,
     	]);
     	
     	return view('products.index', compact('products'));
+    }
+
+    public function sortindex($category){
+        $products = Product::where('category', $category)->orderBy('id', 'desc')->get();
+        if($products){
+            return view('products.index', compact('products'));
+        }
+
+        return redirect()->back();
     }
 
     public function show(Product $product){

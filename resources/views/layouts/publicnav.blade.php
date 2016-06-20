@@ -40,7 +40,7 @@
           </a>
           <ul class="dropdown-menu" style="border-bottom:1px solid #fff;text-align:center;background-color:#000;color:#fff" aria-labelledby="dLabel">
             <a class="row" href="{{ route('products.index') }}" style="color:#fff"><li class="col-sm-12 btn btn-lg">Everything</li></a>
-
+              @include('products.product-categories')
               <a class="row" href="" style="color:#fff"><li class="col-sm-12 btn btn-lg"></li></a>
               <br>
           </ul>
