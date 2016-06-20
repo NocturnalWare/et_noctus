@@ -23,4 +23,8 @@ class Product extends Model
 	public function prices(){
 		return $this->hasOne(Price::class, 'product_id', 'id');
 	}
+
+	public function getMainImage(){
+		return 'https://s3-us-west-2.amazonaws.com/etnoc/images/products/'.$this->main_image;
+	}
 }

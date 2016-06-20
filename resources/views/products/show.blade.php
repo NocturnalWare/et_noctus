@@ -13,7 +13,7 @@
 			<legend>
 				<h3 v-text="products.name"></h3>
 			</legend>
-			<img class="img-responsive" src="http://54.149.181.47/etnoc/{{$product->main_image}}" />
+			<img class="img-responsive" src="{{$product->getMainImage()}}" />
 		</div>
 		<div class="well col-xs-12 col-md-2" style="color:#000;">
 			<span v-text="products.description"></span>
@@ -36,7 +36,7 @@
 				<div v-if="c.product_id == products.id">
 					<span v-if="c.size !== 'onesize'">
 						<span v-text="c.quantity"></span> 
-						<span v-text="c.size | capitalize"></span> Currently in your cart.
+						<span v-text="c.size | capitalize"></span> currently in your cart.
 					</span>
 					<span v-if="c.size == 'onesize'">
 						<span v-text="c.quantity"></span> Currently in your cart.
