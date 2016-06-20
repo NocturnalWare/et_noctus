@@ -20,11 +20,13 @@ class SetCart
         if(empty(\Session::get('cart_id'))){
             \Session::set('cart_id', str_random(32));
         }
-
-        view()->share('cart_quantity', \App\Carts\Cart::where('cart_id', \Session::get('cart_id'))->sum('quantity'));
+        $cart = \App\Carts\Cart::where('cart_id', \Session::get('cart_id'))->get();
+        view()->share('cart', $cart);
+        view()->share('cart_quantity', $cart->sum('quantity'));
         
         \JavaScript::put([
-            'cart_quantity' => \App\Carts\Cart::where('cart_id', \Session::get('cart_id'))->sum('quantity'),
+            'cart' => $cart,
+            'cart_quantity' => $cart->sum('quantity'),
         ]);
 
         return $next($request);

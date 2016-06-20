@@ -22,7 +22,7 @@ class CartsController extends Controller
     		$cart->save();
     	}
 
-    	return $cart->checkCart()->sum('quantity');
+    	return ['cart' => $cart->checkCart(), 'cart_quantity' => $cart->checkCart()->sum('quantity')];
     }
 
     public function destroy($product_id){
