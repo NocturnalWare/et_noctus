@@ -32,8 +32,8 @@ class CartsController extends Controller
     	return ['cart' => $cart->checkCart(), 'cart_quantity' => $cart->checkCart()->sum('quantity')];
     }
 
-    public function destroy($product_id){
-    	Cart::where('cart_id', \Session::get('cart_id'))->where('product_id', $product_id)->delete();
-    	return;
+    public function destroy(Cart $cart){
+        $cart->delete();
+    	return redirect()->back();
     }
 }

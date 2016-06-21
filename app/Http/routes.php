@@ -22,5 +22,6 @@ Route::group(['middleware' => 'cart'], function () {
 	Route::get('products/{product}', ['as' => 'products.show', 'uses' => 'Product\ProductController@show']);
 	Route::get('cart', ['as' => 'cart.index', 'uses' => 'Carts\CartsController@index']);
 	Route::post('cart', ['as' => 'cart.store', 'uses' => 'Carts\CartsController@store']);
+	Route::delete('cart/{cart}/destroy', ['as' => 'cart.destroy', 'uses' => 'Carts\CartsController@destroy']);
 	Route::get('cart/check', ['as' => 'cart.check', 'uses' => 'Product\ProductController@show']);
 });
