@@ -21,30 +21,28 @@
         <li class="btn btn-sm mobile-nav-button-etnoc"></li>
       </ul>
       <ul class="nav navbar-nav navbar-right" style="text-align:center;padding-top:10px;">
-        <li>
-          <a href="" style="background-color:#000;color:#fff;" class="nav-button-etnoc btn btn-lg">
-              <b>
-                <div id="cartIcon">
+          <li id="cartIcon">
+            <a v-if="cart > 0" href="{{route('cart.index')}}" style="background-color:#000;color:#fff;" class="nav-button-etnoc btn btn-lg">
+                <b>
                   <span class="badge" style="background-color:#fff;color:#000">
                     <span v-text="cart"></span>
                   </span>
-                  <a href="{{route('cart.index')}}">Cart</a>
-                </div>
-              </b>
-          </a>
-        </li>
-        <li>
-          <a style="background-color:#000;color:#fff" id="dLabel" type="button" class="dropdown nav-button-etnoc btn btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Shop
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu" style="border-bottom:1px solid #fff;text-align:center;background-color:#000;color:#fff" aria-labelledby="dLabel">
-            <a class="row" href="{{ route('products.index') }}" style="color:#fff"><li class="col-sm-12 btn btn-lg">Everything</li></a>
-              @include('products.product-categories')
-              <a class="row" href="" style="color:#fff"><li class="col-sm-12 btn btn-lg"></li></a>
-              <br>
-          </ul>
-        </li>
+                  Cart
+                </b>
+            </a>
+          </li>
+
+          <li>
+            <a style="background-color:#000;color:#fff" id="dLabel" type="button" class="dropdown nav-button-etnoc btn btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Shop
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" style="border-bottom:1px solid #fff;text-align:center;background-color:#000;color:#fff" aria-labelledby="dLabel">
+              <a class="row" href="{{ route('products.index') }}" style="color:#fff"><li class="col-sm-12 btn btn-lg">Everything</li></a>
+                @include('products.product-categories')
+                <br>
+            </ul>
+          </li>
 
         <li class="btn btn-sm nav-button-etnoc hidden-xs"></li>
         <li class="btn btn-sm nav-button-etnoc hidden-xs hidden">Shows</li>
