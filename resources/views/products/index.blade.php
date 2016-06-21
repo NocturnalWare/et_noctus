@@ -11,7 +11,7 @@
 							<div style="background-color:#000;">
 								<img class="img-responsive" style="max-height:600px;" src="{{$pro->getMainImage()}}">
 							</div>	
-							<label class="en-label-bl" style="background-color:#aaa;width:100%;">{{$pro->name}} ${{$pro->price}} 
+							<label class="en-label-bl" style="color:#000;font-weight:bold;font-size:1.2em;background-color:#aaa;width:100%;">{{$pro->name}} ${{$pro->price}} 
 
 							</label><br>
 						</div>	

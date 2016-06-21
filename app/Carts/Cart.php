@@ -17,11 +17,19 @@ class Cart extends Model
 
     protected $table = 'carts';
 
+    protected $with = [
+    	'product',
+    ];
+
     public function addNew($data){
     	return $this->create($data);
     }
 
     public function checkCart(){
     	return $this->where('cart_id', \Session::get('cart_id'))->get();
+    }
+
+    public function product(){
+    	return $this->hasOne(\App\Product\Product::class, 'id', 'product_id');
     }
 }

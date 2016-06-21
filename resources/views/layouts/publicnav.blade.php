@@ -28,7 +28,7 @@
                   <span class="badge" style="background-color:#fff;color:#000">
                     <span v-text="cart"></span>
                   </span>
-                  Cart
+                  <a href="{{route('cart.index')}}">Cart</a>
                 </div>
               </b>
           </a>
