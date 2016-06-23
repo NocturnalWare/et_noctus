@@ -11,6 +11,11 @@
 |
 */
 
+// Authentication routes...
+Route::get('login', array('as' => 'getLoginPage', 'uses' => 'Auth\AuthController@getLogin'));
+Route::post('login', array('as' => 'login', 'uses' => 'Auth\AuthController@postLogin'));
+Route::get('logout', array('as' => 'logout', 'uses' => 'Auth\AuthController@getLogout'));
+
 Route::group(['middleware' => 'cart'], function () {
 
 	Route::get('/', ['as' => 'welcome', 'uses' => function () {
@@ -24,4 +29,9 @@ Route::group(['middleware' => 'cart'], function () {
 	Route::post('cart', ['as' => 'cart.store', 'uses' => 'Carts\CartsController@store']);
 	Route::delete('cart/{cart}/destroy', ['as' => 'cart.destroy', 'uses' => 'Carts\CartsController@destroy']);
 	Route::get('cart/check', ['as' => 'cart.check', 'uses' => 'Product\ProductController@show']);
+});
+
+
+Route::group(['prefix' => 'control', 'middleware' => 'auth'], function(){
+	Route::get('ok', ['uses' => 'Order\OrdersController@index']);
 });
