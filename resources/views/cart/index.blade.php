@@ -8,12 +8,14 @@
 					<img  style="height:200px" class="img-responsive" src="{{$cart->product->getMainImage()}}" />
 				</center>
 			</div>
-			<div class="col-xs-12 col-md-9 padding-large-vertical">
-				<h3>
-					<center style="margin-top:5%;">
-						<div class="col-xs-12 col-md-3">
-								<label>{{$cart->product->name}}<label><br>
-						</div>
+			<div class="col-xs-12 col-md-9">
+				<center style="margin-top:5%;">
+					<h3>
+							<div class="col-xs-12 col-md-3">
+									<label>{{$cart->product->name}}<label><br>
+							</div>
+						</h3>
+
 						<div class="col-xs-6 col-md-2" style="border:1px solid #000;">
 							<label>Size:</label>
 							{{studly_case($cart->size)}}
@@ -32,21 +34,24 @@
 							</form>
 						</div>
 					</div>
-				</h3>
 				<hr>
 			</div>
 		</div>
 	@endforeach
 	
-	<div class="en-total-container col-xs-12 col-md-3 col-md-offset-8 well">
-		<div id="totalContainer">
+	<div class="col-xs-12 col-md-4 col-md-offset-6 well" style="color:#000">
+		<div id="totalContainer" class="col-md-6 col-md-offset-4" >
 			<center>
 				<div class="row">
 					<div class="col-xs-12 col-md-6">
-						Zip Code <input class="form-control" v-model="formObj.zip">
+						<label>Enter Zip Code</label> <input class="form-control" @keyup.enter="checkShipping" v-model="formObj.zip">
 					</div>
-					<div class="col-xs-11 col-md-6">
-						<br><button @click="checkShipping" class="pull-right row btn btn-primary">Check Shipping Rate</button>
+					<div class="col-xs-12 col-md-6">
+						<br>
+						<button v-if="checking == false" @click="checkShipping" class="col-md-offset-3 row btn btn-primary">Check Shipping Rate</button>
+						<span v-if="checking == true" class="btn btn-lg btn-info">
+							<i class="fa fa-spin fa-spinner"></i>
+						</span>
 					</div>
 				</div>
 			</center>
@@ -72,11 +77,11 @@
 						</div>
 						<hr style="background-color:#000">
 						<div class="row">
-							<h3>Total:<span class="pull-right" v-text="formObj.total"></span></h3>
+							<h3>Total: <span class="pull-right" v-text="'$'+formObj.total"></span></h3>
 						</div>
 					</div>
 				</div>
-				<a class="btn btn-lg btn-primary col-xs-12" href="">Checkout <i class="fa fa-arrow-right pull-right"></i></a>
+				<a class="btn btn-lg btn-primary col-xs-12" href="{{route('shipping.create')}}">Checkout <i class="fa fa-arrow-right pull-right"></i></a>
 			</div>
 		</div>
 	</div>
@@ -87,6 +92,7 @@
 	var totalContainer = new Vue({
 	    el: '#totalContainer',
 	    data:{
+	    	checking: false,
 	    	products: etnoc.products,
 	    	cart: etnoc.cart,
 	    	formObj:{'zip':'', '_token':'{{csrf_token()}}', 'shipping_rate':'0', 'total':''},
@@ -95,9 +101,11 @@
 	    	checkShipping: function(){
 	    		if(this.formObj.zip.length == 5){
 		    		var response = this.$http.post("{{route('shipping.rates.check')}}", this.formObj);
+		    		this.checking = true;
 					response.then(function(response){
 						totalContainer.$set('formObj.shipping_rate', response.data.rate);
 						totalContainer.$set('formObj.total', response.data.total);
+						totalContainer.$set('checking', false);
 					});
 	    		}
 	    	},

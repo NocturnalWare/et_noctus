@@ -38,6 +38,7 @@ Route::group(['middleware' => 'cart'], function () {
 
 	//SHIPPING ROUTES
 	Route::post('shipping/rates/check', ['as' => 'shipping.rates.check', 'uses' => 'Shipping\ShippingController@checkRate']);
+	Route::get('shipping/create', ['as' => 'shipping.create', 'uses' => 'Shipping\ShippingController@create']);
 });
 
 

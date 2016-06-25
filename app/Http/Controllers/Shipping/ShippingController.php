@@ -12,6 +12,11 @@ use App\Carts\Cart;
 
 class ShippingController extends Controller
 {
+
+	public function create(){
+		return view('shipping.create');
+	}
+
     public function checkRate(Request $request){
         EasyPost::setApiKey(env('EASYPOST'));
 
