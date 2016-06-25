@@ -1,6 +1,6 @@
 var Vue    = require('./vue.min.js');
 var jQuery = require('./jquery.min.js');
-var VueResource = require('vue-resource');
+Vue.use(require('./vue-resource.min.js'));
 
 
 window.jQuery = jQuery;

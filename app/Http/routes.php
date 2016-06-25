@@ -14,7 +14,10 @@
 // Authentication routes...
 Route::get('login', array('as' => 'getLoginPage', 'uses' => 'Auth\AuthController@getLogin'));
 Route::post('login', array('as' => 'login', 'uses' => 'Auth\AuthController@postLogin'));
-Route::get('logout', array('as' => 'logout', 'uses' => 'Auth\AuthController@getLogout'));
+Route::get('logout', array('as' => 'logout', 'uses' => function(){
+	Auth::logout();
+	return redirect()->route('welcome');
+}));
 
 Route::group(['middleware' => 'cart'], function () {
 
@@ -22,13 +25,19 @@ Route::group(['middleware' => 'cart'], function () {
 	    return view('welcome');
 	}]);
 
+	//PRODUCT ROUTES
 	Route::get('products', ['as' => 'products.index', 'uses' => 'Product\ProductController@index']);
 	Route::get('products/sort/{category}', ['as' => 'products.sort', 'uses' => 'Product\ProductController@sortindex']);
 	Route::get('products/{product}', ['as' => 'products.show', 'uses' => 'Product\ProductController@show']);
+	
+	//CART ROUTES
 	Route::get('cart', ['as' => 'cart.index', 'uses' => 'Carts\CartsController@index']);
 	Route::post('cart', ['as' => 'cart.store', 'uses' => 'Carts\CartsController@store']);
 	Route::delete('cart/{cart}/destroy', ['as' => 'cart.destroy', 'uses' => 'Carts\CartsController@destroy']);
 	Route::get('cart/check', ['as' => 'cart.check', 'uses' => 'Product\ProductController@show']);
+
+	//SHIPPING ROUTES
+	Route::post('shipping/rates/check', ['as' => 'shipping.rates.check', 'uses' => 'Shipping\ShippingController@checkRate']);
 });
 
 

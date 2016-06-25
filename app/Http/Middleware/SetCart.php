@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use App\Carts\Cart;
 
 class SetCart
 {
@@ -20,8 +21,12 @@ class SetCart
         if(empty(\Session::get('cart_id'))){
             \Session::set('cart_id', str_random(32));
         }
-        $cart = \App\Carts\Cart::where('cart_id', \Session::get('cart_id'))->get();
+
+        $cart = Cart::where('cart_id', \Session::get('cart_id'))->get();
+        $cart_amount = new Cart;
+
         view()->share('cart', $cart);
+        view()->share('cart_amount', $cart_amount->getBaseCartAmount());
         view()->share('cart_quantity', $cart->sum('quantity'));
         
         \JavaScript::put([

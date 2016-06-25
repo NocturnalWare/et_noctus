@@ -18,7 +18,7 @@ class Cart extends Model
     protected $table = 'carts';
 
     protected $with = [
-    	'product',
+        'product',
     ];
 
     public function addNew($data){
@@ -26,10 +26,22 @@ class Cart extends Model
     }
 
     public function checkCart(){
-    	return $this->where('cart_id', \Session::get('cart_id'))->get();
+        return $this->where('cart_id', \Session::get('cart_id'))->get();
+    }
+
+    public function getPrice(){
+        return \App\Product\Price::where('product_id', $this->product_id)->pluck($this->size);
     }
 
     public function product(){
-    	return $this->hasOne(\App\Product\Product::class, 'id', 'product_id');
+        return $this->hasOne(\App\Product\Product::class, 'id', 'product_id');
+    }
+
+    public function getBaseCartAmount(){
+        $price = 0;
+        foreach($this->checkCart() as $item){
+            $price += $item->getPrice()->first() * $item->quantity;
+        }
+        return $price;
     }
 }

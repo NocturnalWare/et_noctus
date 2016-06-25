@@ -10,6 +10,6 @@ use App\Http\Controllers\Controller;
 class OrdersController extends Controller
 {
     public function index(){
-    	return 'workinin';
+    	return view('auth.login');
     }
 }
