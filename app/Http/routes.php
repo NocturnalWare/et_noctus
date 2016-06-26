@@ -33,12 +33,17 @@ Route::group(['middleware' => 'cart'], function () {
 	//CART ROUTES
 	Route::get('cart', ['as' => 'cart.index', 'uses' => 'Carts\CartsController@index']);
 	Route::post('cart', ['as' => 'cart.store', 'uses' => 'Carts\CartsController@store']);
+	Route::post('cart/empty', ['as' => 'cart.empty', 'uses' => 'Carts\CartsController@emptyCart']);
 	Route::delete('cart/{cart}/destroy', ['as' => 'cart.destroy', 'uses' => 'Carts\CartsController@destroy']);
 	Route::get('cart/check', ['as' => 'cart.check', 'uses' => 'Product\ProductController@show']);
 
 	//SHIPPING ROUTES
 	Route::post('shipping/rates/check', ['as' => 'shipping.rates.check', 'uses' => 'Shipping\ShippingController@checkRate']);
 	Route::get('shipping/create', ['as' => 'shipping.create', 'uses' => 'Shipping\ShippingController@create']);
+	Route::post('shipping', ['as' => 'shipping.store', 'uses' => 'Shipping\ShippingController@store']);
+
+	//CHECKOUT ROUTES
+	Route::get('checkout', ['as' => 'checkout.index', 'uses' => 'Checkout\CheckoutController@index']);
 });
 
 

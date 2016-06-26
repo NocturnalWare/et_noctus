@@ -17,6 +17,33 @@ class ShippingController extends Controller
 		return view('shipping.create');
 	}
 
+	public function store(Request $request){
+		$cart_id = \Session::get('cart_id');
+		
+		$this->validate($request, [
+	        'email' => 'required|email',
+	        'ship_f_name' => 'required',
+	        'ship_address1' => 'required',
+	        'ship_city' => 'required',
+	        'ship_state' => 'required',
+	        'ship_zip' => 'required',
+	    ]);
+
+	    $shipping = Shipping::where('cart_id', $cart_id)->first();
+
+		if(empty($shipping)){
+			return Shipping::create(array_merge([
+				'cart_id' => \Session::get('cart_id'), 
+				'cart_amt' => \Session::get('cart_amt')
+			],
+				$request->except('_token'))
+			);
+		}else{
+			$shipping->update($request->except('_token'));
+			return redirect()->route('checkout.index');
+		}
+	}
+
     public function checkRate(Request $request){
         EasyPost::setApiKey(env('EASYPOST'));
 
@@ -25,7 +52,11 @@ class ShippingController extends Controller
         $cart = new Cart;
         $rate = $shipment->lowest_rate();
 
-    	return ['rate' => $rate->rate+.5, 'total' => $rate->rate+.5 + $cart->getBaseCartAmount()/100];
+        $total = $rate->rate+.5 + $cart->getBaseCartAmount()/100;
+
+        \Session::set('cart_amt', $total);
+
+    	return ['rate' => $rate->rate+.5, 'total' => $total];
     }
 
     private function buildShipment($shipping){
@@ -37,7 +68,6 @@ class ShippingController extends Controller
                 "city"    => "$shipping->ship_city",
                 "state"   => "$shipping->ship_state",
                 "zip"     => "$shipping->ship_zip",
-                "phone"   => "$shipping->phone"
             )
         );
         $from_address = \EasyPost\Address::create(

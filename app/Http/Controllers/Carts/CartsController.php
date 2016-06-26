@@ -34,6 +34,14 @@ class CartsController extends Controller
 
     public function destroy(Cart $cart){
         $cart->delete();
-    	return redirect()->back();
+        return redirect()->back();
+    }
+
+    public function emptyCart(Request $request, Cart $cart){
+        foreach($cart->checkCart() as $item){
+            $item->delete();
+        }
+        
+        return redirect()->route('products.index');
     }
 }
