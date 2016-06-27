@@ -44,4 +44,14 @@ class Cart extends Model
         }
         return $price;
     }
+
+    public function getCartWeight(){
+        $weight = 0;
+        
+        foreach($this->checkCart() as $item){
+            $weight += 6 * $item->quantity;
+        }
+
+        return $weight;
+    }
 }
