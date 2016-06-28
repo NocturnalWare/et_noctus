@@ -4,6 +4,8 @@
 	
 	use App\Shipping\Shipping;
 	use App\Order\Sale;
+	use App\Carts\Cart;
+	use App\Product\Inventory;
 	use App\Utilities\SlackHandler;
 	
 	use \Stripe\Stripe;
@@ -26,7 +28,7 @@
 			if($payment == true){
 				$this->completeSale();
 				$this->purgeInventory();
-				$this->sendEmails();
+				// $this->sendEmails();
 				$this->slack->sendSaleMessage();
 	        	return true;
 			}else{
@@ -35,9 +37,27 @@
 		}
 
 		private function completeSale(){
-			Sale::create(array('customer_id' => $markPaid->email, 'cart_id' => \Session::get('cart_id')));
+			Sale::create([
+				'customer_id' => \Session::get('email'),
+				'cart_id' => \Session::get('cart_id')
+			]);
+
+	        $shipping = Shipping::where('cart_id', \Session::get('cart_id'))->first();
+	        $shipping->payment_status = 'Paid';
+            $shipping->shipped_status = 'Not Shipped';
+            $shipping->save();
+            
+            return;
 		}
-		private function completeSale(){
+		
+		private function purgeInventory(){
+			foreach(Cart::where('cart_id', \Session::get('cart_id'))->get() as $cart){
+				$inventory = Inventory::where('product_id', $cart->product_id)->first();
+				$newsize = $inventory[$cart->size] - $cart->quantity;
+				$inventory->update(array($cart->size => $newsize));
+			}
+
+			return;
 		}
 
 		private function completePayment($token)
@@ -55,11 +75,11 @@
 	        }
 	            
 	        	return true;
-	            $cart_id = \Session::get('cart_id');
-	            $markPaid = Shipping::where('cart_id', \Session::get('cart_id'))->first();
-	            $markPaid->payment_status = 'Paid';
-	            $markPaid->shipped_status = 'Not Shipped';
-	            $markPaid->save();
+	            // $cart_id = \Session::get('cart_id');
+	            // $markPaid = Shipping::where('cart_id', \Session::get('cart_id'))->first();
+	            // $markPaid->payment_status = 'Paid';
+	            // $markPaid->shipped_status = 'Not Shipped';
+	            // $markPaid->save();
 	            
 
 	            // $slack->sendSaleMessage();

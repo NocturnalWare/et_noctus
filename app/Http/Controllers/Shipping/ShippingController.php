@@ -29,18 +29,20 @@ class ShippingController extends Controller
 	        'ship_zip' => 'required',
 	    ]);
 
+		\Session::set('email', $request->get('email'));
 	    $shipping = Shipping::where('cart_id', $cart_id)->first();
-
-		if(empty($shipping)){
-			Shipping::create(array_merge([
+	    $data = array_merge([
 				'cart_id' => \Session::get('cart_id'), 
 				'cart_amt' => \Session::get('cart_amt')
 			],
-				$request->except('_token'))
-			);
+				$request->except('_token')
+		);
+
+		if(empty($shipping)){
+			Shipping::create($data);			
 			return redirect()->route('checkout.index');
 		}else{
-			$shipping->update($request->except('_token'));
+			$shipping->update($data);
 			return redirect()->route('checkout.index');
 		}
 	}
