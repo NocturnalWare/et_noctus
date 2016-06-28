@@ -2,15 +2,16 @@
 
 @section('content')
 
-@extends('layouts.master')
-@section('content')
 <div style="margin-left:25%;margin-top:15%;color:#000;background-color:#000000; width:50%;min-height:900px;text-align:center">
   <div class="col-sm-12 col-md-12">
-
    <h2 style="color:#ffffff">Please verify that the information below is correct before entring your credit card details</h2>
   </div>
-
   <div class="row well pull-right">
+      <div class="text-danger">
+        @foreach($errors->all() as $error)
+            {{$error}}<br>
+        @endforeach
+      </div>
     <div style="border:1px solid #000" class="col-sm-12 col-md-12">
         <div class="col-sm-6 col-md-6">
           <label>Email</label>
@@ -69,7 +70,7 @@
 
     <hr>
 
-      <form action="{{route('products.index')}}" method="post">
+      <form action="{{route('checkout.charge')}}" method="post">
         <input type="hidden" name="_token" value="{{csrf_token()}}">
         <input type="hidden" name="data-description" value="{{Session::get('cart_amt')}}">
         <script
@@ -93,6 +94,4 @@
         </form>
   </div>
 </div>
-@stop
-
 @stop

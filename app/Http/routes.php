@@ -44,6 +44,11 @@ Route::group(['middleware' => 'cart'], function () {
 
 	//CHECKOUT ROUTES
 	Route::get('checkout', ['as' => 'checkout.index', 'uses' => 'Checkout\CheckoutController@index']);
+	Route::get('checkout/complete', ['as' => 'checkout.complete', 'uses' => 'Checkout\CheckoutController@complete']);
+	Route::post('checkout/charge', ['as' => 'checkout.charge', 'uses' => 'Checkout\CheckoutController@charge']);
+
+	//BAND ROUTES
+	Route::get('band/{band}', ['as' => 'bands.show', 'uses' => 'Sponsorship\BandsController@show']);
 });
 
 

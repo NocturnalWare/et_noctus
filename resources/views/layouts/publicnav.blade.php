@@ -52,11 +52,11 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu" style="border-bottom:1px solid #fff;text-align:center;background-color:#000;color:#fff" aria-labelledby="dLabel">
-              <a href="" style="color:#fff"><li class="btn btn-lg">Adventurer</li></a><br>
-              <a href="" style="color:#fff"><li class="btn btn-lg">Stories Untold</li></a><br>
-              <a href="" style="color:#fff"><li class="btn btn-lg">The Illustrator</li></a><br>
-              <a href="" style="color:#fff"><li class="btn btn-lg">The Banshee Pilot</li></a><br>
-              <a href="" style="color:#fff"><li class="btn btn-lg">Shapes & Colors</li></a><br>
+              <a href="{{route('bands.show', 1)}}" style="color:#fff"><li class="btn btn-lg">Adventurer</li></a><br>
+              <a href="{{route('bands.show', 5)}}" style="color:#fff"><li class="btn btn-lg">Stories Untold</li></a><br>
+              <a href="{{route('bands.show', 3)}}" style="color:#fff"><li class="btn btn-lg">The Illustrator</li></a><br>
+              <a href="{{route('bands.show', 2)}}" style="color:#fff"><li class="btn btn-lg">The Banshee Pilot</li></a><br>
+              <a href="{{route('bands.show', 4)}}" style="color:#fff"><li class="btn btn-lg">Shapes & Colors</li></a><br>
           </ul>
         </li>
         <li>
