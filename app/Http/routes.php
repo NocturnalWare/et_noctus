@@ -25,6 +25,10 @@ Route::group(['middleware' => 'cart'], function () {
 	    return view('welcome');
 	}]);
 
+	//CONTACT ROUTES
+	Route::get('/contact', ['as' => 'contact.index', 'uses' => 'Utilities\ContactController@index']);
+	Route::post('/contact', ['as' => 'contact.store', 'uses' => 'Utilities\ContactController@store']);
+
 	//PRODUCT ROUTES
 	Route::get('products', ['as' => 'products.index', 'uses' => 'Product\ProductController@index']);
 	Route::get('products/sort/{category}', ['as' => 'products.sort', 'uses' => 'Product\ProductController@sortindex']);

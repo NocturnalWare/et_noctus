@@ -67,7 +67,7 @@
         </li>
 
         <li>
-          <a style="background-color:#000;color:#fff" type="button" class="dropdown nav-button-etnoc btn btn-lg" data-toggle="modal" data-target="#Feedback">
+          <a href="{{route('contact.index')}}" style="background-color:#000;color:#fff" class="nav-button-etnoc btn btn-lg">
             <b>Contact</b>
           </a>
         </li>
@@ -75,7 +75,7 @@
         <li>
           @if(\Auth::check())
           @else
-          <a style="background-color:#000;color:#fff" type="button" class="dropdown nav-button-etnoc btn btn-lg" data-toggle="modal" data-target="#Login">
+          <a style="background-color:#000;color:#fff" class="nav-button-etnoc btn btn-lg">
                 <b>Login</b>
           </a>
           @endif
@@ -86,47 +86,3 @@
 </nav>
 
 <!-- Button trigger modal -->
-
-
-<!-- Modal -->
-<div class="modal fade" id="Feedback" tabindex="-1" role="dialog"  aria-labelledby="FeedbackLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header"  style="background-color:#000;">
-        <button type="button" class="btn btn-danger pull-right" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button></button>
-        <h4 class="modal-title" id="FeedbackLabel" style="color:#fff">Send us a message!</h4>
-      </div>
-      <div class="modal-body" style="background-color:#000;padding:30px">
-        <form action="" method="post">
-          <input type="hidden" name="_token" value="{{csrf_token()}}" style="color:#000000;">
-         <div class="row">
-            <div class="small-12 large-12 columns">
-              <input name="name" placeholder="Your Name" style="color:#000000;">
-            </div>
-            
-            <div class="small-12 large-12 columns">
-              <input name="email" placeholder="An email we can reply to" style="color:#000000;">
-            </div>
-
-            <div class="small-12 large-12 columns">
-              <textarea name='message' placeholder='Message' style='color:#000000;max-height:150px;width:100%'></textarea>
-            </div>
-          </div>
-      </div>
-      <div class="modal-footer" style="background-color:#000">
-        <button type="submit" class="btn btn-primary">Send Feedback</button>
-      </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="Login" tabindex="-1" role="dialog" aria-labelledby="LoginLabel" >
-  <div class="modal-dialog" role="document" >
-    <div class="modal-content" style="background-color:transparent">
-      <div class="modal-body" style="background-color:transparent;border-radius:20px;">
-    </div>
-  </div>
-</div>
-</div>
-</div>
