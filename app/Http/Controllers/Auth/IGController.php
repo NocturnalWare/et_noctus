@@ -25,11 +25,13 @@ class IGController extends Controller
 			$response = curl_exec($curl);
 
 			$json = json_decode($response, true);
-			dd($json);
-			\Session::put('ig_auth', $response['access_token']);
+			// dd($json);
+			\Session::put('ig_auth', 'access_granted');
+			// \Session::put('ig_auth', $response['access_token']);
     	}
 
 		return redirect()->route('welcome');
+  
 
 		// $curl_setopt("client_id=ENV('INSTAGRAM_KEY')");
 	 //    -F 'client_secret=CLIENT_SECRET' \
