@@ -23,7 +23,8 @@
   @include('layouts.javascript')
   @yield('javascript')
   TEST IG STUFF
-{{dd(Instagram::tags()->get('stayawaketocreate'))}}
+    {{dd(Instagram::tags()->get('stayawaketocreate'))}}
+    <a href="https://api.instagram.com/oauth/authorize/?client_id={{ENV('INSTAGRAM_ID')}}&redirect_uri=https://eternallynocturnal.com&response_type=code">iglogin??</a>
 </body>
 
 

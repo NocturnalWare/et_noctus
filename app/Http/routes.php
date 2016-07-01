@@ -19,11 +19,14 @@ Route::get('logout', array('as' => 'logout', 'uses' => function(){
 	return redirect()->route('welcome');
 }));
 
+Route::get('ig/auth', ['as' => 'ig.auth', 'uses' => '\Auth\IGController@authenticate']);
+
 Route::group(['middleware' => 'cart'], function () {
 
 	Route::get('/', ['as' => 'welcome', 'uses' => function () {
 	    return view('welcome');
 	}]);
+
 
 	//CONTACT ROUTES
 	Route::get('/contact', ['as' => 'contact.index', 'uses' => 'Utilities\ContactController@index']);
