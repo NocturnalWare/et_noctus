@@ -42,6 +42,7 @@ class IGController extends Controller
 
     public function test(){
     	$ig = \Instagram::users()->getMedia('self');
+    	$ig = $ig->get();
     	return view('auth.instagram', compact('ig'));
     }
 }
