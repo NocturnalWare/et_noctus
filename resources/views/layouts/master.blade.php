@@ -26,7 +26,7 @@
   @if(!empty(Session::get('ig_access')))
     {{dd(Instagram::tags()->get('stayawaketocreate'))}}
   @else
-    <a href="https://api.instagram.com/oauth/authorize/?client_id={{ENV('INSTAGRAM_ID')}}&redirect_uri=https://eternallynocturnal.com&response_type=code">iglogin??</a>
+    <a href="https://api.instagram.com/oauth/authorize/?client_id={{ENV('INSTAGRAM_ID')}}&redirect_uri=https://staging11.eternallynocturnal.com/ig/auth&response_type=code">iglogin??</a>
   @endif
 </body>
 
