@@ -21,7 +21,7 @@ class IGController extends Controller
 			'code' => $request->get('code'),
 		]);
 
-		dd($curl->exec());
+		dd(curl_exec($curl));
 
 		// $curl_setopt("client_id=ENV('INSTAGRAM_KEY')");
 	 //    -F 'client_secret=CLIENT_SECRET' \
