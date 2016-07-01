@@ -40,7 +40,7 @@ return [
         'main' => [
             'id' => ENV('INSTAGRAM_ID'),
             'secret' => ENV('INSTAGRAM_KEY'),
-            'access_token' => "{'access_token':'".ENV('INSTAGRAM_KEY')."'}",
+            'access_token' => "{'access_token':'".ENV('INSTAGRAM_ACCESS')."'}",
         ],
 
         'alternative' => [
