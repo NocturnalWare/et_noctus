@@ -23,7 +23,7 @@
   @include('layouts.javascript')
   @yield('javascript')
   TEST IG STUFF
-
+{{dd(Instagram::tags()->get('stayawaketocreate'))}}
 </body>
 
 
