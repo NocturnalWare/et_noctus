@@ -155,6 +155,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Vinkla\Instagram\InstagramServiceProvider::class,
         'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider',
         'Maknz\Slack\SlackServiceProvider',
     ],
@@ -203,6 +204,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Slack'     => 'Maknz\Slack\Facades\Slack',
+        'Instagram' => Vinkla\Instagram\Facades\Instagram::class,
     ],
 
 ];
