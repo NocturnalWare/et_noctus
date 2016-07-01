@@ -23,11 +23,11 @@
   @include('layouts.javascript')
   @yield('javascript')
   TEST IG STUFF
-  @if(!empty(Session::get('ig_auth')))
+  
     {{Instagram::tags('stayawaketocreate')->get(21)}}
-  @else
+  
     <a href="https://api.instagram.com/oauth/authorize/?client_id={{ENV('INSTAGRAM_ID')}}&redirect_uri=https://staging11.eternallynocturnal.com/ig/auth&response_type=code">iglogin??</a>
-  @endif
+ 
 </body>
 
 
