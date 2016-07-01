@@ -2,13 +2,10 @@
 
 @section('content')
 
-
-IGTEST
-
 @foreach($ig as $image)
-<div class="col-md-4 col-xs-12">
-	<img class="img-responsive" style="height:300px" src="{{$image->link}}">
-</div>
+	<div class="col-md-3 col-xs-12" style="padding-bottom:10px;">
+		<img class="img-responsive" src="{{$image['images']['standard_resolution']['url']}}">
+	</div>
 @endforeach
 
 
