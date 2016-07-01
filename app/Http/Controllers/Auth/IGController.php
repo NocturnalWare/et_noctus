@@ -24,7 +24,7 @@ class IGController extends Controller
 
 			$response = curl_exec($curl);
 
-			$json = json_decode($response);
+			$json = json_encode($response);
 			dd($json);
 			\Session::put('ig_auth', $response['access_token']);
     	}
