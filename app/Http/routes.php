@@ -19,7 +19,7 @@ Route::get('logout', array('as' => 'logout', 'uses' => function(){
 	return redirect()->route('welcome');
 }));
 
-Route::get('ig/auth', ['as' => 'ig.auth', 'uses' => '\Auth\IGController@authenticate']);
+Route::get('ig/auth', ['as' => 'ig.auth', 'uses' => 'Auth\IGController@authenticate']);
 
 Route::group(['middleware' => 'cart'], function () {
 
