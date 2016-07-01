@@ -20,14 +20,15 @@ class IGController extends Controller
 				'grant_type' => 'authorization_code',
 				'redirect_uri' => 'https://staging11.eternallynocturnal.com/ig/auth',
 				'code' => $request->get('code'),
+				'scope' => 'public_content',
 			]);
 
 			$response = curl_exec($curl);
 
-			$json = json_decode($response->get(), true);
-			// dd($json);
+			$json = json_decode($response);
+			dd($json);
 			// \Session::put('ig_auth', $json['access_token']);
-			\Session::put('ig_auth', $json['access_token']);
+			// \Session::put('ig_auth', $json['access_token']);
     	}
 
 		return redirect()->route('welcome');
