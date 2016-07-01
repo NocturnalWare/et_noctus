@@ -41,4 +41,10 @@ class IGController extends Controller
 	 //    -F 'code=CODE' \
   //   	dd($request->get('code'));
     }
+
+    public function test(){
+    	$ig = Instagram::users()->getMedia('self');
+    	return view('auth.instagram', compact('id'));
+
+    }
 }

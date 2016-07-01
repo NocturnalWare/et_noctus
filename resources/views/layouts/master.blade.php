@@ -23,8 +23,6 @@
   @include('layouts.javascript')
   @yield('javascript')
   TEST IG STUFF
-    <iframe src="https://api.instagram.com/v1/tags/stayawaketocreate?access_token={{ENV('INSTAGRAM_ACCESS')}}"></iframe>
-    Instagram::tags('stayawaketocreate')->get(21)
     <a href="https://api.instagram.com/oauth/authorize/?client_id={{ENV('INSTAGRAM_ID')}}&redirect_uri=https://staging11.eternallynocturnal.com/ig/auth&response_type=code">iglogin??</a>
 </body>
 
