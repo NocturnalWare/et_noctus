@@ -2,7 +2,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="http://159.203.77.45/favicon.ico" />
-  <link rel="stylesheet" href="http://localhost/et_noctus/public/css/final.css">
+  <link rel="stylesheet" href="{{ENV('APP_URL')}}/css/final.css">
   
   <title>#StayAwakeToCreate</title>
   
@@ -23,7 +23,7 @@
   @include('layouts.javascript')
   @yield('javascript')
   TEST IG STUFF
-  
+
 </body>
 
 

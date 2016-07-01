@@ -36,7 +36,7 @@
 
 <div id="fb-root"></div>
 
-<script type="text/javascript" src="http://localhost/et_noctus/public/js/bundle.js"></script>
+<script type="text/javascript" src="{{ENV('APP_URL')}}/js/bundle.js"></script>
 
 <script>  
   var cartIcon = new Vue({
