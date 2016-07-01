@@ -38,8 +38,8 @@ return [
     'connections' => [
 
         'main' => [
-            'id' => '5c08d119648f4b67b53d72414c2a8d35',
-            'secret' => '9b87fc3e1df64d2f8270252e2075bb6b',
+            'id' => ENV('INSTAGRAM_ID'),
+            'secret' => ENV('INSTAGRAM_KEY'),
             'access_token' => null,
         ],
 
