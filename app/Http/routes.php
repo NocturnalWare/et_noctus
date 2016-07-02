@@ -19,7 +19,6 @@ Route::get('logout', array('as' => 'logout', 'uses' => function(){
 	return redirect()->route('welcome');
 }));
 
-Route::get('ig/auth', ['as' => 'ig.auth', 'uses' => 'Auth\IGController@authenticate']);
 Route::get('ig/test', ['as' => 'ig.test', 'uses' => 'Auth\IGController@test']);
 
 
@@ -67,4 +66,5 @@ Route::group(['middleware' => 'cart'], function () {
 
 Route::group(['prefix' => 'control', 'middleware' => 'auth'], function(){
 	Route::get('ok', ['uses' => 'Order\OrdersController@index']);
+	Route::get('ig/auth', ['as' => 'ig.auth', 'uses' => 'Auth\IGController@authenticate']);
 });

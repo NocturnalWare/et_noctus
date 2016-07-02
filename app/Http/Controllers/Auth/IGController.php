@@ -33,20 +33,27 @@ class IGController extends Controller
     	}
 
 		return redirect()->route('welcome');
-  
-
-		// $curl_setopt("client_id=ENV('INSTAGRAM_KEY')");
-	 //    -F 'client_secret=CLIENT_SECRET' \
-	 //    -F 'grant_type=authorization_code' \
-	 //    -F 'redirect_uri=AUTHORIZATION_REDIRECT_URI' \
-	 //    -F 'code=CODE' \
-  //   	dd($request->get('code'));
     }
 
     public function test(){
-    	$ig = \Instagram::tags()->get('stayawaketocreate');
+    	$ig = \Instagram::users()->getMedia('self');
     	$ig = $ig->get();
-    	dd($ig);
-    	return view('auth.instagram', compact('ig'));
+    	$resp1 = [];
+    	$resp2 = [];
+    	$resp3 = [];
+    	$resp4 = [];
+    	$resp5 = [];
+    	$arra = 1;
+    	$count = 0;
+    	foreach($ig as $ins){
+    		if($count == 4){
+    			$arra += 1;
+    			$count = 0;
+    		}
+    		${'resp'.$arra} = array_merge(${'resp'.$arra}, [$ins]);
+    		$count += 1;
+    	}
+    	$images = [$resp2, $resp3, $resp4, $resp5];
+    	return view('auth.instagram', compact('resp1', 'images', 'ig'));
     }
 }
