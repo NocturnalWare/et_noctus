@@ -13,9 +13,6 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'SocialiteProviders\Manager\SocialiteWasCalled' => [
-            'SocialiteProviders\Instagram\InstagramExtendSocialite@handle'
-        ],
         'App\Events\SomeEvent' => [
             'App\Listeners\EventListener',
         ],

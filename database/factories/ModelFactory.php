@@ -35,3 +35,21 @@ $factory->define(App\Product\Product::class, function (Faker\Generator $faker) {
             'preorder' => rand(0, 1),
     ];
 });
+
+$factory->define(App\Promotions\Promotion::class, function (Faker\Generator $faker) {
+    return [
+            'promotion_name' => $faker->catchPhrase,
+            'price_percent' => $faker->randomFloat(2, '0.05', '0.20'),
+            'price_flat' => $faker->randomFloat(2, '2.50', '15.00'),
+    ];
+});
+
+$factory->define(App\Promotions\PromotionCode::class, function (Faker\Generator $faker) {
+    return [
+            'code' => str_random(10),
+            'email' => $faker->safeEmail,
+            'owner' => $faker->name,
+            'used' => rand(0, 1),
+            'expires' => $faker->dateTimeInInterval($startDate = '-5 days', $interval = '+ 90 days', $timezone = date_default_timezone_get()),
+    ];
+});

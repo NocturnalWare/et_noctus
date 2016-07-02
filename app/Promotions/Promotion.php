@@ -13,4 +13,12 @@ class Promotion extends Model
     	'price_fixed',
     	'price_flat',
     ];
+
+    protected $with = [
+    	'codes',
+    ];
+
+    public function codes(){
+    	return $this->hasMany(PromotionCode::class, 'promotion_id', 'id')->orderBy('used', 'asc')->orderBy('expires', 'desc');
+    }
 }

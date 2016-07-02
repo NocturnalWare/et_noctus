@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+	
     protected $rules = [];
     protected $fillable = [];
     protected $table = 'products';
     protected $with = ['variants', 'inventories', 'prices'];
+    protected $appends = [
+    	'show_table',
+    ];
 
     public function variants(){
     	return $this->hasMany(ProductVariant::class, 'product_id', 'id');
@@ -26,5 +30,8 @@ class Product extends Model
 
 	public function getMainImage(){
 		return 'https://s3-us-west-2.amazonaws.com/etnoc/images/products/'.$this->main_image;
+	}
+	public function getShowTableAttribute(){
+		return $this->attributes['show_table'] = false;
 	}
 }

@@ -69,5 +69,8 @@ Route::group(['middleware' => 'cart'], function () {
 
 Route::group(['prefix' => 'control', 'middleware' => 'auth'], function(){
 	Route::get('ok', ['uses' => 'Order\OrdersController@index']);
+	Route::get('promotion/index', ['as' => 'promotion.index', 'uses' => 'Promotion\PromotionController@index']);
+	Route::get('promotion/pop', ['as' => 'promotion.pop', 'uses' => 'Promotion\PromotionController@pop']);
+	Route::get('promotion/create', ['as' => 'promotion.create', 'uses' => 'Promotion\PromotionController@create']);
 	Route::get('ig/auth', ['as' => 'ig.auth', 'uses' => 'Auth\IGController@authenticate']);
 });

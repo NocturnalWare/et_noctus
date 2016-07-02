@@ -13,7 +13,7 @@ class PromotionCode extends Model
 		'owner',
 		'used',
 		'expires',
-    ]
+    ];
 
     protected $table = 'promotion_codes';
 }
