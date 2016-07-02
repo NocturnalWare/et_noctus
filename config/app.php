@@ -156,7 +156,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Vinkla\Instagram\InstagramServiceProvider::class,
-        Laravel\Socialite\SocialiteServiceProvider::class,
         'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider',
         'Maknz\Slack\SlackServiceProvider',
     ],
@@ -206,7 +205,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Slack'     => 'Maknz\Slack\Facades\Slack',
         'Instagram' => Vinkla\Instagram\Facades\Instagram::class,
-        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ],
 
 ];

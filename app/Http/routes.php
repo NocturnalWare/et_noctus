@@ -22,12 +22,17 @@ Route::get('logout', array('as' => 'logout', 'uses' => function(){
 Route::get('ig/auth', ['as' => 'ig.auth', 'uses' => 'Auth\IGController@authenticate']);
 Route::get('ig/test', ['as' => 'ig.test', 'uses' => 'Auth\IGController@test']);
 
+
+
 Route::group(['middleware' => 'cart'], function () {
 
 	Route::get('/', ['as' => 'welcome', 'uses' => function () {
 	    return view('welcome');
 	}]);
 
+	Route::get('/privacy', ['as' => 'privacy', 'uses' => function () {
+	    return view('privacy');
+	}]);
 
 	//CONTACT ROUTES
 	Route::get('/contact', ['as' => 'contact.index', 'uses' => 'Utilities\ContactController@index']);

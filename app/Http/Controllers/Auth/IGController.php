@@ -9,7 +9,8 @@ use App\Http\Controllers\Controller;
 
 class IGController extends Controller
 {
-	//shouldn't need to do this again.
+	//shouldn't need to do this again, but use this button in a view....
+   	// <a href="https://api.instagram.com/oauth/authorize/?client_id={{ENV('INSTAGRAM_ID')}}&redirect_uri=https://staging11.eternallynocturnal.com/ig/auth&response_type=code">iglogin??</a>
     public function authenticate(Request $request){
     	if(empty(\Session::get('ig_auth'))){
 	    	$curl = curl_init(); 
@@ -21,12 +22,14 @@ class IGController extends Controller
 				'grant_type' => 'authorization_code',
 				'redirect_uri' => 'https://staging11.eternallynocturnal.com/ig/auth',
 				'code' => $request->get('code'),
+				'scope' => 'public_content',
 			]);
 
 			$response = curl_exec($curl);
 
 			$json = json_decode($response);
 			dd($json);
+
     	}
 
 		return redirect()->route('welcome');
@@ -41,8 +44,9 @@ class IGController extends Controller
     }
 
     public function test(){
-    	$ig = \Instagram::users()->getMedia('self');
+    	$ig = \Instagram::tags()->get('stayawaketocreate');
     	$ig = $ig->get();
+    	dd($ig);
     	return view('auth.instagram', compact('ig'));
     }
 }
