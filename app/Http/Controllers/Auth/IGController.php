@@ -35,7 +35,7 @@ class IGController extends Controller
 		return redirect()->route('welcome');
     }
 
-    public function test(){
+    public function feed(){
     	$ig = \Instagram::users()->getMedia('self');
     	$ig = $ig->get();
     	$resp1 = [];

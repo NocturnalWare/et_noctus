@@ -3,7 +3,7 @@
   <div class="container-fluid"  style="background-color:#000;">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <a class="navbar-brand" href="http://www.eternallynocturnal.com" style=""><img height="190%" src="http://54.149.181.47/etnoc/WEBSITEBANNERTEXT.png" /></a>
+      <a class="navbar-brand" href="{{route('welcome')}}" style=""><img height="190%" src="https://eternallynocturnal.com/images/WEBSITEBANNERTEXT.png" /></a>
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
         <span style="padding:0px"class="icon-bar"></span>
@@ -17,7 +17,7 @@
       <ul class="nav navbar-nav navbar-left">
         <li class="btn btn-sm mobile-nav-button-etnoc"> <a target="_blank" style="color:#fff;font-size:2em" href="https://twitter.com/enclothingco"><i class="fa fa-twitter"></i></li></a>
         <li class="btn btn-sm mobile-nav-button-etnoc"> <a target="_blank" style="color:#fff;font-size:2em" href="https://www.facebook.com/EternallyNocturnal"><i class="fa fa-facebook-official"></i></li></a>
-        <li class="btn btn-sm mobile-nav-button-etnoc"> <a target="_blank" style="color:#fff;font-size:2em" href="https://instagram.com/eternally_nocturnal/"><i class="fa fa-instagram"></i></li></a>
+        <li class="btn btn-sm mobile-nav-button-etnoc"> <a style="color:#fff;font-size:2em" href="{{route('ig.feed')}}"><i class="fa fa-instagram"></i></li></a>
         <li class="btn btn-sm mobile-nav-button-etnoc"></li>
       </ul>
       <ul class="nav navbar-nav navbar-right" style="text-align:center;padding-top:10px;">

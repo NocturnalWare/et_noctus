@@ -19,7 +19,6 @@ Route::get('logout', array('as' => 'logout', 'uses' => function(){
 	return redirect()->route('welcome');
 }));
 
-Route::get('ig/test', ['as' => 'ig.test', 'uses' => 'Auth\IGController@test']);
 
 
 
@@ -32,6 +31,10 @@ Route::group(['middleware' => 'cart'], function () {
 	Route::get('/privacy', ['as' => 'privacy', 'uses' => function () {
 	    return view('privacy');
 	}]);
+
+	//INSTAGRAM FEED
+	Route::get('ig/feed', ['as' => 'ig.feed', 'uses' => 'Auth\IGController@feed']);
+
 
 	//CONTACT ROUTES
 	Route::get('/contact', ['as' => 'contact.index', 'uses' => 'Utilities\ContactController@index']);
