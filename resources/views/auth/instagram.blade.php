@@ -1,4 +1,6 @@
+@extends('layouts.master')
 
+@section('content')
 	<div class="hidden-xs hidden-sm">
 		<div id="ig-carousel" class="carousel slide" data-ride="carousel">
 		  <!-- Indicators -->
@@ -64,3 +66,8 @@
 			</div>
 		@endforeach
 	</div>
+
+
+
+
+@stop
