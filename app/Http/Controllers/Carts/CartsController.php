@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Carts\Cart;
+use App\Promotions\Promotion;
 
 class CartsController extends Controller
 {
@@ -30,6 +31,14 @@ class CartsController extends Controller
     	}
 
     	return ['cart' => $cart->checkCart(), 'cart_quantity' => $cart->checkCart()->sum('quantity')];
+    }
+
+    public function usePromotionCode(Request $request){
+        $promo = new Promotion;
+        $promo = $promo->checkCode($request->get('code'));
+
+        return $promo;
+        return $request->all();        
     }
 
     public function destroy(Cart $cart){

@@ -19,6 +19,7 @@ class CreatePromotionCodesTable extends Migration
             $table->string('code');
             $table->string('email')->nullable();
             $table->string('owner')->nullable();
+            $table->integer('total')->default(1);
             $table->integer('used')->default(0);
             $table->datetime('expires');
             $table->timestamps();

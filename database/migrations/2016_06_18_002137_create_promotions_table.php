@@ -16,7 +16,7 @@ class CreatePromotionsTable extends Migration
         {
             $table->increments('id');
             $table->string('promotion_name');
-            $table->float('price_percent')->nullable();
+            $table->integer('price_percent')->nullable();
             $table->float('price_flat')->nullable();
             $table->boolean('show_table')->default(false);
             $table->timestamps();

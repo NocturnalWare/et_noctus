@@ -51,6 +51,7 @@ Route::group(['middleware' => 'cart'], function () {
 	Route::post('cart/empty', ['as' => 'cart.empty', 'uses' => 'Carts\CartsController@emptyCart']);
 	Route::delete('cart/{cart}/destroy', ['as' => 'cart.destroy', 'uses' => 'Carts\CartsController@destroy']);
 	Route::get('cart/check', ['as' => 'cart.check', 'uses' => 'Product\ProductController@show']);
+	Route::post('cart/promocode', ['as' => 'cart.promocode', 'uses' => 'Carts\CartsController@usePromotionCode']);
 
 	//SHIPPING ROUTES
 	Route::post('shipping/rates/check', ['as' => 'shipping.rates.check', 'uses' => 'Shipping\ShippingController@checkRate']);
@@ -69,8 +70,9 @@ Route::group(['middleware' => 'cart'], function () {
 
 Route::group(['prefix' => 'control', 'middleware' => 'auth'], function(){
 	Route::get('ok', ['uses' => 'Order\OrdersController@index']);
-	Route::get('promotion/index', ['as' => 'promotion.index', 'uses' => 'Promotion\PromotionController@index']);
-	Route::get('promotion/pop', ['as' => 'promotion.pop', 'uses' => 'Promotion\PromotionController@pop']);
+	Route::get('promotion', ['as' => 'promotion.index', 'uses' => 'Promotion\PromotionController@index']);
+	Route::get('promotion/edit/{promotion}', ['as' => 'promotion.edit', 'uses' => 'Promotion\PromotionController@edit']);
+	Route::put('promotion/update/{promotion}', ['as' => 'promotion.update', 'uses' => 'Promotion\PromotionController@update']);
 	Route::get('promotion/create', ['as' => 'promotion.create', 'uses' => 'Promotion\PromotionController@create']);
 	Route::get('ig/auth', ['as' => 'ig.auth', 'uses' => 'Auth\IGController@authenticate']);
 });

@@ -43,16 +43,32 @@
 			<div id="totalContainer" class="col-md-9 col-md-offset-2" >
 				<center>
 					<div class="row">
-						<div class="col-xs-12">
-							<label>Enter Zip Code</label> <input class="form-control" @keyup.enter="checkShipping" v-model="formObj.zip">
+						<div class="from-group">
+							<div class="input-group">
+								<input class="form-control" @keyup.enter="checkShipping" v-model="formObj.zip" placeholder="Zip Code">
+								<div v-if="checking == false" class="input-group-addon">
+									<button @click="checkShipping" class="btn btn-xs btn-primary">
+										Check Shipping Rate
+									 	&nbsp&nbsp<i class="fa fa-send"></i> 
+									</button>
+								</div>
+								<span v-if="checking == true" class="input-group-addon btn btn-xs btn-info">
+									<i class="fa fa-spin fa-spinner"></i>
+								</span>
+							</div>
 						</div>
-						<div class="col-xs-12">
-							<br>
-							<button v-if="checking == false" @click="checkShipping" class="row btn btn-primary">
-								Check Shipping Rate
-								 &nbsp&nbsp<i class="fa fa-send"></i> 
-							</button>
-							<span v-if="checking == true" class="btn btn-lg btn-info">
+					</div>
+					<div class="row">
+						<div class="form-group">
+							<div class="input-group">
+								<input class="form-control" @keyup.enter="checkShipping" v-model="formObj.code">
+								<div v-if="checking == false" class="input-group-addon">
+									<button @click="checkShipping" class="btn btn-xs btn-primary">
+										Use Promo Code
+									 	&nbsp&nbsp<i class="fa fa-send"></i> 
+									</button>
+								</div>
+							<span v-if="checking == true" class="input-group-addon btn btn-xs btn-info">
 								<i class="fa fa-spin fa-spinner"></i>
 							</span>
 						</div>
@@ -68,6 +84,14 @@
 								</label>
 								 <span class="pull-right">
 									${{$cart_amount / 100}}
+								 </span>
+							</div>
+							<div class="col-xs-11 col-xs-offset-1" v-if="formObj.promo_rate > 0">
+								<label>
+									Promo Discount:
+								</label>
+								 <span v-if="formObj.promo_rate > 0" class="pull-right">
+								 	$<span v-text="formObj.promo_rate"></span>
 								 </span>
 							</div>
 							<div class="col-xs-11 col-xs-offset-1">
@@ -127,7 +151,7 @@
 	    	checking: false,
 	    	products: etnoc.products,
 	    	cart: etnoc.cart,
-	    	formObj:{'zip':'', '_token':'{{csrf_token()}}', 'shipping_rate':'0', 'total':''},
+	    	formObj:{'zip':'', '_token':'{{csrf_token()}}', 'promo_rate':'0', 'shipping_rate':'0', 'total':'', 'code':''},
 	    },
 	    methods:{
 	    	checkShipping: function(){
@@ -136,6 +160,7 @@
 		    		this.checking = true;
 					response.then(function(response){
 						totalContainer.$set('formObj.shipping_rate', response.data.rate);
+						totalContainer.$set('formObj.promo_rate', response.data.promo_rate);
 						totalContainer.$set('formObj.total', response.data.total);
 						totalContainer.$set('checking', false);
 					});

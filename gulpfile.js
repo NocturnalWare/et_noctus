@@ -19,6 +19,7 @@ gulp.task('icons', function() {
 elixir(function(mix) {
     mix.copy('./node_modules/vue/dist/vue.min.js', 'resources/assets/js')
     .copy('./node_modules/vue-resource/dist/vue-resource.min.js', 'resources/assets/js')
+    .copy('./node_modules/vue-router/dist/vue-router.min.js', 'resources/assets/js')
     .copy('./node_modules/jquery/dist/jquery.min.js', 'resources/assets/js')
     .copy('./node_modules/bootstrap-less/js/bootstrap.min.js', 'resources/assets/js')
     .copy('./node_modules/font-awesome/css/font-awesome.min.css', 'resources/assets/css');
@@ -27,6 +28,6 @@ elixir(function(mix) {
 elixir(function(mix) {
     mix.less('style.less', 'resources/assets/css/style.css');
     mix.styles(['style.css'], 'public/css/final.css');
-    mix.browserify(['main.js', 'jquery.min.js', 'vue.min.js', 'bootstrap.min.js']);
+    mix.browserify(['main.js', 'jquery.min.js', 'vue.min.js', 'vue-router.min.js', 'bootstrap.min.js']);
 	mix.copy('./node_modules/font-awesome/fonts/**.*', './public/fonts');
 });

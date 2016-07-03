@@ -12,7 +12,7 @@ class PromotionTableSeeder extends Seeder
     public function run()
     {
         factory(\App\Promotions\Promotion::class, 15)->create()->each(function($promo) {
-        	factory(App\Promotions\PromotionCode::class, 40)->create(['promotion_id' => $promo->id]);
+        	factory(App\Promotions\PromotionCode::class, 10)->create(['promotion_id' => $promo->id]);
     	});
     }
 }

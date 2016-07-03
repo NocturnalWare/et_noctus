@@ -11,9 +11,14 @@ class PromotionCode extends Model
 		'code',
 		'email',
 		'owner',
+		'quantity',
 		'used',
 		'expires',
     ];
 
     protected $table = 'promotion_codes';
+
+    public function getPromotion(){
+    	return \App\Promotions\Promotion::where('id', $this->promotion_id)->first();
+    }
 }

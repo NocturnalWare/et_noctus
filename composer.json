@@ -13,7 +13,8 @@
         "intervention/image": "dev-master",
         "easypost/easypost-php": "dev-master",
         "league/flysystem-aws-s3-v3": "~1.0",
-        "vinkla/instagram": "^4.1"
+        "vinkla/instagram": "^4.1",
+        "likemusic/laravel-5-js-routes": "2.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
