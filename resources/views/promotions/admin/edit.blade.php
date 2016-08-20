@@ -1,25 +1,30 @@
 @extends('layouts.master')
 
 @section('content')
-	<div id="promotionAdminEdit" class="well col-xs-12 col-md-4 col-md-offset-2" style="color:#000">
-		<form action="{{route('promotion.update', $promotion->id)}}" method="POST">
-			<input type="hidden" name="_token" value="{{csrf_token()}}">
-			<input type="hidden" name="_method" value="PUT">
+	<div id="promotionAdminEdit">
+		<div class="well col-xs-12 col-md-4 col-md-offset-2" style="color:#000">
+			<form action="{{route('promotion.update', $promotion->id)}}" method="POST">
+				<input type="hidden" name="_token" value="{{csrf_token()}}">
+				<input type="hidden" name="_method" value="PUT">
 
-			<span class="col-xs-12 form-group">
-				<label>Name</label>
-				<input name="promotion_name" class="form-control" value="{{$promotion->promotion_name}}">
-			</span>
-			<span v-if="discount == 'flat'" class="col-xs-12 form-group">
-				<label>Amount</label>
-				<input name="price_flat" class="form-control" value="{{$promotion->price_flat}}">
-			</span>
-			<span v-if="discount == 'percent'" class="col-xs-12 form-group">
-				<label>Percentage</label>
-				<input name="price_percent" class="form-control" value="{{$promotion->price_percent}}">
-			</span>
-			<button class="btn btn-primary col-xs-12">Update</button>
-		</form>
+				<span class="col-xs-12 form-group">
+					<label>Name</label>
+					<input name="promotion_name" class="form-control" value="{{$promotion->promotion_name}}">
+				</span>
+				<span v-if="discount == 'flat'" class="col-xs-12 form-group">
+					<label>Amount</label>
+					<input name="price_flat" class="form-control" value="{{$promotion->price_flat}}">
+				</span>
+				<span v-if="discount == 'percent'" class="col-xs-12 form-group">
+					<label>Percentage</label>
+					<input name="price_percent" class="form-control" value="{{$promotion->price_percent}}">
+				</span>
+				<button class="btn btn-primary col-xs-12">Update</button>
+			</form>
+		</div>
+		<div class="well col-xs-12 col-md-10 col-md-offset-1" style="color:#000">
+			@include('promotions.admin.edit-add-code')
+		</div>
 	</div>
 @stop
 
@@ -33,10 +38,14 @@
 	    	promotion: etnoc.promotion,
 	    	discount: '',
 	    	formObj:{},
+	    	generic: true,
 	    },
 	    computed: {
 	    },
 	    methods:{
+	    	toggleGenericCode: function(){
+	    		this.generic = !this.generic;
+	    	}
 	    },
 	    ready: function(){
 	    	if(this.promotion.price_flat < .01){
@@ -44,6 +53,7 @@
 	    	}else{
 	    		this.discount = 'flat';
 	    	}
+	    	this.generic = true;
 	    },
 	});
 	</script>
