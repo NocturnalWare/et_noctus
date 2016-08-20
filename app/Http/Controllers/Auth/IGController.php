@@ -34,26 +34,4 @@ class IGController extends Controller
 
 		return redirect()->route('welcome');
     }
-
-    public function feed(){
-    	$ig = \Instagram::users()->getMedia('self');
-    	$ig = $ig->get();
-    	$resp1 = [];
-    	$resp2 = [];
-    	$resp3 = [];
-    	$resp4 = [];
-    	$resp5 = [];
-    	$arra = 1;
-    	$count = 0;
-    	foreach($ig as $ins){
-    		if($count == 4){
-    			$arra += 1;
-    			$count = 0;
-    		}
-    		${'resp'.$arra} = array_merge(${'resp'.$arra}, [$ins]);
-    		$count += 1;
-    	}
-    	$images = [$resp2, $resp3, $resp4, $resp5];
-    	return view('auth.instagram', compact('resp1', 'images', 'ig'));
-    }
 }

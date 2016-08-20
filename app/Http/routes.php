@@ -24,9 +24,7 @@ Route::get('logout', array('as' => 'logout', 'uses' => function(){
 
 Route::group(['middleware' => 'cart'], function () {
 
-	Route::get('/', ['as' => 'welcome', 'uses' => function () {
-	    return view('welcome');
-	}]);
+	Route::get('/', ['as' => 'welcome', 'uses' => 'Landing\LandingController@index']);
 
 	Route::get('/privacy', ['as' => 'privacy', 'uses' => function () {
 	    return view('privacy');
