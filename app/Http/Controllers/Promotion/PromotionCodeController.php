@@ -17,7 +17,7 @@ class PromotionCodeController extends Controller
 
     public function store(Request $request, Promotion $promotion){
     	$data = $request->except('_token');
-
+    	$data['expires'] = \Carbon::parse($data['expires']);
     	if($request->get('generic') == 'true'){
     		$data['code'] = $this->generateCode();
     	}else{

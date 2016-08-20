@@ -23,8 +23,19 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 $factory->define(App\Product\Product::class, function (Faker\Generator $faker) {
     return [
             'sort_order' => '11',
-            'name' => 'Testing',
-            'description' => 'Test',
+            'name' => $faker->randomElement($array = [
+                'Native Owl Tank',
+                'Hunter Tee',
+                'Mank Beast',
+                'Cat Skull Panties',
+                'Devaux',
+                'Darby Skull Leggings',
+                'Overload Tank',
+                'Geo-Owl Tank',
+                'Galaxy Tank',
+                'Zodiac Tee',
+            ]),
+            'description' => $faker->realText($maxNbChars = 200, $indexSize = 2),
             'category' => 'Tee',
             'display_price_min' => rand(10, 29).'.99',
             'display_price_max' => rand(10, 34).'.99',
@@ -33,6 +44,33 @@ $factory->define(App\Product\Product::class, function (Faker\Generator $faker) {
             'onsale' => rand(0, 1),
             'upcomming' => rand(0, 1),
             'preorder' => rand(0, 1),
+            'onesize' => rand(0, 1),
+    ];
+});
+
+$factory->define(App\Product\Price::class, function (Faker\Generator $faker) {
+    return [
+        'xsmall' => $faker->randomFloat(2, '1299', '4999'),
+        'small' => $faker->randomFloat(2, '1299', '4999'),
+        'medium' => $faker->randomFloat(2, '1299', '4999'),
+        'large' => $faker->randomFloat(2, '1299', '4999'),
+        'xlarge' => $faker->randomFloat(2, '1299', '4999'),
+        'xxlarge' => $faker->randomFloat(2, '1299', '4999'),
+        'xxxlarge' => $faker->randomFloat(2, '1299', '4999'),
+        'onesize' => $faker->randomFloat(2, '1299', '4999'),
+    ];
+});
+
+$factory->define(App\Product\Inventory::class, function (Faker\Generator $faker) {
+    return [
+        'xsmall' => rand(0, 50),
+        'small' => rand(0, 50),
+        'medium' => rand(0, 50),
+        'large' => rand(0, 50),
+        'xlarge' => rand(0, 50),
+        'xxlarge' => rand(0, 50),
+        'xxxlarge' => rand(0, 50),
+        'onesize' => rand(0, 50),
     ];
 });
 

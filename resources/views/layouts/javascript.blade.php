@@ -9,6 +9,7 @@
 </script>
 
 <!-- Facebook Pixel Code -->
+@if(env('APP_ENV' == 'production'))
 <script>
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
   n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -34,11 +35,15 @@
   ga('send', 'pageview');
 </script>
 
+@endif
+
 <div id="fb-root"></div>
 
 <script type="text/javascript" src="{{ENV('APP_URL')}}/js/bundle.js"></script>
 
 <script>  
+  jQuery('.datepicker').datepicker()
+
   var cartIcon = new Vue({
       el: '#cartIcon',
       data:{

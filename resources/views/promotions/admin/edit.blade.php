@@ -50,7 +50,7 @@
 						<td v-text="code.used"></td>
 						<td v-text="code.email"></td>
 						<td v-text="code.owner"></td>
-						<td v-text="code.expires"></td>
+						<td v-text="expirationDate(code.expires)"></td>
 						<td><i @click="deleteCode(code)" class="fa fa-trash btn btn-sm btn-danger"></i></td>
 					</tr>
 				</tbody>
@@ -73,6 +73,9 @@
 	    computed: {
 	    },
 	    methods:{
+	    	expirationDate: function(date){
+	    		return moment(date).format('MMM DD, YYYY');
+	    	},
 	    	toggleGenericCode: function(){
 	    		this.generic = !this.generic;
 	    	},
@@ -97,6 +100,7 @@
 	    	this.generic = true;
 	    },
 	});
+
 	</script>
 
 @stop

@@ -4,22 +4,17 @@
 @section('content')
 	<div id="promotionAdminIndex">
 		
-		<div class="col-xs-10 col-md-10 col-md-offset-1" style="background-color:#fff">
+		<div class="col-xs-12 col-md-10 col-md-offset-1">
 				<div v-for="promotion in promotions">
-					<button class="btn btn-lg btn-primary col-xs-10" @click="showTable(promotion)"> 
+					<button class="btn btn-lg btn-primary col-xs-12 col-md-6" @click="editPromo(promotion)"> 
 						<span v-text="promotion.promotion_name" class="col-xs-6"></span>
 						<span class="col-xs-5" v-if="promotion.price_flat > 0">
 							<span v-text="'$'+promotion.price_flat+' DISCOUNT'" class="pull-left"></span>
-							<i class="btn btn-default fa fa-lg fa-arrows-v pull-right"></i>
 						</span>
 						<span class="col-xs-5" v-if="promotion.price_percent" >
 							<span v-text="promotion.price_percent+'% DISCOUNT'" class="pull-left"></span>
-							<i class="btn btn-default fa fa-lg fa-arrows-v pull-right"></i>
 						</span>
 					</button>
-					<div class="col-xs-2 col-md-2">
-						<button @click="editPromo(promotion)" class="col-sm-12 btn btn-lg btn-default"><i class="fa fa-lg fa-pencil-square"></i></button>
-					</div>
 			</div>
 		</div>
 

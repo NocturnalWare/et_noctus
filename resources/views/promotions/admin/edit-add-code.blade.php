@@ -33,9 +33,9 @@
 		<label>Quantity</label>
 		<input name="total" class="form-control">
 	</span>
-	<span class="col-xs-12 col-md-3 form-group">
+	<span class="col-xs-12 col-md-3 form-group"  style="color:#000">
 		<label>Expires</label>
-		<input name="expires" class="form-control">
+		<input name="expires" class="datepicker form-control">
 	</span>
 	<span class="form-group">
 		<label>&nbsp</label>
