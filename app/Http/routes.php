@@ -77,7 +77,11 @@ Route::group(['prefix' => 'control', 'middleware' => 'auth'], function(){
 	Route::get('promotion/edit/{promotion}', ['as' => 'promotion.edit', 'uses' => 'Promotion\PromotionController@edit']);
 	Route::put('promotion/update/{promotion}', ['as' => 'promotion.update', 'uses' => 'Promotion\PromotionController@update']);
 	Route::get('promotion/create', ['as' => 'promotion.create', 'uses' => 'Promotion\PromotionController@create']);
+
+	//PROMO CODE ROUTES
+	Route::get('promotioncode', ['as' => 'promotioncode.index', 'uses' => 'Promotion\PromotionCodeController@index']);
 	Route::post('promotioncode/store/{promotion}', ['as' => 'promotioncode.store', 'uses' => 'Promotion\PromotionCodeController@store']);
+	Route::post('promotioncode/destroy/{promotioncode}', ['as' => 'promotioncode.destroy', 'uses' => 'Promotion\PromotionCodeController@destroy']);
 
 
 	//IG AUTH ROUTE

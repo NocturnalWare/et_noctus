@@ -11,6 +11,7 @@ class PromotionCode extends Model
 		'code',
 		'email',
 		'owner',
+        'total',
 		'quantity',
 		'used',
 		'expires',
