@@ -35,7 +35,7 @@
 	</span>
 	<span class="col-xs-12 col-md-3 form-group"  style="color:#000">
 		<label>Expires</label>
-		<input name="expires" class="datepicker form-control">
+		<input name="expires" class="form-control" type="date">
 	</span>
 	<span class="form-group">
 		<label>&nbsp</label>
