@@ -71,6 +71,9 @@ Route::group(['middleware' => 'cart'], function () {
 Route::group(['prefix' => 'control', 'middleware' => 'auth'], function(){
 	Route::get('ok', ['uses' => 'Order\OrdersController@index']);
 	Route::get('promotion', ['as' => 'promotion.index', 'uses' => 'Promotion\PromotionController@index']);
+	Route::get('promotion/show/{promotion}', ['as' => 'promotion.show', 'uses' => 'Promotion\PromotionController@show']);
+	Route::get('promotion/create', ['as' => 'promotion.create', 'uses' => 'Promotion\PromotionController@create']);
+	Route::post('promotion/store', ['as' => 'promotion.store', 'uses' => 'Promotion\PromotionController@store']);
 	Route::get('promotion/edit/{promotion}', ['as' => 'promotion.edit', 'uses' => 'Promotion\PromotionController@edit']);
 	Route::put('promotion/update/{promotion}', ['as' => 'promotion.update', 'uses' => 'Promotion\PromotionController@update']);
 	Route::get('promotion/create', ['as' => 'promotion.create', 'uses' => 'Promotion\PromotionController@create']);

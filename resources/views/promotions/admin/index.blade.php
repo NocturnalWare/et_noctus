@@ -20,32 +20,6 @@
 					<div class="col-xs-2 col-md-2">
 						<button @click="editPromo(promotion)" class="col-sm-12 btn btn-lg btn-default"><i class="fa fa-lg fa-pencil-square"></i></button>
 					</div>
-					<div v-show="promotion.show_table === true" class="well col-xs-12">
-						<table class="table table-hover" style="color:#000">
-							<thead>
-								<th>Code</th>
-								<th>Owner</th>
-								<th>Emailed To</th>
-								<th>Total Quantity</th>
-								<th>Used</th>
-								<th>Expires</th>
-							</thead>
-							<tbody>
-								<tr v-for="code in promotion.codes" v-bind:class="
-									code.used === 0 && code.expires > todaysDate ? 'bg-success' : 'bg-danger'">
-									<td v-text="code.code"></td>
-									<td v-text="code.owner"></td>
-									<td v-text="code.email"></td>
-									<td v-text="code.total"></td>
-									<td v-text="code.used"></td>
-									<td>
-										<span v-text="code.expires"></span>
-										<i class="pull-right" v-bind:class="code.expires > todaysDate ? 'fa fa-circle text-success' : 'fa fa-ban  text-danger'"></i>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
 			</div>
 		</div>
 

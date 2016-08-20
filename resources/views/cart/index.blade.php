@@ -61,7 +61,7 @@
 					<div class="row">
 						<div class="form-group">
 							<div class="input-group">
-								<input class="form-control" @keyup.enter="checkShipping" v-model="formObj.code">
+								<input class="form-control" @keyup.enter="checkShipping" v-model="formObj.code" placeholder="Code">
 								<div v-if="checking == false" class="input-group-addon">
 									<button @click="checkShipping" class="btn btn-xs btn-primary">
 										Use Promo Code
@@ -140,7 +140,6 @@
 		</form>
 	</div>
 	<br><br>
-
 @stop
 
 @section('javascript')

@@ -22,12 +22,14 @@ elixir(function(mix) {
     .copy('./node_modules/vue-router/dist/vue-router.min.js', 'resources/assets/js')
     .copy('./node_modules/jquery/dist/jquery.min.js', 'resources/assets/js')
     .copy('./node_modules/bootstrap-less/js/bootstrap.min.js', 'resources/assets/js')
-    .copy('./node_modules/font-awesome/css/font-awesome.min.css', 'resources/assets/css');
+    .copy('./node_modules/font-awesome/css/font-awesome.min.css', 'resources/assets/css')
+    .copy('./node_modules/moment/min/moment.min.js', 'resources/assets/js')
+    .copy('./node_modules/vue-datetime-picker/dist/vue-datetime-picker.min.js', 'resources/assets/js');
 });
 
 elixir(function(mix) {
     mix.less('style.less', 'resources/assets/css/style.css');
     mix.styles(['style.css'], 'public/css/final.css');
-    mix.browserify(['main.js', 'jquery.min.js', 'vue.min.js', 'vue-router.min.js', 'bootstrap.min.js']);
+    mix.browserify(['main.js', 'jquery.min.js', 'vue.min.js', 'moment.min.js', 'vue-datetime-picker.min.js', 'vue-router.min.js', 'bootstrap.min.js']);
 	mix.copy('./node_modules/font-awesome/fonts/**.*', './public/fonts');
 });
