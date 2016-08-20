@@ -11,7 +11,6 @@
 	    <div class="item active">
 		    @foreach($instagram->resp1 as $igram)
 				<div class="col-md-3 col-xs-12" style="padding-bottom:15px;color:#000;">
-		      		<div class="well" style="height:575px">
 						<img class="img-responsive" src="{{$igram['images']['standard_resolution']['url']}}">
 						<p>{{$igram['caption']['text']}}</p>
 					</div>
@@ -23,7 +22,6 @@
 		    <div class="item">
 		    	@foreach($image as $igram)
 				<div class="col-md-3 col-xs-12" style="padding-bottom:15px;color:#000;">
-					<div class="well" style="height:575px">
 						<img class="img-responsive" src="{{$igram['images']['standard_resolution']['url']}}">
 						<p>{{$igram['caption']['text']}}</p>
 					</div>

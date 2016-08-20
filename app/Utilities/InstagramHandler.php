@@ -11,7 +11,6 @@ class InstagramHandler
 	public function __construct(){
 		$this->ig = $this->getIG();
 		$this->images = $this->buildImageSets();
-		$this->resp1 = $this->images[0];
 	}
 
 	//Returns an Instagram Object
@@ -39,6 +38,8 @@ class InstagramHandler
 			$count += 1;
 		}
 		
+		$this->resp1 = $resp1;
+
 		return [$resp2, $resp3, $resp4, $resp5];
 	}
 }
