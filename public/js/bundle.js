@@ -19001,6 +19001,9 @@ var inventoryManager = new Vue({
         categories: ['Tees', '¾ Tees', 'Tanks', 'Hoodies', 'Pants', 'Accessories', 'Ticket']
     },
     methods: {
+        updated_at: function updated_at(product) {
+            return moment(product.inventories.updated_at).format('h:mA MM/DD/YYYY');
+        },
         showInventory: function showInventory(product) {
             this.products.forEach(function (product) {
                 product.show_table = false;

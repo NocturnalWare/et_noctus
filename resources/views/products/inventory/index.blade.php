@@ -15,12 +15,14 @@
 					<div v-if="product.onesize === 1">
 						<span class="col-xs-12 input-group">
 							<label>One Size</label>
+							<span class="pull-right" v-text="'Last Updated at '+updated_at(product)"></span>
 							<input class="form-control" v-model="product.inventories.onesize">
 						</span>
 					</div>
 					<div v-if="product.onesize === 0">
 						<span class="col-xs-12 input-group">
 							<label>X-small</label>
+							<span class="pull-right" v-text="'Last Updated at '+updated_at(product)"></span>
 							<input class="form-control" v-model="product.inventories.xsmall">
 						</span>
 
