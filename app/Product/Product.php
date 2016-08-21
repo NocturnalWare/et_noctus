@@ -8,7 +8,27 @@ class Product extends Model
 {
 	
     protected $rules = [];
-    protected $fillable = [];
+    protected $fillable = [
+		'name',
+		'sort_order',
+		'cost',
+		'description',
+		'category',
+		'display_price_min',
+		'display_price_max',
+		'active',
+		'onsale',
+		'upcomming',
+		'preorder',
+		'onesize',
+		'xsmall',
+		'small',
+		'medium',
+		'large',
+		'xlarge',
+		'xxlarge',
+		'xxxlarge',
+    ];
     protected $table = 'products';
     protected $with = ['variants', 'inventories', 'prices'];
     protected $appends = [

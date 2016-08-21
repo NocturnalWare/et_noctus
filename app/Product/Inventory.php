@@ -9,6 +9,7 @@ class Inventory extends Model
     protected $table = 'inventories';
 
     protected $fillable = [
+        'onesize',
     	'xsmall',
     	'small',
     	'medium',

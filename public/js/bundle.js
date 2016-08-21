@@ -17420,7 +17420,7 @@ new Vue({
 
 });
 
-},{"./jquery.min.js":5,"./vue-resource.min.js":9,"./vue-router.min.js":10,"./vue.min.js":11,"moment":1}],7:[function(require,module,exports){
+},{"./jquery.min.js":5,"./vue-resource.min.js":10,"./vue-router.min.js":11,"./vue.min.js":12,"moment":1}],7:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -18865,7 +18865,7 @@ var Vue = require('vue');
 var newProduct = new Vue({
     el: '#createProduct',
     data: {
-        product: { 'name': '', 'description': '', 'category': '', 'price': '', 'active': true, 'onsale': 0, 'upcomming': 0, 'preorder': 0, 'onesize': false, 'xsmall': '', 'small': '', 'medium': '', 'large': '', 'xlarge': '', 'xxlarge': '', 'xxxlarge': '', 'main_image': '' },
+        product: { 'name': '', 'description': '', 'category': '', 'display_price_min': '', 'display_price_max': '', 'active': 1, 'onsale': 0, 'upcomming': 0, 'preorder': 0, 'onesize': 0, 'main_image': '' },
         inventory: { 'xsmall': '', 'small': '', 'medium': '', 'large': '', 'xlarge': '', 'xxlarge': '', 'xxxlarge': '' },
         price: { 'xsmall': '', 'small': '', 'medium': '', 'large': '', 'xlarge': '', 'xxlarge': '', 'xxxlarge': '' },
         categories: ['Tees', '¾ Tees', 'Tanks', 'Hoodies', 'Pants', 'Accessories', 'Ticket']
@@ -18873,8 +18873,8 @@ var newProduct = new Vue({
     methods: {
         addProduct: function addProduct() {
             var data = {};
-            var url = jQuery('#newProduct').attr('route');
-            var token = jQuery('#newProduct').attr('token');
+            var url = jQuery('#createProduct').attr('route');
+            var token = jQuery('#createProduct').attr('token');
             data.product = this.product;
             data.inventory = this.inventory;
             data.prices = this.price;
@@ -18892,10 +18892,18 @@ var newProduct = new Vue({
             return false;
         },
         setActive: function setActive() {
-            this.product.active = !this.product.active;
+            if (this.product.active === 1) {
+                this.product.active = 0;
+            } else {
+                this.product.active = 1;
+            }
         },
         setOnesize: function setOnesize() {
-            this.product.onesize = !this.product.onesize;
+            if (this.product.onesize === 1) {
+                this.product.onesize = 0;
+            } else {
+                this.product.onesize = 1;
+            }
         }
     },
     ready: function ready() {}
@@ -18903,6 +18911,66 @@ var newProduct = new Vue({
 });
 
 },{"vue":3}],9:[function(require,module,exports){
+'use strict';
+
+var Vue = require('vue');
+
+var editProduct = new Vue({
+    el: '#editProduct',
+    data: {
+        product: {},
+        inventory: {},
+        price: {},
+        categories: ['Tees', '¾ Tees', 'Tanks', 'Hoodies', 'Pants', 'Accessories', 'Ticket']
+    },
+    methods: {
+        addProduct: function addProduct() {
+            var data = {};
+            var url = jQuery('#editProduct').attr('route');
+            var token = jQuery('#editProduct').attr('token');
+            data.product = this.product;
+            data.inventory = this.inventory;
+            data.prices = this.price;
+            data._token = token;
+            jQuery.ajax({
+                type: "PUT",
+                url: url,
+                data: data,
+                cache: false,
+                success: function success(response) {
+                    window.location = response;
+                }
+            });
+            return false;
+        },
+        setActive: function setActive() {
+            if (this.product.active === 1) {
+                this.product.active = 0;
+            } else {
+                this.product.active = 1;
+            }
+        },
+        setOnesize: function setOnesize() {
+            if (this.product.onesize === 1) {
+                this.product.onesize = 0;
+            } else {
+                this.product.onesize = 1;
+            }
+        }
+    },
+    ready: function ready() {
+        console.log(this.product);
+    }
+
+});
+
+if (etnoc.product) {
+    editProduct.$set('product', etnoc.product);
+    editProduct.$set('inventory', etnoc.product.inventories);
+    editProduct.$set('price', etnoc.product.prices);
+}
+
+},{"vue":3}],10:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -19313,7 +19381,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }), _.actions = { get: { method: "GET" }, save: { method: "POST" }, query: { method: "GET" }, update: { method: "PUT" }, remove: { method: "DELETE" }, "delete": { method: "DELETE" } }, "undefined" != typeof window && window.Vue && window.Vue.use(K), K;
 });
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -19940,7 +20008,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }, "undefined" != typeof window && window.Vue && window.Vue.use(ct), ct;
 });
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -21907,6 +21975,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[6,5,11,7,10,4,8]);
+},{}]},{},[6,5,12,7,11,4,9,8]);
 
 //# sourceMappingURL=bundle.js.map

@@ -70,6 +70,10 @@ Route::group(['prefix' => 'control', 'middleware' => ['auth', 'cart']], function
 	Route::get('ok', ['uses' => 'Order\OrdersController@index']);
 	//PRODUCT ADMIN ROUTES
 	Route::get('products/create', ['as' => 'products.create', 'uses' => 'Product\ProductController@create']);
+	Route::get('products/edit/{product}', ['as' => 'products.edit', 'uses' => 'Product\ProductController@edit']);
+	Route::post('products', ['as' => 'products.store', 'uses' => 'Product\ProductController@store']);
+	Route::put('products/update/{product}', ['as' => 'products.update', 'uses' => 'Product\ProductController@update']);
+	Route::get('products', ['as' => 'control.products.index', 'uses' => 'Product\ProductController@adminIndex']);
 
 	//PROMO ROUTES
 	Route::get('promotion', ['as' => 'promotion.index', 'uses' => 'Promotion\PromotionController@index']);
@@ -77,7 +81,7 @@ Route::group(['prefix' => 'control', 'middleware' => ['auth', 'cart']], function
 	Route::post('promotion', ['as' => 'promotion.store', 'uses' => 'Promotion\PromotionController@store']);
 	Route::get('promotion/create', ['as' => 'promotion.create', 'uses' => 'Promotion\PromotionController@create']);
 	Route::get('promotion/edit/{promotion}', ['as' => 'promotion.edit', 'uses' => 'Promotion\PromotionController@edit']);
-	Route::put('promotion/update/{promotion}', ['as' => 'promotion.update', 'uses' => 'Promotion\PromotionController@update']);
+	Route::post('promotion/update/{promotion}', ['as' => 'promotion.update', 'uses' => 'Promotion\PromotionController@update']);
 	Route::get('promotion/create', ['as' => 'promotion.create', 'uses' => 'Promotion\PromotionController@create']);
 
 	//PROMO CODE ROUTES

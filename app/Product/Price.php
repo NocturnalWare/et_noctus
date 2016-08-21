@@ -8,5 +8,14 @@ class Price extends Model
 {
     protected $table = 'prices';
 
-    
+	protected $fillable = [
+		'onesize',
+    	'xsmall',
+    	'small',
+    	'medium',
+    	'large',
+    	'xlarge',
+    	'xxlarge',
+    	'xxxlarge',
+	];    
 }

@@ -1,9 +1,9 @@
 @extends('layouts.master')
 
 @section('content')
-	<div id="createProduct" route="{{route('products.store')}}" token="{{csrf_token()}}">
+	<div id="editProduct" route="{{route('products.update', $product->id)}}" token="{{csrf_token()}}">
 		<div class="col-xs-12 col-md-6 col-md-offset-1 well">
-			<h2 class="col-sm-3 col-xs-12">Add a new Product</h2>
+			<h2 class="col-sm-3 col-xs-12">Updating <span v-text="product.name"></span></h2>
 			<div class="col-xs-12 col-sm-7">
 				<div class="col-xs-12">
 					<input type="text" class="form-control" v-model="product.name" placeholder="Product Name">
@@ -13,7 +13,6 @@
 				</div>
 				<div class="col-xs-12">
 					<select v-model="product.category" class="form-control">
-						<option value="Tees" v-if="product.category == ''" selected>Tee</option> 
 						<option v-for="category in categories" value="@{{category}}" v-text="category"></option>
 					</select>
 				</div>
@@ -160,7 +159,7 @@
 
 				</tbody>
 			</table>
-			<span @click="addProduct" class="btn btn-primary col-sm-12">ADD <i class="fa fa-plus"></i></span>
+			<span @click="addProduct" class="btn btn-lg btn-primary col-xs-12">SAVE <i class="fa fa-save"></i></span>
 		</div>
 	</div>
 
