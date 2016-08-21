@@ -3,7 +3,7 @@ var Vue    = require('vue');
 var newProduct = new Vue({
     el: '#createProduct',
     data: {
-        product:{'name':'', 'description':'', 'category':'', 'price':'', 'active':'', 'onsale':'', 'upcomming':'', 'preorder':'', 'xsmall':'', 'small':'', 'medium':'', 'large':'', 'xlarge':'', 'xxlarge':'', 'xxxlarge':'', 'main_image':''},
+        product:{'name':'', 'description':'', 'category':'', 'price':'', 'active':true, 'onsale':0, 'upcomming':0, 'preorder':0, 'onesize':false, 'xsmall':'', 'small':'', 'medium':'', 'large':'', 'xlarge':'', 'xxlarge':'', 'xxxlarge':'', 'main_image':''},
         inventory:{'xsmall':'', 'small':'', 'medium':'', 'large':'', 'xlarge':'', 'xxlarge':'', 'xxxlarge':''},
         price:{'xsmall':'', 'small':'', 'medium':'', 'large':'', 'xlarge':'', 'xxlarge':'', 'xxxlarge':''},
         categories:['Tees', '¾ Tees', 'Tanks', 'Hoodies', 'Pants', 'Accessories', 'Ticket'],
@@ -29,9 +29,12 @@ var newProduct = new Vue({
             });
             return false;
         },
-      doThing: function(){
-        alert('thing');
-      }
+        setActive: function(){
+            this.product.active = !this.product.active;
+        },
+        setOnesize: function(){
+            this.product.onesize = !this.product.onesize;
+        }
     },
     ready: function ready() {
     }

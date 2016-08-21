@@ -20,6 +20,12 @@
 				<div class="col-xs-12 row">
 					<input type="text" class="form-control" v-model="product.price" placeholder="Display Price (19.99 - 24.99)">
 				</div>
+				<div class="col-xs-6">
+					<i @click="setActive" class="fa btn" :class="['', product.active === true ? 'fa-check-square-o' : 'fa-square-o']"></i> Active
+				</div>
+				<div class="col-xs-6">
+					<i class="fa btn" @click="setOnesize" :class="['', product.onesize === true ? 'fa-check-square-o' : 'fa-square-o']"></i> One Size Only
+				</div>
 			</div>
 
 			<hr>
@@ -33,7 +39,23 @@
 						<th>Price</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody v-if="product.onesize === true">
+					<tr>
+						<td>
+							One Size
+						</td>
+						<td>
+							<input type="text" v-model="inventory.onesize">
+						</td>
+						<td>
+							<span class="input-group">
+								<span class="input-group-addon">$</span>
+								<input type="text" v-model="price.onesize">
+							</span>
+						</td>
+					</tr>
+				</tbody>
+				<tbody v-if="product.onesize === false">
 					<tr>
 						<td>
 							X-small
