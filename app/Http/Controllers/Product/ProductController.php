@@ -29,6 +29,10 @@ class ProductController extends Controller
         return redirect()->back();
     }
 
+    public function create(){
+        return view('products.create');
+    }
+
     public function show(Product $product){
 
     	\JavaScript::put([

@@ -42,8 +42,6 @@
 <script type="text/javascript" src="{{ENV('APP_URL')}}/js/bundle.js"></script>
 
 <script>  
-  jQuery('.datepicker').datepicker()
-
   var cartIcon = new Vue({
       el: '#cartIcon',
       data:{
