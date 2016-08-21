@@ -40,6 +40,7 @@
 <div id="fb-root"></div>
 
 <script type="text/javascript" src="{{ENV('APP_URL')}}/js/bundle.js"></script>
+<script type="text/javascript" src="{{ENV('APP_URL')}}/js/typeahead.bundle.min.js"></script>
 
 <script>  
   var cartIcon = new Vue({
@@ -52,4 +53,6 @@
       ready: function(){
       },
   });
+
+
 </script>

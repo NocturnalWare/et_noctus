@@ -33,6 +33,7 @@ class Product extends Model
     protected $with = ['variants', 'inventories', 'prices'];
     protected $appends = [
     	'show_table',
+    	'updated',
     ];
 
     public function variants(){
@@ -53,5 +54,8 @@ class Product extends Model
 	}
 	public function getShowTableAttribute(){
 		return $this->attributes['show_table'] = false;
+	}
+	public function getUpdatedAttribute(){
+		return $this->attributes['updated'] = false;
 	}
 }

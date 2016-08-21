@@ -12,7 +12,7 @@
 		<div class=" col-md-3 col-xs-12" >
 			<h1><i class="fa fa-gift"></i> Products</h1>
 			<a class="btn btn-info col-xs-12" href="{{route('control.products.index')}}"><i class="pull-left fa fa-wrench"></i> Edit Products</a>
-			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-cube"></i> Inventory</a>
+			<a class="btn btn-info col-xs-12" href="{{route('inventory.index')}}"><i class="pull-left fa fa-cube"></i> Inventory</a>
 			<a class="btn btn-info col-xs-12" href="{{route('products.create')}}"><i class="pull-left fa fa-plus"></i> Add Product</a>
 			<a class="btn btn-danger col-xs-12" href="{{route('products.create')}}"><i class="pull-left fa fa-cogs"></i> Plan Orders</a>
 		</div>

@@ -10,6 +10,8 @@ window.moment = moment;
 
 import editProduct from './products/edit.js';
 import createProduct from './products/create.js';
+import inventoryManager from './products/inventory.js';
+
 
 window.wareHouse = new Vue({
     el: '#wareHouse',

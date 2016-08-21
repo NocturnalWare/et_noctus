@@ -17411,6 +17411,10 @@ var _create = require('./products/create.js');
 
 var _create2 = _interopRequireDefault(_create);
 
+var _inventory = require('./products/inventory.js');
+
+var _inventory2 = _interopRequireDefault(_inventory);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Vue = require('./vue.min.js');
@@ -17434,7 +17438,7 @@ window.wareHouse = new Vue({
 
 });
 
-},{"./jquery.min.js":5,"./products/create.js":8,"./products/edit.js":9,"./vue-resource.min.js":10,"./vue-router.min.js":11,"./vue.min.js":12,"moment":1}],7:[function(require,module,exports){
+},{"./jquery.min.js":5,"./products/create.js":8,"./products/edit.js":9,"./products/inventory.js":10,"./vue-resource.min.js":11,"./vue-router.min.js":12,"./vue.min.js":13,"moment":1}],7:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -18985,6 +18989,52 @@ if (etnoc.product) {
 }
 
 },{"vue":3}],10:[function(require,module,exports){
+'use strict';
+
+var Vue = require('vue');
+
+var inventoryManager = new Vue({
+    el: '#inventoryManager',
+    data: {
+        products: {},
+        search_input: { 'input': '' },
+        categories: ['Tees', '¾ Tees', 'Tanks', 'Hoodies', 'Pants', 'Accessories', 'Ticket']
+    },
+    methods: {
+        showInventory: function showInventory(product) {
+            this.products.forEach(function (product) {
+                product.show_table = false;
+            });
+
+            product.show_table = !product.show_table;
+        },
+        saveInventory: function saveInventory(product) {
+            var data = {};
+            var url = jQuery('#inventoryManager').attr('route');
+            var token = jQuery('#inventoryManager').attr('token');
+            data.product = product;
+            data._token = token;
+            jQuery.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                cache: false,
+                success: function success(response) {
+                    product.updated = true;
+                }
+            });
+            return false;
+        }
+    },
+    ready: function ready() {}
+
+});
+
+if (etnoc.products) {
+    inventoryManager.$set('products', etnoc.products);
+}
+
+},{"vue":3}],11:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -19395,7 +19445,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }), _.actions = { get: { method: "GET" }, save: { method: "POST" }, query: { method: "GET" }, update: { method: "PUT" }, remove: { method: "DELETE" }, "delete": { method: "DELETE" } }, "undefined" != typeof window && window.Vue && window.Vue.use(K), K;
 });
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -20022,7 +20072,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }, "undefined" != typeof window && window.Vue && window.Vue.use(ct), ct;
 });
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -21989,6 +22039,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[6,5,12,7,11,4,9,8]);
+},{}]},{},[6,5,13,7,12,4,9,8]);
 
 //# sourceMappingURL=bundle.js.map
