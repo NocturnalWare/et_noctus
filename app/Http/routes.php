@@ -68,6 +68,7 @@ Route::group(['middleware' => 'cart'], function () {
 
 Route::group(['prefix' => 'control', 'middleware' => ['auth', 'cart']], function(){
 	Route::get('ok', ['uses' => 'Order\OrdersController@index']);
+	Route::get('manage', ['as' => 'admin.index', 'uses' => 'Admin\AdminController@index']);
 	//PRODUCT ADMIN ROUTES
 	Route::get('products/create', ['as' => 'products.create', 'uses' => 'Product\ProductController@create']);
 	Route::get('products/edit/{product}', ['as' => 'products.edit', 'uses' => 'Product\ProductController@edit']);

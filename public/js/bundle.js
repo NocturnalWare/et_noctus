@@ -17403,6 +17403,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 },{}],6:[function(require,module,exports){
 'use strict';
 
+var _edit = require('./products/edit.js');
+
+var _edit2 = _interopRequireDefault(_edit);
+
+var _create = require('./products/create.js');
+
+var _create2 = _interopRequireDefault(_create);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var Vue = require('./vue.min.js');
 var jQuery = require('./jquery.min.js');
 var Router = require('./vue-router.min.js');
@@ -17413,14 +17423,18 @@ window.jQuery = jQuery;
 window.Vue = Vue;
 window.moment = moment;
 
-new Vue({
-    el: '#Login',
+window.wareHouse = new Vue({
+    el: '#wareHouse',
     data: {},
+    components: {
+        editProduct: _edit2.default,
+        createProduct: _create2.default
+    },
     ready: function ready() {}
 
 });
 
-},{"./jquery.min.js":5,"./vue-resource.min.js":10,"./vue-router.min.js":11,"./vue.min.js":12,"moment":1}],7:[function(require,module,exports){
+},{"./jquery.min.js":5,"./products/create.js":8,"./products/edit.js":9,"./vue-resource.min.js":10,"./vue-router.min.js":11,"./vue.min.js":12,"moment":1}],7:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };

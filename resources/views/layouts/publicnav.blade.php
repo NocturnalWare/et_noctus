@@ -74,6 +74,7 @@
 
         <li>
           @if(\Auth::check())
+            <a style="background-color:#000;color:#fff" href="{{route('admin.index')}}" class="nav-button-etnoc btn btn-lg">Manage</a>
           @else
           <a style="background-color:#000;color:#fff" class="nav-button-etnoc btn btn-lg">
                 <b>Login</b>

@@ -8,9 +8,16 @@ window.jQuery = jQuery;
 window.Vue = Vue;
 window.moment = moment;
 
-new Vue({
-    el: '#Login',
+import editProduct from './products/edit.js';
+import createProduct from './products/create.js';
+
+window.wareHouse = new Vue({
+    el: '#wareHouse',
     data:{},
+    components:{
+    	editProduct,
+    	createProduct,
+    },
     ready: function(){
     },
 
