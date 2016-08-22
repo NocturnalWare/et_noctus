@@ -68,8 +68,12 @@ Route::group(['middleware' => 'cart'], function () {
 
 Route::group(['prefix' => 'control', 'middleware' => ['auth', 'cart']], function(){
 	Route::get('ok', ['uses' => 'Order\OrdersController@index']);
+
 	//GENERAL ADMIN ROUTES
 	Route::get('manage', ['as' => 'admin.index', 'uses' => 'Admin\AdminController@index']);
+
+	//CONTACT Routes
+	Route::get('contacts', ['as' => 'contacts.index', 'uses' => 'Contact\ContactsController@index']);
 
 	//PRODUCT ADMIN ROUTES
 	Route::get('products/create', ['as' => 'products.create', 'uses' => 'Product\ProductController@create']);

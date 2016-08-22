@@ -31,9 +31,7 @@
 		<div class=" col-md-3 col-xs-12" >
 			<h1><i class="fa fa-music"></i> Bands</h1>
 			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-wrench"></i> Edit Bands</a>
-			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-wrench"></i> Edit Sponsorships</a>
 			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-plus"></i> Add Band</a>
-			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-plus"></i> Add Sponsorship</a>
 		</div>
 		<div class=" col-md-3 col-xs-12" >
 			<h1><i class="fa fa-sun-o"></i> Spotlights</h1>
@@ -46,7 +44,5 @@
 			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-dollar"></i> Expense Reports</a>
 		</div>
 	</div>
-
-
 
 @stop

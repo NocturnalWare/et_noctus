@@ -14971,6 +14971,26 @@ if ("undefined" == typeof jQuery) throw new Error("Bootstrap's JavaScript requir
 }(jQuery);
 
 },{}],5:[function(require,module,exports){
+'use strict';
+
+var Vue = require('vue');
+
+var contactManager = new Vue({
+    el: '#contactManager',
+    data: {
+        contacts: {},
+        search_input: { 'input': '' }
+    },
+    methods: {},
+    ready: function ready() {}
+
+});
+
+if (etnoc.contacts) {
+    contactManager.$set('contacts', etnoc.contacts);
+}
+
+},{"vue":3}],6:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -17400,7 +17420,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }, b || (a.jQuery = a.$ = n), n;
 });
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var _edit = require('./products/edit.js');
@@ -17414,6 +17434,10 @@ var _create2 = _interopRequireDefault(_create);
 var _inventory = require('./products/inventory.js');
 
 var _inventory2 = _interopRequireDefault(_inventory);
+
+var _index = require('./contacts/index.js');
+
+var _index2 = _interopRequireDefault(_index);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17438,7 +17462,7 @@ window.wareHouse = new Vue({
 
 });
 
-},{"./jquery.min.js":5,"./products/create.js":8,"./products/edit.js":9,"./products/inventory.js":10,"./vue-resource.min.js":11,"./vue-router.min.js":12,"./vue.min.js":13,"moment":1}],7:[function(require,module,exports){
+},{"./contacts/index.js":5,"./jquery.min.js":6,"./products/create.js":9,"./products/edit.js":10,"./products/inventory.js":11,"./vue-resource.min.js":12,"./vue-router.min.js":13,"./vue.min.js":14,"moment":1}],8:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -18875,7 +18899,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   a.version = "2.14.1", b(rb), a.fn = Se, a.min = tb, a.max = ub, a.now = Fe, a.utc = j, a.unix = Jc, a.months = Pc, a.isDate = f, a.locale = Za, a.invalid = n, a.duration = Mb, a.isMoment = r, a.weekdays = Rc, a.parseZone = Kc, a.localeData = ab, a.isDuration = wb, a.monthsShort = Qc, a.weekdaysMin = Tc, a.defineLocale = $a, a.updateLocale = _a, a.locales = bb, a.weekdaysShort = Sc, a.normalizeUnits = J, a.relativeTimeRounding = id, a.relativeTimeThreshold = jd, a.calendarFormat = Tb, a.prototype = Se;var nf = a;return nf;
 });
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -18928,7 +18952,7 @@ var newProduct = new Vue({
 
 });
 
-},{"vue":3}],9:[function(require,module,exports){
+},{"vue":3}],10:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -18988,7 +19012,7 @@ if (etnoc.product) {
     editProduct.$set('price', etnoc.product.prices);
 }
 
-},{"vue":3}],10:[function(require,module,exports){
+},{"vue":3}],11:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -19037,7 +19061,7 @@ if (etnoc.products) {
     inventoryManager.$set('products', etnoc.products);
 }
 
-},{"vue":3}],11:[function(require,module,exports){
+},{"vue":3}],12:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -19448,7 +19472,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }), _.actions = { get: { method: "GET" }, save: { method: "POST" }, query: { method: "GET" }, update: { method: "PUT" }, remove: { method: "DELETE" }, "delete": { method: "DELETE" } }, "undefined" != typeof window && window.Vue && window.Vue.use(K), K;
 });
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -20075,7 +20099,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }, "undefined" != typeof window && window.Vue && window.Vue.use(ct), ct;
 });
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -22042,6 +22066,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[6,5,13,7,12,4,9,8]);
+},{}]},{},[7,6,14,8,13,4,10,9]);
 
 //# sourceMappingURL=bundle.js.map
