@@ -10,18 +10,17 @@
 				<input type="text" class="search-input form-control" v-model="search_input.input" style="background-color:#fff; width:100%">
 			</span>
 			<div class="col-xs-12" v-for="contact in contacts"  style="border:1px solid #000;padding:10px;">
-				<div class="col-xs-12" v-if="contact.f_name+' '+contact.l_name == search_input.input || search_input.input == ''">
-					<span class="col-xs-12 col-md-6">
-						<h3><span v-text="contact.f_name"></span> <span v-text="contact.l_name"></span></h3>
-					</span>
-					<span class="col-xs-12 col-md-6">
-						<a href="{{route('contacts.index')}}/edit/@{{contact.id}}" class="pull-right"><i class="fa fa-wrench"></i></a>
-						<div class="col-xs-12 pull-left">
-							<span v-text="contact.city"></span>, 
-							<span v-text="contact.state"></span>
-							<span v-text="contact.zip"></span>
-						</div>
-					</span>
+				<div class="col-xs-11">
+					<h3><span v-text="contact.f_name"></span> <span v-text="contact.l_name"></span></h3>
+				</div>
+				<div class="col-xs-1">
+					<a href="{{route('contacts.index')}}/edit/@{{contact.id}}" class="pull-right"><i class="fa fa-wrench"></i></a>
+				</div>
+				<div class="col-xs-12 well">
+					<h4>Location</h4>
+					<span v-text="contact.city"></span>, 
+					<span v-text="contact.state"></span>
+					<span v-text="contact.zip"></span>
 				</div>
 				<div class="col-xs-12 well">
 					<a class="btn col-xs-1" target="_blank" v-if="contact.facebook" href="@{{contact.facebook}}"><i class="fa fa-lg fa-facebook-official"></i></a>
