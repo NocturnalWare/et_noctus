@@ -96,6 +96,8 @@ Route::group(['prefix' => 'control', 'middleware' => ['auth', 'cart']], function
 	Route::post('promotioncode/store/{promotion}', ['as' => 'promotioncode.store', 'uses' => 'Promotion\PromotionCodeController@store']);
 	Route::post('promotioncode/destroy/{promotioncode}', ['as' => 'promotioncode.destroy', 'uses' => 'Promotion\PromotionCodeController@destroy']);
 
+	//SALE ROUTES
+	Route::get('sales', ['as' => 'sales.index', 'uses' => 'Sale\SaleController@index']);
 
 	//IG AUTH ROUTE
 	Route::get('ig/auth', ['as' => 'ig.auth', 'uses' => 'Auth\IGController@authenticate']);

@@ -27,6 +27,14 @@ class Shipping extends Model
     	'tracking_number'
     ];
 
+    protected $with = [
+        'carts',
+    ];
+
+    public function carts(){
+        return $this->hasMany(\App\Carts\Cart::class, 'cart_id', 'cart_id');
+    }
+
     public static function checkRate($zip, $weight){
         EasyPost::setApiKey(env('EASYPOST'));
 

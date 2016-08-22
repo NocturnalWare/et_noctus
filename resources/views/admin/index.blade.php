@@ -5,7 +5,7 @@
 	<div class="well col-xs-12 col-md-10 col-md-offset-1">
 		<div class=" col-md-3 col-xs-12" >
 			<h1><i class="fa fa-rocket"></i> Shipping & Sales</h1>
-			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-exclamation-triangle"></i> New Sales</a>
+			<a class="btn btn-danger col-xs-12" href="{{route('sales.index')}}"><i class="pull-left fa fa-exclamation-triangle"></i> New Sales</a>
 			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-truck"></i> Shipped Sales</a>
 			
 		</div>

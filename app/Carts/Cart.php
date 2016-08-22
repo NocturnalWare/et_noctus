@@ -33,6 +33,10 @@ class Cart extends Model
         return \App\Product\Price::where('product_id', $this->product_id)->pluck($this->size);
     }
 
+    public function getProduct(){
+        return \App\Product\Product::where('id', $this->product_id)->first();
+    }
+
     public function product(){
         return $this->hasOne(\App\Product\Product::class, 'id', 'product_id');
     }

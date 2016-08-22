@@ -3,7 +3,7 @@
 	namespace App\Utilities;
 	
 	use App\Shipping\Shipping;
-	use App\Order\Sale;
+	use App\Sale\Sale;
 	use App\Carts\Cart;
 	use App\Product\Inventory;
 	use App\Utilities\SlackHandler;
