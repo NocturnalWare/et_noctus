@@ -74,6 +74,7 @@ Route::group(['prefix' => 'control', 'middleware' => ['auth', 'cart']], function
 
 	//CONTACT Routes
 	Route::get('contacts', ['as' => 'contacts.index', 'uses' => 'Contact\ContactsController@index']);
+	Route::get('contacts/edit/{contact}', ['as' => 'contacts.edit', 'uses' => 'Contact\ContactsController@edit']);
 
 	//PRODUCT ADMIN ROUTES
 	Route::get('products/create', ['as' => 'products.create', 'uses' => 'Product\ProductController@create']);

@@ -16,6 +16,7 @@ class CreateContactEmailsTable extends Migration
         {
             $table->increments('id');
             $table->integer('contact_id');
+            $table->string('label');
             $table->string('email');
             $table->text('notes');
             $table->timestamps();

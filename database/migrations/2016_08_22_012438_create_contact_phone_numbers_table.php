@@ -17,6 +17,7 @@ class CreateContactPhoneNumbersTable extends Migration
             $table->increments('id');
             $table->integer('contact_id');
             $table->string('number');
+            $table->string('label');
             $table->text('notes');
             $table->timestamps();
         });

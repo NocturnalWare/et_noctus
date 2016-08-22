@@ -17,6 +17,9 @@ class CreateContactsTable extends Migration
             $table->increments('id');
             $table->string('f_name');
             $table->string('l_name')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('zip')->nullable();//string for CA -_-
             $table->text('facebook')->nullable();
             $table->text('twitter')->nullable();
             $table->text('linkedin')->nullable();

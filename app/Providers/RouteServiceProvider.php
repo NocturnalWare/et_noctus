@@ -27,6 +27,7 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('products', \Products\Product::class);
         $router->model('promotion', \App\Promotions\Promotion::class);
         $router->model('promotioncode', \App\Promotions\PromotionCode::class);
+        $router->model('contact', \App\Contacts\Contact::class);
 
         parent::boot($router);
     }

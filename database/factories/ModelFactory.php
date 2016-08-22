@@ -96,6 +96,9 @@ $factory->define(App\Contacts\Contact::class, function (Faker\Generator $faker) 
     return [
         'f_name' => $faker->firstName,
         'l_name' => $faker->lastName,
+        'city' => $faker->city,
+        'state' => $faker->state,
+        'zip' => $faker->postcode,
         'facebook' => $faker->url,
         'twitter' => $faker->url,
         'linkedin' => $faker->url,
@@ -109,11 +112,13 @@ $factory->define(App\Contacts\Contact::class, function (Faker\Generator $faker) 
 $factory->define(App\Contacts\Email::class, function (Faker\Generator $faker) {
     return [
         'email' => $faker->email,
+        'label' => $faker->bs,
     ];
 });
 
 $factory->define(App\Contacts\Phone::class, function (Faker\Generator $faker) {
     return [
         'number' => $faker->phoneNumber,
+        'label' => $faker->bs,
     ];
 });
