@@ -98,6 +98,7 @@ Route::group(['prefix' => 'control', 'middleware' => ['auth', 'cart']], function
 
 	//SALE ROUTES
 	Route::get('sales', ['as' => 'sales.index', 'uses' => 'Sale\SaleController@index']);
+	Route::get('sales/shipped', ['as' => 'sales.shipped', 'uses' => 'Sale\SaleController@shipped']);
 
 	//IG AUTH ROUTE
 	Route::get('ig/auth', ['as' => 'ig.auth', 'uses' => 'Auth\IGController@authenticate']);

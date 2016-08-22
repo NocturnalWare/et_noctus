@@ -15,4 +15,9 @@ class SaleController extends Controller
     	$sales = Shipping::where('shipped_status', 'Not Shipped')->get();
     	return view('sales.index', compact('sales'));
     }
+
+    public function shipped(){
+    	$sales = Shipping::where('shipped_status', '!=', 'Not Shipped')->get();
+    	return view('sales.index', compact('sales'));
+    }
 }
