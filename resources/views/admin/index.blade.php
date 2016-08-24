@@ -18,8 +18,8 @@
 		</div>
 		<div class=" col-md-3 col-xs-12" >
 			<h1><i class="fa fa-users"></i> Contacts</h1>
-			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-users"></i> View Contacts</a>
-			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-user-plus"></i> Add Contact</a>
+			<a class="btn btn-info col-xs-12" href="{{route('contacts.index')}}"><i class="pull-left fa fa-users"></i> View Contacts</a>
+			<a class="btn btn-info col-xs-12" href="{{route('contacts.create')}}"><i class="pull-left fa fa-user-plus"></i> Add Contact</a>
 		</div>
 		<div class=" col-md-3 col-xs-12" >
 			<h1><i class="fa fa-volume-up"></i> Shows</h1>

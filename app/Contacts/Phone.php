@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Phone extends Model
 {
     protected $rules = [];
-    protected $fillable = [];
+    protected $fillable = [
+    	'label',
+    	'number',
+    ];
     protected $table = 'contact_phone_numbers';
 }

@@ -22,9 +22,34 @@ class ContactsController extends Controller
     	]);
 
     	return view('contacts.index', compact('contacts'));
+    }    
+
+    public function create(){
+        return view('contacts.create');
+    }
+
+    public function store(Request $request){
+        $contact = new Contact($request->get('contact'));
+        $contact->save();
+        if(count($request->get('emails')) > 0){
+            $contact->attachEmails($request->get('emails'));
+        }
+        if(count($request->get('phones')) > 0){
+            $contact->attachPhones($request->get('phones'));
+        }
+    }
+
+    public function update(Request $request, Contact $contact){
+        $contact->update($request->get('contact'));
+        $contact->phonesupdate($request->get('contact'));
+        return $contact;
     }
 
     public function edit(Contact $contact){
+
+        \JavaScript::put([
+            'contact' => $contact,
+        ]);
     	return view('contacts.edit', compact('contact'));
     }
 }

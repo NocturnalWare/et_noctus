@@ -14975,6 +14975,111 @@ if ("undefined" == typeof jQuery) throw new Error("Bootstrap's JavaScript requir
 
 var Vue = require('vue');
 
+var createContact = new Vue({
+    el: '#createContact',
+    data: {
+        contact: { 'phones': [], 'emails': [], 'product': {
+                'f_name': '',
+                'l_name': '',
+                'city': '',
+                'state': '',
+                'zip': '',
+                'facebook': '',
+                'twitter': '',
+                'linkedin': '',
+                'instagram': '',
+                'snapchat': '',
+                'website': '',
+                'notes': ''
+            } },
+        newPhone: { 'number': '', 'label': '' },
+        newEmail: { 'email': '', 'label': '' },
+        saved: false
+    },
+    methods: {
+        saveContact: function saveContact() {
+            this.addNewPhone();
+            this.addNewEmail();
+            var data = {};
+            var token = jQuery('#createContact').attr('token');
+            data.contact = this.contact;
+            data.phones = this.contact.phones;
+            data.emails = this.contact.emails;
+            data._token = token;
+            // console.log(data);
+            jQuery.ajax({
+                type: "POST",
+                url: jQuery('#createContact').attr('route'),
+                data: data,
+                cache: false,
+                success: function success(response) {
+                    createContact.$set('saved', true);
+                }
+            });
+            return false;
+        },
+        addNewPhone: function addNewPhone() {
+            if (this.newPhone.number.length > 0 || this.newPhone.label.length > 0) {
+                this.contact.phones.push(this.newPhone);
+                this.newPhone = { 'number': '', 'label': '' };
+            }
+        },
+        addNewEmail: function addNewEmail() {
+            if (this.newEmail.email.length > 0 || this.newEmail.label.length > 0) {
+                this.contact.emails.push(this.newEmail);
+                this.newEmail = { 'email': '', 'label': '' };
+            }
+        }
+    },
+    ready: function ready() {}
+
+});
+
+},{"vue":3}],6:[function(require,module,exports){
+'use strict';
+
+var Vue = require('vue');
+
+var editContact = new Vue({
+    el: '#editContact',
+    data: {
+        contact: {},
+        saved: false
+    },
+    methods: {
+        saveContact: function saveContact() {
+            var data = {};
+            var token = jQuery('#editContact').attr('token');
+            data.contact = this.contact;
+            data.phones = this.contact.phones;
+            data.emails = this.contact.emails;
+            data._token = token;
+            // console.log(data);
+            jQuery.ajax({
+                type: "POST",
+                url: jQuery('#editContact').attr('route'),
+                data: data,
+                cache: false,
+                success: function success(response) {
+                    editContact.$set('saved', true);
+                }
+            });
+            return false;
+        }
+    },
+    ready: function ready() {}
+
+});
+
+if (etnoc.contact) {
+    editContact.$set('contact', etnoc.contact);
+}
+
+},{"vue":3}],7:[function(require,module,exports){
+'use strict';
+
+var Vue = require('vue');
+
 var contactManager = new Vue({
     el: '#contactManager',
     data: {
@@ -14990,7 +15095,7 @@ if (etnoc.contacts) {
     contactManager.$set('contacts', etnoc.contacts);
 }
 
-},{"vue":3}],6:[function(require,module,exports){
+},{"vue":3}],8:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -17420,16 +17525,24 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }, b || (a.jQuery = a.$ = n), n;
 });
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var _edit = require('./products/edit.js');
 
 var _edit2 = _interopRequireDefault(_edit);
 
-var _create = require('./products/create.js');
+var _create = require('./contacts/create.js');
 
 var _create2 = _interopRequireDefault(_create);
+
+var _edit3 = require('./contacts/edit.js');
+
+var _edit4 = _interopRequireDefault(_edit3);
+
+var _create3 = require('./products/create.js');
+
+var _create4 = _interopRequireDefault(_create3);
 
 var _inventory = require('./products/inventory.js');
 
@@ -17456,13 +17569,14 @@ window.wareHouse = new Vue({
     data: {},
     components: {
         editProduct: _edit2.default,
-        createProduct: _create2.default
+        editContact: _edit4.default,
+        createProduct: _create4.default
     },
     ready: function ready() {}
 
 });
 
-},{"./contacts/index.js":5,"./jquery.min.js":6,"./products/create.js":9,"./products/edit.js":10,"./products/inventory.js":11,"./vue-resource.min.js":12,"./vue-router.min.js":13,"./vue.min.js":14,"moment":1}],8:[function(require,module,exports){
+},{"./contacts/create.js":5,"./contacts/edit.js":6,"./contacts/index.js":7,"./jquery.min.js":8,"./products/create.js":11,"./products/edit.js":12,"./products/inventory.js":13,"./vue-resource.min.js":14,"./vue-router.min.js":15,"./vue.min.js":16,"moment":1}],10:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -18899,7 +19013,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   a.version = "2.14.1", b(rb), a.fn = Se, a.min = tb, a.max = ub, a.now = Fe, a.utc = j, a.unix = Jc, a.months = Pc, a.isDate = f, a.locale = Za, a.invalid = n, a.duration = Mb, a.isMoment = r, a.weekdays = Rc, a.parseZone = Kc, a.localeData = ab, a.isDuration = wb, a.monthsShort = Qc, a.weekdaysMin = Tc, a.defineLocale = $a, a.updateLocale = _a, a.locales = bb, a.weekdaysShort = Sc, a.normalizeUnits = J, a.relativeTimeRounding = id, a.relativeTimeThreshold = jd, a.calendarFormat = Tb, a.prototype = Se;var nf = a;return nf;
 });
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -18952,7 +19066,7 @@ var newProduct = new Vue({
 
 });
 
-},{"vue":3}],10:[function(require,module,exports){
+},{"vue":3}],12:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -19012,7 +19126,7 @@ if (etnoc.product) {
     editProduct.$set('price', etnoc.product.prices);
 }
 
-},{"vue":3}],11:[function(require,module,exports){
+},{"vue":3}],13:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -19061,7 +19175,7 @@ if (etnoc.products) {
     inventoryManager.$set('products', etnoc.products);
 }
 
-},{"vue":3}],12:[function(require,module,exports){
+},{"vue":3}],14:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -19472,7 +19586,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }), _.actions = { get: { method: "GET" }, save: { method: "POST" }, query: { method: "GET" }, update: { method: "PUT" }, remove: { method: "DELETE" }, "delete": { method: "DELETE" } }, "undefined" != typeof window && window.Vue && window.Vue.use(K), K;
 });
 
-},{}],13:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -20099,7 +20213,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }, "undefined" != typeof window && window.Vue && window.Vue.use(ct), ct;
 });
 
-},{}],14:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -22066,6 +22180,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[7,6,14,8,13,4,10,9]);
+},{}]},{},[9,8,16,10,15,4,12,11]);
 
 //# sourceMappingURL=bundle.js.map

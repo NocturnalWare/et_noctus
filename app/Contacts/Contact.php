@@ -7,7 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Contact extends Model
 {
 	protected $rules = [];
-	protected $fillable = [];
+	protected $fillable = [
+        'f_name',
+        'l_name',
+        'city',
+        'state',
+        'zip',
+        'facebook',
+        'twitter',
+        'linkedin',
+        'instagram',
+        'snapchat',
+        'website',
+        'notes',
+    ];
     protected $table = 'contacts';
 
     protected $with = [
@@ -25,5 +38,17 @@ class Contact extends Model
 
     public function getFullNameAttribute(){
     	return $this->f_name.' '.$this->l_name;
+    }
+
+    public function attachPhones($phones){
+        foreach($phones as $phone){
+            $this->phones()->save(new \App\Contacts\Phone($phone));
+        }
+    }
+
+    public function attachEmails($emails){
+        foreach($emails as $email){
+            $this->emails()->save(new \App\Contacts\Email($email));
+        }
     }
 }

@@ -74,7 +74,10 @@ Route::group(['prefix' => 'control', 'middleware' => ['auth', 'cart']], function
 
 	//CONTACT Routes
 	Route::get('contacts', ['as' => 'contacts.index', 'uses' => 'Contact\ContactsController@index']);
+	Route::post('contacts', ['as' => 'contacts.store', 'uses' => 'Contact\ContactsController@store']);
+	Route::get('contacts/create', ['as' => 'contacts.create', 'uses' => 'Contact\ContactsController@create']);
 	Route::get('contacts/edit/{contact}', ['as' => 'contacts.edit', 'uses' => 'Contact\ContactsController@edit']);
+	Route::put('contacts/update/{contact}', ['as' => 'contacts.update', 'uses' => 'Contact\ContactsController@update']);
 
 	//PRODUCT ADMIN ROUTES
 	Route::get('products/create', ['as' => 'products.create', 'uses' => 'Product\ProductController@create']);

@@ -9,6 +9,8 @@ window.Vue = Vue;
 window.moment = moment;
 
 import editProduct from './products/edit.js';
+import addContact from './contacts/create.js';
+import editContact from './contacts/edit.js';
 import createProduct from './products/create.js';
 import inventoryManager from './products/inventory.js';
 import contactManager from './contacts/index.js';
@@ -19,6 +21,7 @@ window.wareHouse = new Vue({
     data:{},
     components:{
     	editProduct,
+    	editContact,
     	createProduct,
     },
     ready: function(){
