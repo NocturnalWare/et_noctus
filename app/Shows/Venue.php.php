@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Product;
+namespace App\Shows;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VariantType extends Model
+class Venue.php extends Model
 {
     //
 }

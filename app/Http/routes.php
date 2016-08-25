@@ -72,12 +72,15 @@ Route::group(['prefix' => 'control', 'middleware' => ['auth', 'cart']], function
 	//GENERAL ADMIN ROUTES
 	Route::get('manage', ['as' => 'admin.index', 'uses' => 'Admin\AdminController@index']);
 
-	//CONTACT Routes
+	//CONTACT ROUTES
 	Route::get('contacts', ['as' => 'contacts.index', 'uses' => 'Contact\ContactsController@index']);
 	Route::post('contacts', ['as' => 'contacts.store', 'uses' => 'Contact\ContactsController@store']);
 	Route::get('contacts/create', ['as' => 'contacts.create', 'uses' => 'Contact\ContactsController@create']);
 	Route::get('contacts/edit/{contact}', ['as' => 'contacts.edit', 'uses' => 'Contact\ContactsController@edit']);
 	Route::put('contacts/update/{contact}', ['as' => 'contacts.update', 'uses' => 'Contact\ContactsController@update']);
+
+	//SHOW ROUTES
+	Route::get('shows', ['as' => 'control.shows.index', 'uses' => 'Shows\ShowsController@adminIndex']);
 
 	//PRODUCT ADMIN ROUTES
 	Route::get('products/create', ['as' => 'products.create', 'uses' => 'Product\ProductController@create']);

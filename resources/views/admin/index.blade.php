@@ -14,7 +14,7 @@
 			<a class="btn btn-info col-xs-12" href="{{route('control.products.index')}}"><i class="pull-left fa fa-wrench"></i> Edit Products</a>
 			<a class="btn btn-info col-xs-12" href="{{route('inventory.index')}}"><i class="pull-left fa fa-cube"></i> Inventory</a>
 			<a class="btn btn-info col-xs-12" href="{{route('products.create')}}"><i class="pull-left fa fa-plus"></i> Add Product</a>
-			<a class="btn btn-danger col-xs-12" href="{{route('products.create')}}"><i class="pull-left fa fa-cogs"></i> Plan Orders</a>
+			<a class="btn btn-info col-xs-12" href="{{route('promotion.index')}}"><i class="pull-left fa fa-bullhorn"></i> Promotions</a>
 		</div>
 		<div class=" col-md-3 col-xs-12" >
 			<h1><i class="fa fa-users"></i> Contacts</h1>
@@ -23,7 +23,7 @@
 		</div>
 		<div class=" col-md-3 col-xs-12" >
 			<h1><i class="fa fa-volume-up"></i> Shows</h1>
-			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-wrench"></i> Edit Shows</a>
+			<a class="btn btn-info col-xs-12" href="{{route('control.shows.index')}}"><i class="pull-left fa fa-wrench"></i> Edit Shows</a>
 			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-university"></i> Edit Venues</a>
 			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-plus"></i> Add Show</a>
 			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-plus"></i> Add Venue</a>
@@ -34,14 +34,16 @@
 			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-plus"></i> Add Band</a>
 		</div>
 		<div class=" col-md-3 col-xs-12" >
-			<h1><i class="fa fa-sun-o"></i> Spotlights</h1>
+			<h1><i class="fa fa-sun-o"></i> Featured</h1>
 			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-wrench"></i> Edit Spotlights</a>
+			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-wrench"></i> Edit Featured Products</a>
 			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-plus"></i> Add Spotlight</a>
 		</div>
 		<div class=" col-md-3 col-xs-12" >
 			<h1><i class="fa fa-line-chart"></i> Reports</h1>
 			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-cubes"></i> Inventory Reports</a>
 			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-dollar"></i> Expense Reports</a>
+			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-cogs"></i> Plan Orders</a>
 		</div>
 	</div>
 

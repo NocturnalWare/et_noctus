@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductVariantTypesTable extends Migration
+class CreateShowContactsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,8 @@ class CreateProductVariantTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('variant_types', function(Blueprint $table)
-        {
-            $table->increments('id');
-            $table->string('variant_type');
-            $table->timestamps();
-        });
+        //
     }
-
 
     /**
      * Reverse the migrations.
@@ -28,6 +22,6 @@ class CreateProductVariantTypesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('variant_types');
+        //
     }
 }
