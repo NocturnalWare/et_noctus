@@ -24,7 +24,7 @@
 		<div class=" col-md-3 col-xs-12" >
 			<h1><i class="fa fa-volume-up"></i> Shows</h1>
 			<a class="btn btn-info col-xs-12" href="{{route('control.shows.index')}}"><i class="pull-left fa fa-wrench"></i> Edit Shows</a>
-			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-university"></i> Edit Venues</a>
+			<a class="btn btn-info col-xs-12" href="{{route('venues.index')}}"><i class="pull-left fa fa-university"></i> Edit Venues</a>
 			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-plus"></i> Add Show</a>
 			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-plus"></i> Add Venue</a>
 		</div>

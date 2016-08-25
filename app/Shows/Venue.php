@@ -4,7 +4,7 @@ namespace App\Shows;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ShowBand.php extends Model
+class Venue extends Model
 {
-    //
+    protected $table = 'venues';
 }

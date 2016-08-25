@@ -18,8 +18,10 @@ class CreateShowsTable extends Migration
             $table->integer('venue_id');
             $table->integer('main_contact_id');
             $table->string('name');
-            $table->text('facebook_link')->nullable();
-            $table->text('ticket_link')->nullable();
+            $table->text('main_image');
+            $table->text('facebook')->nullable();
+            $table->text('ticket')->nullable();
+            $table->text('website')->nullable();
             $table->datetime('event_date');
             $table->longtext('message');
             $table->timestamps();

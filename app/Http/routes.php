@@ -81,6 +81,9 @@ Route::group(['prefix' => 'control', 'middleware' => ['auth', 'cart']], function
 
 	//SHOW ROUTES
 	Route::get('shows', ['as' => 'control.shows.index', 'uses' => 'Shows\ShowsController@adminIndex']);
+	
+	//VENUE ROUTES
+	Route::get('venues', ['as' => 'venues.index', 'uses' => 'Shows\VenuesController@index']);
 
 	//PRODUCT ADMIN ROUTES
 	Route::get('products/create', ['as' => 'products.create', 'uses' => 'Product\ProductController@create']);

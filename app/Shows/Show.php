@@ -4,7 +4,7 @@ namespace App\Shows;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Show.php extends Model
+class Show extends Model
 {
     //
 }

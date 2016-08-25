@@ -3,6 +3,11 @@
 
 @section('content')
 
-Shows ADmin here!
+	<div class="well">
+		@foreach($shows as $show)
+			{{$show}}
+		@endforeach
+
+	</div>
 
 @stop

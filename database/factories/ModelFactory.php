@@ -122,3 +122,35 @@ $factory->define(App\Contacts\Phone::class, function (Faker\Generator $faker) {
         'label' => $faker->bs,
     ];
 });
+
+$factory->define(App\Shows\Venue::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->bs,
+        'address1' => "$faker->buildingNumber.' '.$faker->streetName",
+        'address2' => $faker->secondaryAddress,
+        'city' => $faker->city,
+        'state' => $faker->state,
+        'zip' => $faker->postcode,
+        'phone' => $faker->phoneNumber,
+        'email' => $faker->email,
+        'capacity' => $faker->numberBetween($min = 200, $max = 2000),
+        'facebook' => $faker->url,
+        'twitter' => $faker->url,
+        'instagram' => $faker->url,
+        'yelp' => $faker->url,
+        'website' => $faker->url,
+        'notes' => $faker->realText($maxNbChars = 200, $indexSize = 2)
+    ];
+});
+
+$factory->define(App\Shows\Show::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->catchPhrase,
+        'main_image' => $faker->url,
+        'facebook' => $faker->url,
+        'ticket' => $faker->url,
+        'website' => $faker->url,
+        'event_date' => $faker->dateTimeThisYear($max = '+1 years'),
+        'message' => $faker->realText($maxNbChars = 200, $indexSize = 2)
+    ];
+});

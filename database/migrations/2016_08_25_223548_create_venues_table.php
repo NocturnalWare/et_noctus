@@ -28,6 +28,7 @@ class CreateVenuesTable extends Migration
             $table->text('facebook')->nullable();
             $table->text('twitter')->nullable();
             $table->text('instagram')->nullable();
+            $table->text('yelp')->nullable();
             $table->text('website')->nullable();
             $table->longtext('notes')->nullable();
             $table->timestamps();
