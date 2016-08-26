@@ -3,18 +3,20 @@
 
 @section('content')
 	<div class="col-xs-12 col-md-6 col-md-offset-1 well">
-		<h3>
-			{{$bandmember->contact->f_name}} {{$bandmember->contact->l_name}} 
-		</h3>
-		<h4>
-			Plays {{$bandmember->mainInstrument->instrument}} in 
-			<a href="{{route('bands.edit', $bandmember->currentBand->id)}}">{{$bandmember->currentBand->name}}</a>
-		</h4>
+		<center>
+			<h3>
+				{{$bandmember->contact->f_name}} {{$bandmember->contact->l_name}} 
+			</h3>
+			<h4>
+				Plays {{$bandmember->mainInstrument->instrument}} in 
+				<a href="{{route('bands.edit', $bandmember->currentBand->id)}}">{{$bandmember->currentBand->name}}</a>
+			</h4>
+		</center>
 		<div class="col-xs-12 well">
 			<div id="contactManager">
 				<div class="col-xs-12">
 					<div class="col-xs-12 well">
-						<h4>Location</h4>
+						<h4>Location <a href="{{route('contacts.edit', $bandmember->contact->id)}}"><i class="fa fa-wrench pull-right"></i></a></h4>
 						<span v-text="contacts.city"></span>, 
 						<span v-text="contacts.state"></span>
 						<span v-text="contacts.zip"></span>

@@ -81,6 +81,7 @@ Route::group(['prefix' => 'control', 'middleware' => ['auth', 'cart']], function
 
 	//SHOW ROUTES
 	Route::get('shows', ['as' => 'control.shows.index', 'uses' => 'Shows\ShowsController@adminIndex']);
+	Route::get('shows/{show}/edit', ['as' => 'control.shows.edit', 'uses' => 'Shows\ShowsController@adminEdit']);
 	
 	//VENUE ROUTES
 	Route::get('venues', ['as' => 'venues.index', 'uses' => 'Shows\VenuesController@index']);

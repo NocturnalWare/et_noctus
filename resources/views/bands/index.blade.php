@@ -5,7 +5,7 @@
 
 	<div class="well row">
 		@foreach($bands as $band)
-			<div class="col-xs-12 col-md-4 well">
+			<div class="col-xs-12 col-md-4 well" style="height:225px;">
 				<h3>
 					{{$band->name}}
 					<a href="{{route('bands.edit', $band->id)}}" class="btn pull-right">

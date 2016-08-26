@@ -14,4 +14,8 @@ class ShowsController extends Controller
 		$shows = Show::all();
 		return view('shows.admin.index', compact('shows'));
 	}
+
+	public function adminEdit(Show $show){
+		return view('shows.admin.edit', compact('show'));
+	}
 }

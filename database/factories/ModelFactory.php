@@ -155,6 +155,12 @@ $factory->define(App\Shows\Show::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Shows\ShowBand::class, function (Faker\Generator $faker) {
+    return [
+        'ticket_sales' => $faker->url,
+    ];
+});
+
 $factory->define(App\Bands\Band::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,

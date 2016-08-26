@@ -11,9 +11,14 @@ class Band extends Model
     protected $table = 'bands';
     protected $with = [
     	'members',
+    	'shows',
     ];
 
     public function members(){
-    	return $this->hasMany(\App\Bands\BandMember::class, 'band_id', 'id');
+    	return $this->hasMany(BandMember::class, 'band_id', 'id');
+    }
+
+    public function shows(){
+    	return $this->hasMany(\App\Shows\ShowBand::class, 'band_id', 'id');
     }
 }

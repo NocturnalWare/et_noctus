@@ -18,11 +18,6 @@ class BandsTableSeeder extends Seeder
         		$this->member($band);
         	}
     	});
-
-    	foreach(\App\Bands\BandMember::all() as $member){
-    		$member->main_instrument_id = \App\Bands\BandMemberInstrument::inRandomOrder()->first()->id;
-    		$member->save();
-    	}
     }
 
     public function member($band){

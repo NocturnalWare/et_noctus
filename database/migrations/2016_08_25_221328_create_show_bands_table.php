@@ -18,7 +18,7 @@ class CreateShowBandsTable extends Migration
             $table->integer('band_id');
             $table->integer('show_id');
             $table->integer('band_contact_id')->nullable();
-            $table->integer('ticket_sales')->nullable();
+            $table->text('ticket_sales')->nullable();
             $table->timestamps();
         });
     }

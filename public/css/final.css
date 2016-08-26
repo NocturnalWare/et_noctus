@@ -8665,6 +8665,9 @@ body {
   border-radius: 35px;
   padding: 15px;
 }
+dd.band-members:hover {
+  background-color: #b3e6ff;
+}
 
 /*# sourceMappingURL=style.css.map */
 
