@@ -2,14 +2,13 @@
 
 
 @section('content')
-	
 	<div id="contactManager">
 		<div class="well col-xs-12 col-md-5 col-md-offset-1">
 			<span class="input-group">
 				<span class="input-group-addon"><i class="fa fa-search"></i></span>
 				<input type="text" class="search-input form-control" v-model="search_input.input" style="background-color:#fff; width:100%">
 			</span>
-			<div class="col-xs-12" v-for="contact in contacts"  style="border:1px solid #000;padding:10px;">
+			<div class="col-xs-12" v-for="contact in contacts" v-if="search_input.input == '' || search_input.input == contact.f_name+' '+contact.l_name" style="border:1px solid #000;padding:10px;">
 				<div class="col-xs-11">
 					<h3><span v-text="contact.f_name"></span> <span v-text="contact.l_name"></span></h3>
 				</div>

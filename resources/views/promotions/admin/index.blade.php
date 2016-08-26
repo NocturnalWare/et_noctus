@@ -4,17 +4,20 @@
 @section('content')
 	<div id="promotionAdminIndex">
 		
-		<div class="col-xs-12 col-md-10 col-md-offset-1">
-				<div v-for="promotion in promotions">
-					<button class="btn btn-lg btn-primary col-xs-12 col-md-6" @click="editPromo(promotion)"> 
+		<div class="col-xs-12 col-md-6 col-md-offset-1 well">
+			<div v-for="promotion in promotions" @click="editPromo(promotion)">
+				<button class="btn col-xs-12">
+					<dt> 
 						<span v-text="promotion.promotion_name" class="col-xs-6"></span>
-						<span class="col-xs-5" v-if="promotion.price_flat > 0">
-							<span v-text="'$'+promotion.price_flat+' DISCOUNT'" class="pull-left"></span>
-						</span>
-						<span class="col-xs-5" v-if="promotion.price_percent" >
-							<span v-text="promotion.price_percent+'% DISCOUNT'" class="pull-left"></span>
-						</span>
-					</button>
+					</dt>
+					<span class="col-xs-5" v-if="promotion.price_flat > 0">
+						<span v-text="'$'+promotion.price_flat+' DISCOUNT'" class="pull-left"></span>
+					</span>
+					<span class="col-xs-5" v-if="promotion.price_percent" >
+						<span v-text="promotion.price_percent+'% DISCOUNT'" class="pull-left"></span>
+					</span>
+					<i class="col-xs-1 fa fa-wrench"></i>
+				</button>
 			</div>
 		</div>
 
