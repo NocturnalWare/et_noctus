@@ -154,3 +154,47 @@ $factory->define(App\Shows\Show::class, function (Faker\Generator $faker) {
         'message' => $faker->realText($maxNbChars = 200, $indexSize = 2)
     ];
 });
+
+$factory->define(App\Bands\Band::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'city' => $faker->city,
+        'state' => $faker->state,
+        'zip' => $faker->postcode,
+        'facebook' => $faker->url,
+        'twitter' => $faker->url,
+        'instagram' => $faker->url,
+        'snapchat' => $faker->url,
+        'website' => $faker->url,
+        'notes' => $faker->realText($maxNbChars = 200, $indexSize = 2),
+    ];
+});
+
+$factory->define(App\Bands\BandMember::class, function (Faker\Generator $faker) {
+    return [
+    ];
+});
+
+$factory->define(App\Bands\BandMemberInstrument::class, function (Faker\Generator $faker) {
+    return [
+        'instrument' => $faker->randomElement($array = [
+            'Vocals (heavy)',
+            'Vocals (clean)',
+            'Rhythm Guitar',
+            'Lead Guitar',
+            'Bass Guitar',
+            'Drums',
+            'Harmonica',
+            'Keyboard',
+            'Trumpet',
+            'Piano',
+            'Violin',
+        ]),
+        'description' => $faker->realText($maxNbChars = 200, $indexSize = 2),
+    ];
+});
+
+$factory->define(App\Bands\BandMemberPrevious::class, function (Faker\Generator $faker) {
+    return [
+    ];
+});

@@ -3,26 +3,25 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContactsTable extends Migration
+class CreateBandsTable extends Migration
 {
-        /**
+    /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('contacts', function(Blueprint $table)
+        Schema::create('bands', function(Blueprint $table)
         {
             $table->increments('id');
-            $table->string('f_name');
-            $table->string('l_name')->nullable();
-            $table->string('city')->nullable();
-            $table->string('state')->nullable();
-            $table->string('zip')->nullable();//string for Canada -_-
+            $table->integer('manager_id')->nullable();
+            $table->string('name');            
+            $table->string('city');
+            $table->string('state');
+            $table->string('zip')->nullable();//string for CA -_-
             $table->text('facebook')->nullable();
             $table->text('twitter')->nullable();
-            $table->text('linkedin')->nullable();
             $table->text('instagram')->nullable();
             $table->text('snapchat')->nullable();
             $table->text('website')->nullable();
@@ -38,6 +37,6 @@ class CreateContactsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('contacts');
+        Schema::drop('bands');
     }
 }

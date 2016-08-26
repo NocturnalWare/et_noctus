@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PromotionTableSeeder::class);
         $this->call(ContactTableSeeder::class);
         $this->call(ShowTableSeeder::class);
+        $this->call(BandsTableSeeder::class); //RUN AFTER CONTACTS!
     }
 }

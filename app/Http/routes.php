@@ -85,6 +85,11 @@ Route::group(['prefix' => 'control', 'middleware' => ['auth', 'cart']], function
 	//VENUE ROUTES
 	Route::get('venues', ['as' => 'venues.index', 'uses' => 'Shows\VenuesController@index']);
 
+	//BAND ROUTES
+	Route::get('bands', ['as' => 'bands.index', 'uses' => 'Bands\BandsController@index']);
+	Route::get('bands/{band}/edit', ['as' => 'bands.edit', 'uses' => 'Bands\BandsController@edit']);
+	Route::get('bandmembers/{bandmember}/edit', ['as' => 'bandmember.edit', 'uses' => 'Bands\BandMembersController@edit']);
+
 	//PRODUCT ADMIN ROUTES
 	Route::get('products/create', ['as' => 'products.create', 'uses' => 'Product\ProductController@create']);
 	Route::get('products/edit/{product}', ['as' => 'products.edit', 'uses' => 'Product\ProductController@edit']);

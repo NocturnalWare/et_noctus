@@ -4,7 +4,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateShowContactsTable extends Migration
-{
+{    
     /**
      * Run the migrations.
      *
@@ -12,7 +12,13 @@ class CreateShowContactsTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('show_contacts', function(Blueprint $table)
+        {
+            $table->increments('id');
+            $table->integer('contact_id');
+            $table->integer('show_id');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -22,6 +28,6 @@ class CreateShowContactsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('show_contacts');
     }
 }

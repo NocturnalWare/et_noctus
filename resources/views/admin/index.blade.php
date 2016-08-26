@@ -30,7 +30,7 @@
 		</div>
 		<div class=" col-md-3 col-xs-12" >
 			<h1><i class="fa fa-music"></i> Bands</h1>
-			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-wrench"></i> Edit Bands</a>
+			<a class="btn btn-info col-xs-12" href="{{route('bands.index')}}"><i class="pull-left fa fa-wrench"></i> Edit Bands</a>
 			<a class="btn btn-danger col-xs-12" href=""><i class="pull-left fa fa-plus"></i> Add Band</a>
 		</div>
 		<div class=" col-md-3 col-xs-12" >
