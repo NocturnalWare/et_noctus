@@ -43,16 +43,16 @@
 <script type="text/javascript" src="{{ENV('APP_URL')}}/js/typeahead.bundle.min.js"></script>
 
 <script>  
-  var cartIcon = new Vue({
-      el: '#cartIcon',
-      data:{
-        cart: etnoc.cart_quantity,
-      },
-      methods:{
-      },
-      ready: function(){
-      },
-  });
+  // var cartIcon = new Vue({
+  //     el: '#cartIcon',
+  //     data:{
+  //       cart: etnoc.cart_quantity,
+  //     },
+  //     methods:{
+  //     },
+  //     ready: function(){
+  //     },
+  // });
 
 
 </script>

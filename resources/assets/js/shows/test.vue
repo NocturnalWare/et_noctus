@@ -1,23 +1,61 @@
-@extends('layouts.master')
+<template>
+	<div class="row well">
+		<div v-for="show in shows" class="col-xs-12 col-md-4 well">
+			<show-header :name="show.name" :date="show.event_date"></show-header>
+
+			<div class="well col-xs-12">
+				<venue-title :venue-name="show.venue.name" :link="'shows/'+show.id+'/edit'"></venue-title>
+			</div>
+
+			<div class="well col-xs-12">
+				<div class="col-xs-12 col-md-6">
+					<venue-address :venue="show.venue"></venue-address>
+					<band-list :bands="show.bands"></band-list>
+				</div>
+			</div>
 
 
-@section('content')
 
-	<div class="row well" id="showManager">
+		</div>
+	</div>
+</template>
 
-		@foreach($shows as $show)
-		<band-list :bands="{{$show->bands}}"></band-list>23
-		<band-list :bands="{{$show->bands}}"></band-list>2352
-		<band-list :bands="{{$show->bands}}"></band-list>
-		<band-list :bands="{{$show->bands}}"></band-list>2345
-		<band-list :bands="{{$show->bands}}"></band-list>2525
-		<band-list :bands="{{$show->bands}}"></band-list>
-		<band-list :bands="{{$show->bands}}"></band-list>567567
-			<div class="col-xs-12 col-md-4 well">
-				<center>
-					<h3>{{$show->name}}</h3>
-					<i> {{\Carbon::parse($show->event_date)->format('M d, Y')}} </i>
-				</center>
+<script>
+	import store from '../stores/store.js'
+	import showHeader from './components/header.vue'
+	import venueTitle from './components/venue-title.vue'
+	import venueAddress from './components/venue-address.vue'
+	import bandList from './components/band-list.vue'
+
+	export default {
+		props: ['show'],
+		computed: {
+			shows: function(){
+				return store.state.shows;
+			}
+		},
+		components: {
+			showHeader,
+			venueTitle,
+			bandList,
+			venueAddress
+		},
+		methods:{
+			
+		},
+		ready: function(){
+		}
+	}
+</script>
+
+
+
+
+<!-- 
+
+
+
+				
 
 				<div class="well col-xs-12">
 					<div class="col-xs-12">
@@ -27,6 +65,10 @@
 								<i class="pull-right fa fa-wrench"></i>
 							</a>
 						</h4>
+						<div class="col-xs-6">
+							<div class="row pull-right">
+							</div>
+						</div>
 					</div>
 					<div class="col-xs-12">
 						<div class="col-xs-12 col-md-6">
@@ -48,7 +90,7 @@
 								</div>
 								@foreach($show->bands as $band)
 									<a v-if="showBands" class="btn btn-lg col-xs-12" href="{{route('bands.edit', $band->id)}}">
-										<b>{{$band->name}}</b>
+										<b>{{$band->band()->name}}</b>
 									</a>
 								@endforeach
 							</div>
@@ -118,9 +160,4 @@
 						</div>
 					</div>
 				</div>
-			</div>
-		@endforeach
-
-	</div>
-
-@stop
+			</div> -->

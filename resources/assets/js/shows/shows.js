@@ -1,9 +1,9 @@
 let Vue    = require('vue');
 let headerComponent = require('./components/header.vue');
-import dataStore from '../stores/shows.js';
+import dataStore from '../stores/store.js';
 
 Vue.extend({
-    data: {
+    data: function(){
         return {
             shows:{},
             search_input: {'input':''},

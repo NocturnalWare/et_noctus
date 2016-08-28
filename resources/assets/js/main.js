@@ -2,6 +2,7 @@ var Vue    = require('./vue.min.js');
 var jQuery = require('./jquery.min.js');
 var Router = require('./vue-router.min.js');
 var moment = require('moment');
+
 Vue.use(require('./vue-resource.min.js'));
 
 window.jQuery = jQuery;
@@ -14,24 +15,21 @@ window.moment = moment;
 // import createProduct from './products/create.js';
 // import inventoryManager from './products/inventory.js';
 // import contactManager from './contacts/index.js';
-import showManager from './shows/shows.js';
-import dataStore from './stores/shows.js';
+import showManager from './shows/test.vue';
+import dataStore from './stores/store.js';
 
 
 
 var wareHouse = new Vue({
     el: '#wareHouse',
-    data:{
-    	store: dataStore,
-    },
+    data:{ },
     components:{
-    	editProduct,
+    	// editProduct,
     	showManager,
-    	editContact,
-    	createProduct,
+    	// editContact,
+    	// createProduct,
     },
     ready: function(){
-    	console.log(store);
     },
 
 });

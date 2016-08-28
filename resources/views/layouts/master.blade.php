@@ -16,8 +16,9 @@
 
   <div class="div-sm-12" style="margin-top:70px;">
   <div id="wareHouse">
-    <show-header name="lool" date="om"></show-header>
     @yield('content')
+    <show-manager></show-manager>
+
   </div>
 
   </div>

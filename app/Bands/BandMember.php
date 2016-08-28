@@ -10,10 +10,10 @@ class BandMember extends Model
     protected $fillable = [];
     protected $table = 'band_members';
     protected $with = [
-    	'instruments',
+    	// 'instruments',
     	'contact',
     	'mainInstrument',
-    	'previousBands'
+    	// 'previousBands'
     ];
 
     public function contact(){

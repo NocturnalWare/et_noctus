@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ShowBand extends Model
 {
 	protected $with = [
+		'band',
 	];
 
     public function show(){
@@ -14,6 +15,7 @@ class ShowBand extends Model
     }
 
     public function band(){
-    	return \App\Bands\Band::where('id', $this->band_id)->first();
+    	return $this->hasOne(\App\Bands\Band::class, 'id', 'band_id');
+    	// return \App\Bands\Band::where('id', $this->band_id)->first();
     }
 }

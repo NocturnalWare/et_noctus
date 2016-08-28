@@ -1,13 +1,11 @@
 <template>
-	<div>
-		<center>
-			<h3>
-				{{ name }}
-			</h3>
-			<i>
-				{{ event_date(date) }}
-			</i>
-		</center>
+	<div class="col-xs-12">
+		<h4>
+			<b>{{venueName}}</b>
+			<a href="{{link}}">
+				<i class="pull-right fa fa-wrench"></i>
+			</a>
+		</h4>
 	</div>
 </template>
 
@@ -17,9 +15,9 @@
 
 	export default {
 		store: store,
-		props: ['name', 'date'],
+		props: ['venueName', 'link'],
 		methods:{
-			event_date: function(date){
+			edit_link: function(date){
 				return moment(date).format('MMM Do YYYY');
 			}
 		}

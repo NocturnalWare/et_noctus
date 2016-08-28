@@ -30,6 +30,6 @@ elixir(function(mix) {
 elixir(function(mix) {
     mix.less('style.less', 'resources/assets/css/style.css');
     mix.styles(['style.css'], 'public/css/final.css');
-    mix.browserify(['main.js', 'jquery.min.js', 'vue.min.js', 'moment.min.js', 'vue-router.min.js', 'bootstrap.min.js', 'products/edit.js', 'products/create.js', 'contacts/index.js']);
+    mix.browserify(['main.js', 'jquery.min.js', 'vue.min.js', 'moment.min.js', 'vue-router.min.js', 'bootstrap.min.js']);
 	mix.copy('./node_modules/font-awesome/fonts/**.*', './public/fonts');
 });

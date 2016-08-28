@@ -11,6 +11,7 @@
     "font-awesome":"*",
     "jquery":"^1.10.0",
     "moment":"*",
-    "laravel-elixir-vueify":"*"
+    "laravel-elixir-vueify":"*",
+    "vuex":"*"
   }
 }

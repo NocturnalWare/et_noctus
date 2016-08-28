@@ -9,6 +9,7 @@ class Show extends Model
 
 	protected $with = [
 		'bands',
+		'venue',
 	];
 
 	public function bands(){
