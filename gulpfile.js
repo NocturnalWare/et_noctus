@@ -1,5 +1,6 @@
 var elixir = require('laravel-elixir'),
 gulp = require('gulp');
+require('laravel-elixir-vueify');
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management

@@ -10,6 +10,7 @@
     "vue-resource":"*",
     "font-awesome":"*",
     "jquery":"^1.10.0",
-    "moment":"*"
+    "moment":"*",
+    "laravel-elixir-vueify":"*"
   }
 }

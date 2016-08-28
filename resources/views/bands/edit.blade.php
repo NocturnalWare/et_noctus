@@ -32,10 +32,10 @@
 		<div class="col-xs-12 well">
 			<dt>Upcoming Shows</dt>
 			@foreach($band->shows as $show)
-				@if(\Carbon::parse($show->show->event_date) > \Carbon::parse())
+				@if(\Carbon::parse($show->event_date) > \Carbon::parse())
 					<dd class="band-members col-xs-12">
-						<a href="{{route('control.shows.edit', $show->show->id)}}">{{$show->show->name}}</a>
-						<span class="pull-right">{{\Carbon::parse($show->show->event_date)->format('M d, Y')}}</span>
+						<a href="{{route('control.shows.edit', $show->id)}}">{{$show->name}}</a>
+						<span class="pull-right">{{\Carbon::parse($show->event_date)->format('M d, Y')}}</span>
 					</dd>
 				@endif
 			@endforeach
@@ -44,10 +44,10 @@
 		<div class="col-xs-12 well">
 			<dt>Previous Shows</dt>
 			@foreach($band->shows as $show)
-				@if(\Carbon::parse($show->show->event_date) < \Carbon::parse())
+				@if(\Carbon::parse($show->event_date) < \Carbon::parse())
 					<dd class="band-members col-xs-12">
-						<a href="{{route('control.shows.edit', $show->show->id)}}">{{$show->show->name}}</a>
-						<span class="pull-right">{{\Carbon::parse($show->show->event_date)->format('M d, Y')}}</span>
+						<a href="{{route('control.shows.edit', $show->id)}}">{{$show->name}}</a>
+						<span class="pull-right">{{\Carbon::parse($show->event_date)->format('M d, Y')}}</span>
 					</dd>
 				@endif
 			@endforeach

@@ -16,6 +16,7 @@ class BandsController extends Controller
 	}
 
 	public function edit(Band $band){
+		$band = Band::with('shows')->find($band->id);
 		return view('bands.edit', compact('band'));
 	}
 }

@@ -8,23 +8,30 @@ window.jQuery = jQuery;
 window.Vue = Vue;
 window.moment = moment;
 
-import editProduct from './products/edit.js';
-import addContact from './contacts/create.js';
-import editContact from './contacts/edit.js';
-import createProduct from './products/create.js';
-import inventoryManager from './products/inventory.js';
-import contactManager from './contacts/index.js';
+// import editProduct from './products/edit.js';
+// import addContact from './contacts/create.js';
+// import editContact from './contacts/edit.js';
+// import createProduct from './products/create.js';
+// import inventoryManager from './products/inventory.js';
+// import contactManager from './contacts/index.js';
+import showManager from './shows/shows.js';
+import dataStore from './stores/shows.js';
 
 
-window.wareHouse = new Vue({
+
+var wareHouse = new Vue({
     el: '#wareHouse',
-    data:{},
+    data:{
+    	store: dataStore,
+    },
     components:{
     	editProduct,
+    	showManager,
     	editContact,
     	createProduct,
     },
     ready: function(){
+    	console.log(store);
     },
 
 });

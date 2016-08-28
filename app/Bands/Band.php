@@ -11,7 +11,6 @@ class Band extends Model
     protected $table = 'bands';
     protected $with = [
     	'members',
-    	'shows',
     ];
 
     public function members(){
@@ -19,6 +18,6 @@ class Band extends Model
     }
 
     public function shows(){
-    	return $this->hasMany(\App\Shows\ShowBand::class, 'band_id', 'id');
+    	return $this->hasManyThrough(\App\Shows\Show::class, \App\Shows\ShowBand::class, 'show_id', 'id', 'show_id');
     }
 }

@@ -9,7 +9,7 @@ class BandsTableSeeder extends Seeder
      *
      * @return void
      */
-    private $count = 5;
+    private $count = 15;
 
     public function run()
     {

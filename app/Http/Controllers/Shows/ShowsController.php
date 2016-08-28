@@ -12,6 +12,9 @@ class ShowsController extends Controller
 {
 	public function adminIndex(){
 		$shows = Show::all();
+		\JavaScript::put([
+			'shows' => $shows,
+		]);
 		return view('shows.admin.index', compact('shows'));
 	}
 

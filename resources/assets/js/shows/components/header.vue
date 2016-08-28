@@ -1,0 +1,19 @@
+<template>
+	<div>
+		<center>
+			<h3>
+				{{ name }}
+			</h3>
+			<i>
+				{{ date }}
+			</i>
+		</center>
+	</div>
+</template>
+
+<script>
+	let Vue = require('vue');
+	Vue.component({
+		props: ['name', 'date'],
+	});
+</script>

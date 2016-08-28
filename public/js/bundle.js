@@ -4316,6 +4316,307 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 },{}],3:[function(require,module,exports){
+var Vue // late bind
+var map = Object.create(null)
+var shimmed = false
+var isBrowserify = false
+
+/**
+ * Determine compatibility and apply patch.
+ *
+ * @param {Function} vue
+ * @param {Boolean} browserify
+ */
+
+exports.install = function (vue, browserify) {
+  if (shimmed) return
+  shimmed = true
+
+  Vue = vue
+  isBrowserify = browserify
+
+  exports.compatible = !!Vue.internalDirectives
+  if (!exports.compatible) {
+    console.warn(
+      '[HMR] vue-loader hot reload is only compatible with ' +
+      'Vue.js 1.0.0+.'
+    )
+    return
+  }
+
+  // patch view directive
+  patchView(Vue.internalDirectives.component)
+  console.log('[HMR] Vue component hot reload shim applied.')
+  // shim router-view if present
+  var routerView = Vue.elementDirective('router-view')
+  if (routerView) {
+    patchView(routerView)
+    console.log('[HMR] vue-router <router-view> hot reload shim applied.')
+  }
+}
+
+/**
+ * Shim the view directive (component or router-view).
+ *
+ * @param {Object} View
+ */
+
+function patchView (View) {
+  var unbuild = View.unbuild
+  View.unbuild = function (defer) {
+    if (!this.hotUpdating) {
+      var prevComponent = this.childVM && this.childVM.constructor
+      removeView(prevComponent, this)
+      // defer = true means we are transitioning to a new
+      // Component. Register this new component to the list.
+      if (defer) {
+        addView(this.Component, this)
+      }
+    }
+    // call original
+    return unbuild.call(this, defer)
+  }
+}
+
+/**
+ * Add a component view to a Component's hot list
+ *
+ * @param {Function} Component
+ * @param {Directive} view - view directive instance
+ */
+
+function addView (Component, view) {
+  var id = Component && Component.options.hotID
+  if (id) {
+    if (!map[id]) {
+      map[id] = {
+        Component: Component,
+        views: [],
+        instances: []
+      }
+    }
+    map[id].views.push(view)
+  }
+}
+
+/**
+ * Remove a component view from a Component's hot list
+ *
+ * @param {Function} Component
+ * @param {Directive} view - view directive instance
+ */
+
+function removeView (Component, view) {
+  var id = Component && Component.options.hotID
+  if (id) {
+    map[id].views.$remove(view)
+  }
+}
+
+/**
+ * Create a record for a hot module, which keeps track of its construcotr,
+ * instnaces and views (component directives or router-views).
+ *
+ * @param {String} id
+ * @param {Object} options
+ */
+
+exports.createRecord = function (id, options) {
+  if (typeof options === 'function') {
+    options = options.options
+  }
+  if (typeof options.el !== 'string' && typeof options.data !== 'object') {
+    makeOptionsHot(id, options)
+    map[id] = {
+      Component: null,
+      views: [],
+      instances: []
+    }
+  }
+}
+
+/**
+ * Make a Component options object hot.
+ *
+ * @param {String} id
+ * @param {Object} options
+ */
+
+function makeOptionsHot (id, options) {
+  options.hotID = id
+  injectHook(options, 'created', function () {
+    var record = map[id]
+    if (!record.Component) {
+      record.Component = this.constructor
+    }
+    record.instances.push(this)
+  })
+  injectHook(options, 'beforeDestroy', function () {
+    map[id].instances.$remove(this)
+  })
+}
+
+/**
+ * Inject a hook to a hot reloadable component so that
+ * we can keep track of it.
+ *
+ * @param {Object} options
+ * @param {String} name
+ * @param {Function} hook
+ */
+
+function injectHook (options, name, hook) {
+  var existing = options[name]
+  options[name] = existing
+    ? Array.isArray(existing)
+      ? existing.concat(hook)
+      : [existing, hook]
+    : [hook]
+}
+
+/**
+ * Update a hot component.
+ *
+ * @param {String} id
+ * @param {Object|null} newOptions
+ * @param {String|null} newTemplate
+ */
+
+exports.update = function (id, newOptions, newTemplate) {
+  var record = map[id]
+  // force full-reload if an instance of the component is active but is not
+  // managed by a view
+  if (!record || (record.instances.length && !record.views.length)) {
+    console.log('[HMR] Root or manually-mounted instance modified. Full reload may be required.')
+    if (!isBrowserify) {
+      window.location.reload()
+    } else {
+      // browserify-hmr somehow sends incomplete bundle if we reload here
+      return
+    }
+  }
+  if (!isBrowserify) {
+    // browserify-hmr already logs this
+    console.log('[HMR] Updating component: ' + format(id))
+  }
+  var Component = record.Component
+  // update constructor
+  if (newOptions) {
+    // in case the user exports a constructor
+    Component = record.Component = typeof newOptions === 'function'
+      ? newOptions
+      : Vue.extend(newOptions)
+    makeOptionsHot(id, Component.options)
+  }
+  if (newTemplate) {
+    Component.options.template = newTemplate
+  }
+  // handle recursive lookup
+  if (Component.options.name) {
+    Component.options.components[Component.options.name] = Component
+  }
+  // reset constructor cached linker
+  Component.linker = null
+  // reload all views
+  record.views.forEach(function (view) {
+    updateView(view, Component)
+  })
+  // flush devtools
+  if (window.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
+    window.__VUE_DEVTOOLS_GLOBAL_HOOK__.emit('flush')
+  }
+}
+
+/**
+ * Update a component view instance
+ *
+ * @param {Directive} view
+ * @param {Function} Component
+ */
+
+function updateView (view, Component) {
+  if (!view._bound) {
+    return
+  }
+  view.Component = Component
+  view.hotUpdating = true
+  // disable transitions
+  view.vm._isCompiled = false
+  // save state
+  var state = extractState(view.childVM)
+  // remount, make sure to disable keep-alive
+  var keepAlive = view.keepAlive
+  view.keepAlive = false
+  view.mountComponent()
+  view.keepAlive = keepAlive
+  // restore state
+  restoreState(view.childVM, state, true)
+  // re-eanble transitions
+  view.vm._isCompiled = true
+  view.hotUpdating = false
+}
+
+/**
+ * Extract state from a Vue instance.
+ *
+ * @param {Vue} vm
+ * @return {Object}
+ */
+
+function extractState (vm) {
+  return {
+    cid: vm.constructor.cid,
+    data: vm.$data,
+    children: vm.$children.map(extractState)
+  }
+}
+
+/**
+ * Restore state to a reloaded Vue instance.
+ *
+ * @param {Vue} vm
+ * @param {Object} state
+ */
+
+function restoreState (vm, state, isRoot) {
+  var oldAsyncConfig
+  if (isRoot) {
+    // set Vue into sync mode during state rehydration
+    oldAsyncConfig = Vue.config.async
+    Vue.config.async = false
+  }
+  // actual restore
+  if (isRoot || !vm._props) {
+    vm.$data = state.data
+  } else {
+    Object.keys(state.data).forEach(function (key) {
+      if (!vm._props[key]) {
+        // for non-root, only restore non-props fields
+        vm.$data[key] = state.data[key]
+      }
+    })
+  }
+  // verify child consistency
+  var hasSameChildren = vm.$children.every(function (c, i) {
+    return state.children[i] && state.children[i].cid === c.constructor.cid
+  })
+  if (hasSameChildren) {
+    // rehydrate children
+    vm.$children.forEach(function (c, i) {
+      restoreState(c, state.children[i])
+    })
+  }
+  if (isRoot) {
+    Vue.config.async = oldAsyncConfig
+  }
+}
+
+function format (id) {
+  var match = id.match(/[^\/]+\.vue$/)
+  return match ? match[0] : id
+}
+
+},{}],4:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v1.0.25
@@ -14386,7 +14687,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":2}],4:[function(require,module,exports){
+},{"_process":2}],5:[function(require,module,exports){
 "use strict";
 /* */
 "format global";
@@ -14970,112 +15271,7 @@ if ("undefined" == typeof jQuery) throw new Error("Bootstrap's JavaScript requir
   });
 }(jQuery);
 
-},{}],5:[function(require,module,exports){
-'use strict';
-
-var Vue = require('vue');
-
-var createContact = new Vue({
-    el: '#createContact',
-    data: {
-        contact: { 'phones': [], 'emails': [], 'product': {
-                'f_name': '',
-                'l_name': '',
-                'city': '',
-                'state': '',
-                'zip': '',
-                'facebook': '',
-                'twitter': '',
-                'linkedin': '',
-                'instagram': '',
-                'snapchat': '',
-                'website': '',
-                'notes': ''
-            } },
-        newPhone: { 'number': '', 'label': '' },
-        newEmail: { 'email': '', 'label': '' },
-        saved: false
-    },
-    methods: {
-        saveContact: function saveContact() {
-            this.addNewPhone();
-            this.addNewEmail();
-            var data = {};
-            var token = jQuery('#createContact').attr('token');
-            data.contact = this.contact;
-            data.phones = this.contact.phones;
-            data.emails = this.contact.emails;
-            data._token = token;
-            // console.log(data);
-            jQuery.ajax({
-                type: "POST",
-                url: jQuery('#createContact').attr('route'),
-                data: data,
-                cache: false,
-                success: function success(response) {
-                    createContact.$set('saved', true);
-                }
-            });
-            return false;
-        },
-        addNewPhone: function addNewPhone() {
-            if (this.newPhone.number.length > 0 || this.newPhone.label.length > 0) {
-                this.contact.phones.push(this.newPhone);
-                this.newPhone = { 'number': '', 'label': '' };
-            }
-        },
-        addNewEmail: function addNewEmail() {
-            if (this.newEmail.email.length > 0 || this.newEmail.label.length > 0) {
-                this.contact.emails.push(this.newEmail);
-                this.newEmail = { 'email': '', 'label': '' };
-            }
-        }
-    },
-    ready: function ready() {}
-
-});
-
-},{"vue":3}],6:[function(require,module,exports){
-'use strict';
-
-var Vue = require('vue');
-
-var editContact = new Vue({
-    el: '#editContact',
-    data: {
-        contact: {},
-        saved: false
-    },
-    methods: {
-        saveContact: function saveContact() {
-            var data = {};
-            var token = jQuery('#editContact').attr('token');
-            data.contact = this.contact;
-            data.phones = this.contact.phones;
-            data.emails = this.contact.emails;
-            data._token = token;
-            // console.log(data);
-            jQuery.ajax({
-                type: "POST",
-                url: jQuery('#editContact').attr('route'),
-                data: data,
-                cache: false,
-                success: function success(response) {
-                    editContact.$set('saved', true);
-                }
-            });
-            return false;
-        }
-    },
-    ready: function ready() {}
-
-});
-
-if (etnoc.contact) {
-    editContact.$set('contact', etnoc.contact);
-}
-
-},{"vue":3}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -15095,7 +15291,7 @@ if (etnoc.contacts) {
     contactManager.$set('contacts', etnoc.contacts);
 }
 
-},{"vue":3}],8:[function(require,module,exports){
+},{"vue":4}],7:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -17525,32 +17721,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }, b || (a.jQuery = a.$ = n), n;
 });
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
-var _edit = require('./products/edit.js');
+var _shows = require('./shows/shows.js');
 
-var _edit2 = _interopRequireDefault(_edit);
+var _shows2 = _interopRequireDefault(_shows);
 
-var _create = require('./contacts/create.js');
+var _shows3 = require('./stores/shows.js');
 
-var _create2 = _interopRequireDefault(_create);
-
-var _edit3 = require('./contacts/edit.js');
-
-var _edit4 = _interopRequireDefault(_edit3);
-
-var _create3 = require('./products/create.js');
-
-var _create4 = _interopRequireDefault(_create3);
-
-var _inventory = require('./products/inventory.js');
-
-var _inventory2 = _interopRequireDefault(_inventory);
-
-var _index = require('./contacts/index.js');
-
-var _index2 = _interopRequireDefault(_index);
+var _shows4 = _interopRequireDefault(_shows3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17564,19 +17744,32 @@ window.jQuery = jQuery;
 window.Vue = Vue;
 window.moment = moment;
 
-window.wareHouse = new Vue({
+// import editProduct from './products/edit.js';
+// import addContact from './contacts/create.js';
+// import editContact from './contacts/edit.js';
+// import createProduct from './products/create.js';
+// import inventoryManager from './products/inventory.js';
+// import contactManager from './contacts/index.js';
+
+
+var wareHouse = new Vue({
     el: '#wareHouse',
-    data: {},
-    components: {
-        editProduct: _edit2.default,
-        editContact: _edit4.default,
-        createProduct: _create4.default
+    data: {
+        store: _shows4.default
     },
-    ready: function ready() {}
+    components: {
+        editProduct: editProduct,
+        showManager: _shows2.default,
+        editContact: editContact,
+        createProduct: createProduct
+    },
+    ready: function ready() {
+        console.log(store);
+    }
 
 });
 
-},{"./contacts/create.js":5,"./contacts/edit.js":6,"./contacts/index.js":7,"./jquery.min.js":8,"./products/create.js":11,"./products/edit.js":12,"./products/inventory.js":13,"./vue-resource.min.js":14,"./vue-router.min.js":15,"./vue.min.js":16,"moment":1}],10:[function(require,module,exports){
+},{"./jquery.min.js":7,"./shows/shows.js":13,"./stores/shows.js":14,"./vue-resource.min.js":15,"./vue-router.min.js":16,"./vue.min.js":17,"moment":1}],9:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -19013,7 +19206,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   a.version = "2.14.1", b(rb), a.fn = Se, a.min = tb, a.max = ub, a.now = Fe, a.utc = j, a.unix = Jc, a.months = Pc, a.isDate = f, a.locale = Za, a.invalid = n, a.duration = Mb, a.isMoment = r, a.weekdays = Rc, a.parseZone = Kc, a.localeData = ab, a.isDuration = wb, a.monthsShort = Qc, a.weekdaysMin = Tc, a.defineLocale = $a, a.updateLocale = _a, a.locales = bb, a.weekdaysShort = Sc, a.normalizeUnits = J, a.relativeTimeRounding = id, a.relativeTimeThreshold = jd, a.calendarFormat = Tb, a.prototype = Se;var nf = a;return nf;
 });
 
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -19066,7 +19259,7 @@ var newProduct = new Vue({
 
 });
 
-},{"vue":3}],12:[function(require,module,exports){
+},{"vue":4}],11:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -19126,56 +19319,76 @@ if (etnoc.product) {
     editProduct.$set('price', etnoc.product.prices);
 }
 
-},{"vue":3}],13:[function(require,module,exports){
+},{"vue":4}],12:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
+Vue.component({
+	props: ['name', 'date']
+});
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n\t<center>\n\t\t<h3>\n\t\t\t{{ name }}\n\t\t</h3>\n\t\t<i>\n\t\t\t{{ date }}\n\t\t</i>\n\t</center>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-6325b6ec", module.exports)
+  } else {
+    hotAPI.update("_v-6325b6ec", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":4,"vue-hot-reload-api":3}],13:[function(require,module,exports){
+'use strict';
 
-var inventoryManager = new Vue({
-    el: '#inventoryManager',
+var _shows = require('../stores/shows.js');
+
+var _shows2 = _interopRequireDefault(_shows);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Vue = require('vue');
+var headerComponent = require('./components/header.vue');
+
+
+Vue.extend({
     data: {
-        products: {},
-        search_input: { 'input': '' },
-        categories: ['Tees', '¾ Tees', 'Tanks', 'Hoodies', 'Pants', 'Accessories', 'Ticket']
+        shows: {},
+        search_input: { 'input': '' }
+    },
+    computed: {
+        shh: function shh() {
+            return _shows2.default.data.shows;
+        }
     },
     methods: {
-        updated_at: function updated_at(product) {
-            return moment(product.inventories.updated_at).format('h:mA MM/DD/YYYY');
-        },
-        showInventory: function showInventory(product) {
-            this.products.forEach(function (product) {
-                product.show_table = false;
-            });
-
-            product.show_table = !product.show_table;
-        },
-        saveInventory: function saveInventory(product) {
-            var data = {};
-            var url = jQuery('#inventoryManager').attr('route');
-            var token = jQuery('#inventoryManager').attr('token');
-            data.product = product;
-            data._token = token;
-            jQuery.ajax({
-                type: "POST",
-                url: url,
-                data: data,
-                cache: false,
-                success: function success(response) {
-                    product.updated = true;
-                }
-            });
-            return false;
+        toggleShowBands: function toggleShowBands() {
+            band.showBands = !band.showBands;
         }
+    },
+    components: {
+        headerComponent: headerComponent
     },
     ready: function ready() {}
 
 });
 
-if (etnoc.products) {
-    inventoryManager.$set('products', etnoc.products);
+if (etnoc.shows) {
+    etnoc.shows.forEach(function (show) {
+        show.showBand = false;
+    });
 }
 
-},{"vue":3}],14:[function(require,module,exports){
+},{"../stores/shows.js":14,"./components/header.vue":12,"vue":4}],14:[function(require,module,exports){
+"use strict";
+
+var data = {
+	shows: {}
+};
+
+data.shows = etnoc.shows;
+
+},{}],15:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -19586,7 +19799,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }), _.actions = { get: { method: "GET" }, save: { method: "POST" }, query: { method: "GET" }, update: { method: "PUT" }, remove: { method: "DELETE" }, "delete": { method: "DELETE" } }, "undefined" != typeof window && window.Vue && window.Vue.use(K), K;
 });
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -20213,7 +20426,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }, "undefined" != typeof window && window.Vue && window.Vue.use(ct), ct;
 });
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -22180,6 +22393,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[9,8,16,10,15,4,12,11,7]);
+},{}]},{},[8,7,17,9,16,5,11,10,6]);
 
 //# sourceMappingURL=bundle.js.map

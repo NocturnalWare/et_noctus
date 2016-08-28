@@ -40,8 +40,16 @@ class Contact extends Model
         return $this->belongsTo(\App\Bands\BandMember::class, 'contact_id', 'id');
     }
 
-    public function getFullNameAttribute(){
+    public function fullName(){
     	return $this->f_name.' '.$this->l_name;
+    }
+
+    public function mainPhone(){
+        return $this->hasOne(\App\Contacts\Phone::class, 'id', 'main_phone_id');
+    }
+
+    public function mainEmail(){
+        return $this->hasOne(\App\Contacts\Phone::class, 'id', 'main_email_id');
     }
 
     public function attachPhones($phones){
