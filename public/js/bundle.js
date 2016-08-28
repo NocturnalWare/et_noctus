@@ -18383,7 +18383,7 @@ var wareHouse = new Vue({
 
 });
 
-},{"./jquery.min.js":7,"./shows/test.vue":14,"./stores/store.js":15,"./vue-resource.min.js":16,"./vue-router.min.js":17,"./vue.min.js":18,"moment":1}],9:[function(require,module,exports){
+},{"./jquery.min.js":7,"./shows/test.vue":15,"./stores/store.js":16,"./vue-resource.min.js":17,"./vue-router.min.js":18,"./vue.min.js":19,"moment":1}],9:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -19837,14 +19837,18 @@ var moment = require('moment');
 
 exports.default = {
 	store: _store2.default,
-	props: ['bands'],
-	methods: {},
-	ready: function ready() {
-		console.log(this.bands);
-	}
+	props: ['bands', 'showBand'],
+	methods: {
+		toggleShowBand: function toggleShowBand() {
+			console.log(this.showBand);
+			this.showBand = !this.showBand;
+			console.log(this.showBand);
+		}
+	},
+	ready: function ready() {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row well\">\n\t<div class=\"col-xs-8\">\n\t\t<dt>Bands</dt>\n\t</div>\n\t<div class=\"col-xs-4\">\n\t\t<button class=\"btn btn-sm pull-right\">Show</button>\n\t</div>\n\t<div v-for=\"band in bands\">\n\t\t<a class=\"btn btn-lg col-xs-12\" href=\"\">\n\t\t\t<b>{{band.band.name}}</b>\n\t\t</a>\n\t</div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row well\">\n\t<div class=\"col-xs-8\">\n\t\t<dt>Bands</dt>\n\t</div>\n\t<div class=\"col-xs-4\">\n\t\t<button @click=\"toggleShowBand\" class=\"btn btn-sm pull-right\">\n\t\t\t<span v-if=\"!showBand\"><i class=\"fa fa-arrow-down\"></i>Show</span>\n\t\t\t<span v-if=\"showBand\"><i class=\"fa fa-arrow-up\"></i> Hide</span>\n\t\t</button>\n\t</div>\n\t<div v-if=\"showBand\">\n\t\t<a v-for=\"band in bands\" class=\"btn btn-lg col-xs-12\" href=\"\">\n\t\t\t<b>{{band.band.name}}</b>\n\t\t</a>\n\t</div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -19855,7 +19859,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-365fe8c9", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":15,"moment":1,"vue":4,"vue-hot-reload-api":3}],11:[function(require,module,exports){
+},{"../../stores/store.js":16,"moment":1,"vue":4,"vue-hot-reload-api":3}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -19891,7 +19895,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-6325b6ec", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":15,"moment":1,"vue":4,"vue-hot-reload-api":3}],12:[function(require,module,exports){
+},{"../../stores/store.js":16,"moment":1,"vue":4,"vue-hot-reload-api":3}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -19922,7 +19926,45 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-9e992eae", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":15,"moment":1,"vue":4,"vue-hot-reload-api":3}],13:[function(require,module,exports){
+},{"../../stores/store.js":16,"moment":1,"vue":4,"vue-hot-reload-api":3}],13:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _store = require('../../stores/store.js');
+
+var _store2 = _interopRequireDefault(_store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var moment = require('moment');
+
+exports.default = {
+	store: _store2.default,
+	props: ['venue'],
+	methods: {},
+	computed: {
+		contactName: function contactName() {
+			return this.venue.main_contact.f_name + ' ' + this.venue.main_contact.l_name;
+		}
+	},
+	ready: function ready() {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"col-xs-12\" style=\"padding:5px;border-bottom:1px solid #000;\">\n\t<dt style=\"text-align:center;\">Primary Venue Contact</dt>\n\t<div class=\"col-xs-12\">\n\t\t<center>\n\t\t\t<a class=\"btn btn\" href=\"\">\n\t\t\t\t{{contactName}}\n\t\t\t</a>\n\t\t</center>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"col-xs-4\">\n\t\t\t\t<a target=\"_blank\" href=\"tel:{{venue.main_contact.main_phone.number}}\" class=\"btn btn-lg\">\n\t\t\t\t\t<i class=\"fa fa-phone\"></i>\n\t\t\t\t</a>\n\t\t\t</div>\n\t\t\t<div class=\"col-xs-4\">\n\t\t\t\t<a target=\"_blank\" href=\"mailto:{{venue.main_contact.main_email.email}}\" class=\"btn btn-lg\">\n\t\t\t\t\t<i class=\"fa fa-envelope\"></i>\n\t\t\t\t</a>\n\t\t\t</div>\n\t\t\t<div class=\"col-xs-4\">\n\t\t\t\t<a target=\"_blank\" href=\"{{venue.main_contact.facebook}}\" class=\"btn btn-lg\">\n\t\t\t\t\t<i class=\"fa fa-facebook-official\"></i>\n\t\t\t\t</a>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n<div class=\"col-xs-12\" style=\"padding:5px;\">\n\t<dt style=\"text-align:center\">Venue Links</dt>\n\t<div class=\"col-xs-4\">\n\t\t<a target=\"_blank\" href=\"{{venue.facebook}}\" class=\"btn btn-lg\">\n\t\t\t<i class=\"fa fa-facebook-official\"></i>\n\t\t</a>\n\t</div>\n\t<div class=\"col-xs-4\">\n\t\t<a target=\"_blank\" href=\"{{venue.twitter}}\" class=\"btn btn-lg\">\n\t\t\t<i class=\"fa fa-twitter\"></i>\n\t\t</a>\n\t</div>\n\t<div class=\"col-xs-4\">\n\t\t<a target=\"_blank\" href=\"{{venue.instagram}}\" class=\"btn btn-lg\">\n\t\t\t<i class=\"fa fa-instagram\"></i>\n\t\t</a>\n\t</div>\n\t<div class=\"col-xs-4\">\n\t\t<a target=\"_blank\" href=\"{{venue.yelp}}\" class=\"btn btn-lg\">\n\t\t\t<i class=\"fa fa-yelp\"></i>\n\t\t</a>\n\t</div>\n\t<div class=\"col-xs-4\">\n\t\t<a target=\"_blank\" href=\"{{venue.website}}\" class=\"btn btn-lg\">\n\t\t\t<i class=\"fa fa-globe\"></i>\n\t\t</a>\n\t</div>\n\t<div class=\"col-xs-4\">\n\t\t<a target=\"_blank\" href=\"mailto:{{venue.email}}\" class=\"btn btn-lg\">\n\t\t\t<i class=\"fa fa-envelope\"></i>\n\t\t</a>\n\t</div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-053afad5", module.exports)
+  } else {
+    hotAPI.update("_v-053afad5", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../../stores/store.js":16,"moment":1,"vue":4,"vue-hot-reload-api":3}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -19958,7 +20000,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5a46804d", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":15,"moment":1,"vue":4,"vue-hot-reload-api":3}],14:[function(require,module,exports){
+},{"../../stores/store.js":16,"moment":1,"vue":4,"vue-hot-reload-api":3}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -19985,6 +20027,10 @@ var _bandList = require('./components/band-list.vue');
 
 var _bandList2 = _interopRequireDefault(_bandList);
 
+var _venueContact = require('./components/venue-contact.vue');
+
+var _venueContact2 = _interopRequireDefault(_venueContact);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
@@ -19998,13 +20044,14 @@ exports.default = {
 		showHeader: _header2.default,
 		venueTitle: _venueTitle2.default,
 		bandList: _bandList2.default,
-		venueAddress: _venueAddress2.default
+		venueAddress: _venueAddress2.default,
+		venueContact: _venueContact2.default
 	},
 	methods: {},
 	ready: function ready() {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row well\">\n\t<div v-for=\"show in shows\" class=\"col-xs-12 col-md-4 well\">\n\t\t<show-header :name=\"show.name\" :date=\"show.event_date\"></show-header>\n\n\t\t<div class=\"well col-xs-12\">\n\t\t\t<venue-title :venue-name=\"show.venue.name\" :link=\"'shows/'+show.id+'/edit'\"></venue-title>\n\t\t</div>\n\n\t\t<div class=\"well col-xs-12\">\n\t\t\t<div class=\"col-xs-12 col-md-6\">\n\t\t\t\t<venue-address :venue=\"show.venue\"></venue-address>\n\t\t\t\t<band-list :bands=\"show.bands\"></band-list>\n\t\t\t</div>\n\t\t</div>\n\n\n\n\t</div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row well\">\n\t<div v-for=\"show in shows\" class=\"col-xs-12 col-md-4 well\">\n\t\t<show-header :name=\"show.name\" :date=\"show.event_date\"></show-header>\n\n\t\t<div class=\"well col-xs-12\">\n\t\t\t<venue-title :venue-name=\"show.venue.name\" :link=\"'shows/'+show.id+'/edit'\"></venue-title>\n\t\t</div>\n\n\t\t<div class=\"well col-xs-12\">\n\t\t\t<div class=\"col-xs-12 col-md-6\">\n\t\t\t\t<venue-address :venue=\"show.venue\"></venue-address>\n\t\t\t\t<band-list :bands=\"show.bands\" :show-band=\"false\"></band-list>\n\t\t\t</div>\n\t\t\t<div class=\"well col-xs-12 col-md-6\">\n\t\t\t\t<venue-contact :venue=\"show.venue\"></venue-contact>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -20015,7 +20062,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1bbf826b", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../stores/store.js":15,"./components/band-list.vue":10,"./components/header.vue":11,"./components/venue-address.vue":12,"./components/venue-title.vue":13,"vue":4,"vue-hot-reload-api":3}],15:[function(require,module,exports){
+},{"../stores/store.js":16,"./components/band-list.vue":10,"./components/header.vue":11,"./components/venue-address.vue":12,"./components/venue-contact.vue":13,"./components/venue-title.vue":14,"vue":4,"vue-hot-reload-api":3}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20047,7 +20094,7 @@ exports.default = new _vuex2.default.Store({
   mutations: mutations
 });
 
-},{"../vue.min.js":18,"vuex":5}],16:[function(require,module,exports){
+},{"../vue.min.js":19,"vuex":5}],17:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -20458,7 +20505,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }), _.actions = { get: { method: "GET" }, save: { method: "POST" }, query: { method: "GET" }, update: { method: "PUT" }, remove: { method: "DELETE" }, "delete": { method: "DELETE" } }, "undefined" != typeof window && window.Vue && window.Vue.use(K), K;
 });
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -21085,7 +21132,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }, "undefined" != typeof window && window.Vue && window.Vue.use(ct), ct;
 });
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -23052,6 +23099,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[8,7,18,9,17,6]);
+},{}]},{},[8,7,19,9,18,6]);
 
 //# sourceMappingURL=bundle.js.map

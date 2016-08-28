@@ -4,10 +4,13 @@
 			<dt>Bands</dt>
 		</div>
 		<div class="col-xs-4">
-			<button class="btn btn-sm pull-right">Show</button>
+			<button @click="toggleShowBand" class="btn btn-sm pull-right">
+				<span v-if="!showBand"><i class="fa fa-arrow-down"></i>Show</span>
+				<span v-if="showBand"><i class="fa fa-arrow-up"></i> Hide</span>
+			</button>
 		</div>
-		<div v-for="band in bands">
-			<a class="btn btn-lg col-xs-12" href="">
+		<div v-if="showBand">
+			<a  v-for="band in bands" class="btn btn-lg col-xs-12" href="">
 				<b>{{band.band.name}}</b>
 			</a>
 		</div>
@@ -20,11 +23,15 @@
 
 	export default {
 		store: store,
-		props: ['bands'],
+		props: ['bands', 'showBand'],
 		methods:{
+			toggleShowBand: function(){
+				console.log(this.showBand);
+				this.showBand = !this.showBand;
+				console.log(this.showBand);
+			}
 		},
 		ready: function(){
-			console.log(this.bands);
 		}
 	};
 </script>

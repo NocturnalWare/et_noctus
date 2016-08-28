@@ -17,8 +17,6 @@
   <div class="div-sm-12" style="margin-top:70px;">
   <div id="wareHouse">
     @yield('content')
-    <show-manager></show-manager>
-
   </div>
 
   </div>

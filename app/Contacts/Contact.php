@@ -25,7 +25,9 @@ class Contact extends Model
 
     protected $with = [
     	'phones',
-    	'emails'
+        'mainPhone',
+        'emails',
+        'mainEmail',
     ];
 
     public function phones(){
@@ -49,7 +51,7 @@ class Contact extends Model
     }
 
     public function mainEmail(){
-        return $this->hasOne(\App\Contacts\Phone::class, 'id', 'main_email_id');
+        return $this->hasOne(\App\Contacts\Email::class, 'id', 'main_email_id');
     }
 
     public function attachPhones($phones){
