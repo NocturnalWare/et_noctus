@@ -30,15 +30,11 @@ class Product extends Model
 		'xxxlarge',
     ];
     protected $table = 'products';
-    protected $with = ['variants', 'inventories', 'prices'];
+    protected $with = ['inventories', 'prices'];
     protected $appends = [
     	'show_table',
     	'updated',
     ];
-
-    public function variants(){
-    	return $this->hasMany(ProductVariant::class, 'product_id', 'id');
-    }
 
 	public function inventories()
 	{

@@ -12,12 +12,12 @@
 
 <body>
 
-  @include('layouts.publicnav')
-
-  <div class="div-sm-12" style="margin-top:70px;">
   <div id="wareHouse">
-    @yield('content')
-  </div>
+    @include('layouts.publicnav')
+
+    <div class="div-sm-12" style="margin-top:70px;">
+      @yield('content')
+    </div>
 
   </div>
   @include('layouts.jsvars')

@@ -15,17 +15,19 @@ window.moment = moment;
 // import createProduct from './products/create.js';
 // import inventoryManager from './products/inventory.js';
 // import contactManager from './contacts/index.js';
-import showManager from './shows/test.vue';
+import showIndex from './shows/show-index.vue';
+import cartIndex from './components/cart-index.vue';
+import addToCartButton from './components/add-to-cart-button.vue';
 import dataStore from './stores/store.js';
-
-
 
 var wareHouse = new Vue({
     el: '#wareHouse',
     data:{ },
     components:{
     	// editProduct,
-    	showManager,
+    	showIndex,
+    	cartIndex,
+    	addToCartButton,
     	// editContact,
     	// createProduct,
     },

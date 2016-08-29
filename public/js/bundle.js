@@ -15911,6 +15911,118 @@ if ("undefined" == typeof jQuery) throw new Error("Bootstrap's JavaScript requir
 }(jQuery);
 
 },{}],7:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _store = require('../stores/store.js');
+
+var _store2 = _interopRequireDefault(_store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  props: ['cartId', 'token', 'route'],
+  computed: {
+    product: function product() {
+      return _store2.default.state.product;
+    },
+    cart: function cart() {
+      return _store2.default.state.cart;
+    },
+    showXsmall: function showXsmall() {
+      return this.product.inventories.xsmall > 0 && this.product.prices.xsmall > 0;
+    },
+    showSmall: function showSmall() {
+      return this.product.inventories.small > 0 && this.product.prices.small > 0;
+    },
+    showMedium: function showMedium() {
+      return this.product.inventories.medium > 0 && this.product.prices.medium > 0;
+    },
+    showLarge: function showLarge() {
+      return this.product.inventories.large > 0 && this.product.prices.large > 0;
+    },
+    showXlarge: function showXlarge() {
+      return this.product.inventories.xlarge > 0 && this.product.prices.xlarge > 0;
+    },
+    showXxlarge: function showXxlarge() {
+      return this.product.inventories.xxlarge > 0 && this.product.prices.xxlarge > 0;
+    },
+    showXxxlarge: function showXxxlarge() {
+      return this.product.inventories.xxxlarge > 0 && this.product.prices.xxxlarge > 0;
+    }
+  },
+  data: {
+    size: ''
+  },
+  methods: {
+    displayPrice: function displayPrice(product) {
+      return parseInt(product) / 100;
+    },
+    addToCart: function addToCart() {
+      var data = _store2.default.state.addToCartformObj;
+      data.size = this.size;
+      data._token = this.token;
+      data.route = this.route;
+      data.cart_id = this.cartId;
+      console.log('posty', data);
+
+      if (data.size !== '') {
+        var call = this.$http.post(this.route, data);
+        call.then(function (response) {
+          _store2.default.dispatch('ADD_TO_CART', response.data.cart);
+        });
+      }
+    }
+  }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<span>\n  <span v-if=\"product.onesize === 1\">\n      One Size Only $<span v-text=\"displayPrice(products.prices.onesize)\"></span>\n  </span>\n  <select v-if=\"product.onesize === 0\" class=\"col-sm-12 form-control\" v-model=\"size\">\n    <option value=\"\" selected=\"\">Choose Size</option>\n    <option v-if=\"showXsmall\" value=\"xsmall\" v-text=\"'X-Small $'+displayPrice(product.prices.xsmall)\"></option>\n    <option v-if=\"showSmall\" value=\"small\" v-text=\"'Small $'+displayPrice(product.prices.small)\"></option>\n    <option v-if=\"showMedium\" value=\"medium\" v-text=\"'Medium $'+displayPrice(product.prices.medium)\"></option>\n    <option v-if=\"showLarge\" value=\"large\" v-text=\"'Large $'+displayPrice(product.prices.large)\"></option>\n    <option v-if=\"showXlarge\" value=\"xlarge\" v-text=\"'X-Large $'+displayPrice(product.prices.xlarge)\"></option>\n    <option v-if=\"showXxlarge\" value=\"xxlarge\" v-text=\"'XX-Large $'+displayPrice(product.prices.xxlarge)\"></option>\n    <option v-if=\"showXxxlarge\" value=\"xxxlarge\" v-text=\"'XXX-Large $'+displayPrice(product.prices.xxxlarge)\"></option>\n  </select>\n  <div v-for=\"c in cart\">\n    <div v-if=\"c.product_id == product.id\">\n      <span v-if=\"c.size !== 'onesize'\">\n        <span v-text=\"c.quantity\"></span> \n        <span v-text=\"c.size | capitalize\"></span> currently in your cart.\n      </span>\n      <span v-if=\"c.size == 'onesize'\">\n        <span v-text=\"c.quantity\"></span> Currently in your cart.\n      </span>\n    </div>\n  </div>\n  <button @click=\"addToCart\" type=\"button\" class=\"col-sm-12 btn btn-sm btn-default\"><i class=\"fa fa-plus\"></i> Add to Cart</button>\n</span>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-4c203b48", module.exports)
+  } else {
+    hotAPI.update("_v-4c203b48", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../stores/store.js":18,"vue":4,"vue-hot-reload-api":3}],8:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _store = require('../stores/store.js');
+
+var _store2 = _interopRequireDefault(_store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  computed: {
+    quantity: function quantity() {
+      return _store2.default.state.cart_quantity;
+    }
+  }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<section>\n  <a href=\"/carts\" style=\"background-color:#000;color:#fff;font-weight:bold\" class=\"nav-button-etnoc btn btn-lg\">\n    <span class=\"badge\" style=\"background-color:#fff;color:#000\">\n      <span v-text=\"quantity\"></span>\n    </span>\n    Cart\n  </a>\n</section>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-1d30b330", module.exports)
+  } else {
+    hotAPI.update("_v-1d30b330", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../stores/store.js":18,"vue":4,"vue-hot-reload-api":3}],9:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -18340,12 +18452,20 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }, b || (a.jQuery = a.$ = n), n;
 });
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
-var _test = require('./shows/test.vue');
+var _showIndex = require('./shows/show-index.vue');
 
-var _test2 = _interopRequireDefault(_test);
+var _showIndex2 = _interopRequireDefault(_showIndex);
+
+var _cartIndex = require('./components/cart-index.vue');
+
+var _cartIndex2 = _interopRequireDefault(_cartIndex);
+
+var _addToCartButton = require('./components/add-to-cart-button.vue');
+
+var _addToCartButton2 = _interopRequireDefault(_addToCartButton);
 
 var _store = require('./stores/store.js');
 
@@ -18377,13 +18497,15 @@ var wareHouse = new Vue({
     data: {},
     components: {
         // editProduct,
-        showManager: _test2.default
+        showIndex: _showIndex2.default,
+        cartIndex: _cartIndex2.default,
+        addToCartButton: _addToCartButton2.default
     },
     ready: function ready() {}
 
 });
 
-},{"./jquery.min.js":7,"./shows/test.vue":15,"./stores/store.js":16,"./vue-resource.min.js":17,"./vue-router.min.js":18,"./vue.min.js":19,"moment":1}],9:[function(require,module,exports){
+},{"./components/add-to-cart-button.vue":7,"./components/cart-index.vue":8,"./jquery.min.js":9,"./shows/show-index.vue":17,"./stores/store.js":18,"./vue-resource.min.js":19,"./vue-router.min.js":20,"./vue.min.js":21,"moment":1}],11:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -19820,7 +19942,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   a.version = "2.14.1", b(rb), a.fn = Se, a.min = tb, a.max = ub, a.now = Fe, a.utc = j, a.unix = Jc, a.months = Pc, a.isDate = f, a.locale = Za, a.invalid = n, a.duration = Mb, a.isMoment = r, a.weekdays = Rc, a.parseZone = Kc, a.localeData = ab, a.isDuration = wb, a.monthsShort = Qc, a.weekdaysMin = Tc, a.defineLocale = $a, a.updateLocale = _a, a.locales = bb, a.weekdaysShort = Sc, a.normalizeUnits = J, a.relativeTimeRounding = id, a.relativeTimeThreshold = jd, a.calendarFormat = Tb, a.prototype = Se;var nf = a;return nf;
 });
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -19859,7 +19981,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-365fe8c9", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":16,"moment":1,"vue":4,"vue-hot-reload-api":3}],11:[function(require,module,exports){
+},{"../../stores/store.js":18,"moment":1,"vue":4,"vue-hot-reload-api":3}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -19895,7 +20017,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-6325b6ec", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":16,"moment":1,"vue":4,"vue-hot-reload-api":3}],12:[function(require,module,exports){
+},{"../../stores/store.js":18,"moment":1,"vue":4,"vue-hot-reload-api":3}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -19926,7 +20048,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-9e992eae", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":16,"moment":1,"vue":4,"vue-hot-reload-api":3}],13:[function(require,module,exports){
+},{"../../stores/store.js":18,"moment":1,"vue":4,"vue-hot-reload-api":3}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -19964,7 +20086,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-053afad5", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":16,"moment":1,"vue":4,"vue-hot-reload-api":3}],14:[function(require,module,exports){
+},{"../../stores/store.js":18,"moment":1,"vue":4,"vue-hot-reload-api":3}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20000,7 +20122,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5a46804d", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":16,"moment":1,"vue":4,"vue-hot-reload-api":3}],15:[function(require,module,exports){
+},{"../../stores/store.js":18,"moment":1,"vue":4,"vue-hot-reload-api":3}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20057,12 +20179,12 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-1bbf826b", module.exports)
+    hotAPI.createRecord("_v-68c591ca", module.exports)
   } else {
-    hotAPI.update("_v-1bbf826b", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-68c591ca", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../stores/store.js":16,"./components/band-list.vue":10,"./components/header.vue":11,"./components/venue-address.vue":12,"./components/venue-contact.vue":13,"./components/venue-title.vue":14,"vue":4,"vue-hot-reload-api":3}],16:[function(require,module,exports){
+},{"../stores/store.js":18,"./components/band-list.vue":12,"./components/header.vue":13,"./components/venue-address.vue":14,"./components/venue-contact.vue":15,"./components/venue-title.vue":16,"vue":4,"vue-hot-reload-api":3}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20080,12 +20202,17 @@ var Vue = require('../vue.min.js');
 Vue.use(_vuex2.default);
 
 var state = {
-  shows: etnoc.shows
+  shows: etnoc.shows,
+  product: etnoc.products,
+  addToCartformObj: { 'product_id': etnoc.products.id, 'cart_id': '', 'quantity': '1', 'size': etnoc.products.onesize === 1 ? 'onesize' : '', 'color': 'base' },
+  cart: etnoc.cart,
+  cart_quantity: etnoc.cart_quantity
 };
 
 var mutations = {
-  INCREMENT: function INCREMENT(state) {
-    state.count++;
+  ADD_TO_CART: function ADD_TO_CART(state, data) {
+    state.cart_quantity++;
+    state.cart = data;
   }
 };
 
@@ -20094,7 +20221,7 @@ exports.default = new _vuex2.default.Store({
   mutations: mutations
 });
 
-},{"../vue.min.js":19,"vuex":5}],17:[function(require,module,exports){
+},{"../vue.min.js":21,"vuex":5}],19:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -20505,7 +20632,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }), _.actions = { get: { method: "GET" }, save: { method: "POST" }, query: { method: "GET" }, update: { method: "PUT" }, remove: { method: "DELETE" }, "delete": { method: "DELETE" } }, "undefined" != typeof window && window.Vue && window.Vue.use(K), K;
 });
 
-},{}],18:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -21132,7 +21259,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }, "undefined" != typeof window && window.Vue && window.Vue.use(ct), ct;
 });
 
-},{}],19:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -23099,6 +23226,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[8,7,19,9,18,6]);
+},{}]},{},[10,9,21,11,20,6]);
 
 //# sourceMappingURL=bundle.js.map

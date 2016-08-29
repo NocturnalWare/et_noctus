@@ -21,31 +21,19 @@
 			<span v-if="products.onesize === 1">
 				One Size Only $<span v-text="parseInt(products.prices.onesize)/100"></span>
 			</span>
-			<select v-if="products.onesize === 0" class="col-sm-12 form-control" v-model="formObj.size">
-				<option value="" selected>Choose Size</option>
-				<option v-if="products.inventories.xsmall > 0 && products.prices.xsmall > 0" value="xsmall" v-text="'X-Small $'+parseInt(products.prices.xsmall)/100"></option>
-				<option v-if="products.inventories.small > 0 && products.prices.small > 0" value="small" v-text="'Small $'+parseInt(products.prices.small)/100"></option>
-				<option v-if="products.inventories.medium > 0 && products.prices.medium > 0" value="medium" v-text="'Medium $'+parseInt(products.prices.medium)/100"></option>
-				<option v-if="products.inventories.large > 0 && products.prices.large > 0" value="large" v-text="'Large $'+parseInt(products.prices.large)/100"></option>
-				<option v-if="products.inventories.xlarge > 0 && products.prices.xlarge > 0" value="xlarge" v-text="'X-Large $'+parseInt(products.prices.xlarge)/100"></option>
-				<option v-if="products.inventories.xxlarge > 0 && products.prices.xxlarge > 0" value="xxlarge" v-text="'XX-Large $'+parseInt(products.prices.xxlarge)/100"></option>
-				<option v-if="products.inventories.xxxlarge > 0 && products.prices.xxxlarge > 0" value="xxxlarge" v-text="'XXX-Large $'+parseInt(products.prices.xxxlarge)/100"></option>
-			</select>
+
 			<br>
-			<div v-for="c in cart">
-				<div v-if="c.product_id == products.id">
-					<span v-if="c.size !== 'onesize'">
-						<span v-text="c.quantity"></span> 
-						<span v-text="c.size | capitalize"></span> currently in your cart.
-					</span>
-					<span v-if="c.size == 'onesize'">
-						<span v-text="c.quantity"></span> Currently in your cart.
-					</span>
-				</div>
-			</div>
+
 			<div id="checkCart"></div> 
 			<br>
 			@if($product->id !== 39)
+				<add-to-cart-button
+					cart-id="{{\Session::get('cart_id')}}"
+					product="{{$product}}"
+					token="{{csrf_token()}}"
+					route="{{route('cart.store')}}"
+				>
+				</add-to-cart-button>
 				<button @click="addToCart" type="button" class="col-sm-12 btn btn-sm btn-default"><i class="fa fa-plus"></i> Add to Cart</button>
 			@else
 				<h3> This item is sold out :( </h3>
@@ -74,27 +62,27 @@
 	@section('javascript')
 		<script>
 		
-		var productShow = new Vue({
-		    el: '#productShow',
-		    data:{
-		    	products: etnoc.products,
-		    	cart: etnoc.cart,
-		    	formObj:{'product_id':etnoc.products.id, 'cart_id':"{{ Session::get('cart_id') }}", 'quantity':'1', 'size': etnoc.products.onesize === 1 ? 'onesize' : '', 'color':'base', '_token':'{{csrf_token()}}' },
-		    },
-		    methods:{
-		    	addToCart: function(){
-		    		if(this.formObj.size !== ''){
-			    		var response = this.$http.post("{{route('cart.store')}}", this.formObj);
-						response.then(function(response){
-							cartIcon.$set('cart', response.data.cart_quantity);
-							this.cart = response.data.cart;
-						});
-		    		}
-		    	},
-		    },
-		    ready: function(){
-		    },
-		});
+		// var productShow = new Vue({
+		//     el: '#productShow',
+		//     data:{
+		//     	products: etnoc.products,
+		//     	cart: etnoc.cart,
+		//     	formObj:{'product_id':etnoc.products.id, 'cart_id':"{{ Session::get('cart_id') }}", 'quantity':'1', 'size': etnoc.products.onesize === 1 ? 'onesize' : '', 'color':'base', '_token':'{{csrf_token()}}' },
+		//     },
+		//     methods:{
+		//     	addToCart: function(){
+		//     		if(this.formObj.size !== ''){
+		// 	    		var response = this.$http.post("{{route('cart.store')}}", this.formObj);
+		// 				response.then(function(response){
+		// 					cartIcon.$set('cart', response.data.cart_quantity);
+		// 					this.cart = response.data.cart;
+		// 				});
+		//     		}
+		//     	},
+		//     },
+		//     ready: function(){
+		//     },
+		// });
 		</script>
 	@stop
 @stop
