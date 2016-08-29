@@ -8,81 +8,49 @@
 
 
 <center>
-	<div id="productShow">
-		<div class="col-xs-12 col-md-7">
-			<legend>
-				<h3 v-text="products.name"></h3>
-			</legend>
-			<img class="img-responsive" src="{{$product->getMainImage()}}" />
-		</div>
-		<div class="well col-xs-12 col-md-2" style="color:#000;">
-			<span v-text="products.description"></span>
+	<div class="col-xs-12 col-md-7">
+		<legend style="color:#fff">
+			{{$product->name}}
+		</legend>
+		<img class="img-responsive" src="{{$product->getMainImage()}}" />
+
+	</div>
+	<div class="well col-xs-12 col-md-2" style="color:#000;">
+		{{$product->description}}
+		<span v-text="products.description"></span>
+		<br>
+
+		<div id="checkCart"></div> 
+		<br>
+		@if($product->id !== 39)
+			<add-to-cart-button
+				cart-id="{{\Session::get('cart_id')}}"
+				product="{{$product}}"
+				token="{{csrf_token()}}"
+				route="{{route('cart.store')}}"
+			>
+			</add-to-cart-button>
+		@else
+			<h3> This item is sold out :( </h3>
+		@endif
 			<br><br>
-			<span v-if="products.onesize === 1">
-				One Size Only $<span v-text="parseInt(products.prices.onesize)/100"></span>
-			</span>
-
-			<br>
-
-			<div id="checkCart"></div> 
-			<br>
-			@if($product->id !== 39)
-				<add-to-cart-button
-					cart-id="{{\Session::get('cart_id')}}"
-					product="{{$product}}"
-					token="{{csrf_token()}}"
-					route="{{route('cart.store')}}"
-				>
-				</add-to-cart-button>
-				<button @click="addToCart" type="button" class="col-sm-12 btn btn-sm btn-default"><i class="fa fa-plus"></i> Add to Cart</button>
-			@else
-				<h3> This item is sold out :( </h3>
-			@endif
-				<br><br>
-			<a href="{{route('cart.index')}}" class="col-sm-12 btn btn-sm btn-default"><i class="fa fa-shopping-cart"></i> View Cart</a>
-			<div class="row">
-				<div class="col-sm-6 btn" style="color:transparent">
-					<div class="fb-like" 
-						data-href="http://store.eternallynocturnal.com/products/{{$product->id}}"
-						data-layout="button_count" 
-						data-action="like">
-					</div>
+		<a href="{{route('cart.index')}}" class="col-sm-12 btn btn-sm btn-default"><i class="fa fa-shopping-cart"></i> View Cart</a>
+		<div class="row">
+			<div class="col-sm-6 btn" style="color:transparent">
+				<div class="fb-like" 
+					data-href="http://store.eternallynocturnal.com/products/{{$product->id}}"
+					data-layout="button_count" 
+					data-action="like">
 				</div>
-				<div class="col-sm-6 btn">
-					<div>
-						<div class="fb-share-button" data-href="http://store.eternallynocturnal.com/products/{{$product->id}}" data-layout="button"></div>
-					</div>
+			</div>
+			<div class="col-sm-6 btn">
+				<div>
+					<div class="fb-share-button" data-href="http://store.eternallynocturnal.com/products/{{$product->id}}" data-layout="button"></div>
 				</div>
 			</div>
 		</div>
-		</div>
-	</center>
-	<div class="col-md-3"></div>
-
-	@section('javascript')
-		<script>
-		
-		// var productShow = new Vue({
-		//     el: '#productShow',
-		//     data:{
-		//     	products: etnoc.products,
-		//     	cart: etnoc.cart,
-		//     	formObj:{'product_id':etnoc.products.id, 'cart_id':"{{ Session::get('cart_id') }}", 'quantity':'1', 'size': etnoc.products.onesize === 1 ? 'onesize' : '', 'color':'base', '_token':'{{csrf_token()}}' },
-		//     },
-		//     methods:{
-		//     	addToCart: function(){
-		//     		if(this.formObj.size !== ''){
-		// 	    		var response = this.$http.post("{{route('cart.store')}}", this.formObj);
-		// 				response.then(function(response){
-		// 					cartIcon.$set('cart', response.data.cart_quantity);
-		// 					this.cart = response.data.cart;
-		// 				});
-		//     		}
-		//     	},
-		//     },
-		//     ready: function(){
-		//     },
-		// });
-		</script>
-	@stop
+	</div>
+	</div>
+</center>
+<div class="col-md-3"></div>
 @stop

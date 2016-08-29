@@ -1,7 +1,7 @@
 <template>
   <span>
     <span v-if="product.onesize === 1">
-        One Size Only $<span v-text="displayPrice(products.prices.onesize)"></span>
+        <dt>One Size Only $<span v-text="displayPrice(product.prices.onesize)"></span><dt>
     </span>
     <select v-if="product.onesize === 0" class="col-sm-12 form-control" v-model="size">
       <option value="" selected>Choose Size</option>
@@ -58,6 +58,11 @@
       addToCart: function(){
         var data = store.state.addToCartformObj;
         data.size = this.size;
+
+        if(this.product.onesize === 1){
+          data.size = 'onesize';
+        }
+
         data._token = this.token;
         data.route = this.route;
         data.cart_id = this.cartId;
