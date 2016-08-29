@@ -15932,6 +15932,9 @@ exports.default = {
     cart: function cart() {
       return _store2.default.state.cart;
     },
+    addToCartformObj: function addToCartformObj() {
+      return { 'product_id': this.product.id, 'cart_id': '', 'quantity': '1', 'size': '', 'color': 'base' };
+    },
     showXsmall: function showXsmall() {
       return this.product.inventories.xsmall > 0 && this.product.prices.xsmall > 0;
     },
@@ -15954,16 +15957,14 @@ exports.default = {
       return this.product.inventories.xxxlarge > 0 && this.product.prices.xxxlarge > 0;
     }
   },
-  data: {
-    size: ''
-  },
+  data: {},
   methods: {
     displayPrice: function displayPrice(product) {
       return parseInt(product) / 100;
     },
     addToCart: function addToCart() {
-      var data = _store2.default.state.addToCartformObj;
-      data.size = this.size;
+      var data = this.addToCartformObj;
+      data.size = this.addToCartformObj.size;
 
       if (this.product.onesize === 1) {
         data.size = 'onesize';
@@ -15972,9 +15973,8 @@ exports.default = {
       data._token = this.token;
       data.route = this.route;
       data.cart_id = this.cartId;
-      console.log('posty', data);
 
-      if (data.size !== '') {
+      if (data.size) {
         var call = this.$http.post(this.route, data);
         call.then(function (response) {
           _store2.default.dispatch('ADD_TO_CART', response.data.cart);
@@ -15984,7 +15984,7 @@ exports.default = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <span>\n    <span v-if=\"product.onesize === 1\">\n        <dt>One Size Only $<span v-text=\"displayPrice(product.prices.onesize)\"></span></dt><dt>\n    \n    <select v-if=\"product.onesize === 0\" class=\"col-sm-12 form-control\" v-model=\"size\">\n      <option value=\"\" selected=\"\">Choose Size</option>\n      <option v-if=\"showXsmall\" value=\"xsmall\" v-text=\"'X-Small $'+displayPrice(product.prices.xsmall)\"></option>\n      <option v-if=\"showSmall\" value=\"small\" v-text=\"'Small $'+displayPrice(product.prices.small)\"></option>\n      <option v-if=\"showMedium\" value=\"medium\" v-text=\"'Medium $'+displayPrice(product.prices.medium)\"></option>\n      <option v-if=\"showLarge\" value=\"large\" v-text=\"'Large $'+displayPrice(product.prices.large)\"></option>\n      <option v-if=\"showXlarge\" value=\"xlarge\" v-text=\"'X-Large $'+displayPrice(product.prices.xlarge)\"></option>\n      <option v-if=\"showXxlarge\" value=\"xxlarge\" v-text=\"'XX-Large $'+displayPrice(product.prices.xxlarge)\"></option>\n      <option v-if=\"showXxxlarge\" value=\"xxxlarge\" v-text=\"'XXX-Large $'+displayPrice(product.prices.xxxlarge)\"></option>\n    </select>\n    <div v-for=\"c in cart\">\n      <div v-if=\"c.product_id == product.id\">\n        <span v-if=\"c.size !== 'onesize'\">\n          <span v-text=\"c.quantity\"></span> \n          <span v-text=\"c.size | capitalize\"></span> currently in your cart.\n        </span>\n        <span v-if=\"c.size == 'onesize'\">\n          <span v-text=\"c.quantity\"></span> Currently in your cart.\n        </span>\n      </div>\n    </div>\n    <button @click=\"addToCart\" type=\"button\" class=\"col-sm-12 btn btn-sm btn-default\"><i class=\"fa fa-plus\"></i> Add to Cart</button>\n  \n</dt></span></span>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<span>\n  <span v-if=\"product.onesize === 1\">\n      <dt>One Size Only $<span v-text=\"displayPrice(product.prices.onesize)\"></span></dt>\n  </span>\n  <select v-if=\"product.onesize === 0\" class=\"col-sm-12 form-control\" v-model=\"addToCartformObj.size\">\n    <option value=\"\" selected=\"\">Choose Size</option>\n    <option v-if=\"showXsmall\" value=\"xsmall\" v-text=\"'X-Small $'+displayPrice(product.prices.xsmall)\"></option>\n    <option v-if=\"showSmall\" value=\"small\" v-text=\"'Small $'+displayPrice(product.prices.small)\"></option>\n    <option v-if=\"showMedium\" value=\"medium\" v-text=\"'Medium $'+displayPrice(product.prices.medium)\"></option>\n    <option v-if=\"showLarge\" value=\"large\" v-text=\"'Large $'+displayPrice(product.prices.large)\"></option>\n    <option v-if=\"showXlarge\" value=\"xlarge\" v-text=\"'X-Large $'+displayPrice(product.prices.xlarge)\"></option>\n    <option v-if=\"showXxlarge\" value=\"xxlarge\" v-text=\"'XX-Large $'+displayPrice(product.prices.xxlarge)\"></option>\n    <option v-if=\"showXxxlarge\" value=\"xxxlarge\" v-text=\"'XXX-Large $'+displayPrice(product.prices.xxxlarge)\"></option>\n  </select>\n  <div v-for=\"c in cart\">\n    <div v-if=\"c.product_id == product.id\">\n      <span v-if=\"c.size !== 'onesize'\">\n        <span v-text=\"c.quantity\"></span> \n        <span v-text=\"c.size | capitalize\"></span> currently in your cart.\n      </span>\n      <span v-if=\"c.size == 'onesize'\">\n        <span v-text=\"c.quantity\"></span> Currently in your cart.\n      </span>\n    </div>\n  </div>\n  <button @click=\"addToCart\" type=\"button\" class=\"col-sm-12 btn btn-sm btn-default\"><i class=\"fa fa-plus\"></i> Add to Cart</button>\n</span>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -20208,8 +20208,8 @@ Vue.use(_vuex2.default);
 
 var state = {
   shows: etnoc.shows,
-  product: etnoc.products,
-  addToCartformObj: { 'product_id': etnoc.products.id, 'cart_id': '', 'quantity': '1', 'size': etnoc.products.onesize === 1 ? 'onesize' : '', 'color': 'base' },
+  product: [],
+  products: [],
   cart: etnoc.cart,
   cart_quantity: etnoc.cart_quantity
 };
@@ -20220,6 +20220,11 @@ var mutations = {
     state.cart = data;
   }
 };
+
+if (etnoc.products) {
+  state.product = etnoc.products;
+  state.products = etnoc.products;
+}
 
 exports.default = new _vuex2.default.Store({
   state: state,

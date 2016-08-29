@@ -36,7 +36,7 @@ $factory->define(App\Product\Product::class, function (Faker\Generator $faker) {
                 'Zodiac Tee',
             ]),
             'description' => $faker->realText($maxNbChars = 200, $indexSize = 2),
-            'category' => 'Tee',
+            'category' => 'Tees',
             'display_price_min' => rand(10, 29).'.99',
             'display_price_max' => rand(10, 34).'.99',
             'paypal' => rand(0, 1),
