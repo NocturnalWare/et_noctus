@@ -6,7 +6,7 @@
 				<div v-if="!checking" class="input-group-addon">
 					<button @click="checkShipping" class="btn btn-xs btn-primary">
 						Use Promo Code
-					 	&nbsp&nbsp<i class="fa fa-send"></i> 
+					 	&nbsp&nbsp<i class="fa fa-lg fa-gift"></i> 
 					</button>
 				</div>
 				<span v-if="checking" class="input-group-addon btn btn-xs btn-info">
