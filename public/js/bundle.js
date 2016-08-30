@@ -15995,7 +15995,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4c203b48", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../stores/store.js":18,"vue":4,"vue-hot-reload-api":3}],8:[function(require,module,exports){
+},{"../stores/store.js":21,"vue":4,"vue-hot-reload-api":3}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -16012,11 +16012,14 @@ exports.default = {
   computed: {
     quantity: function quantity() {
       return _store2.default.state.cart_quantity;
+    },
+    hasQuantity: function hasQuantity() {
+      return this.quantity > 0;
     }
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<section>\n  <a href=\"/carts\" style=\"background-color:#000;color:#fff;font-weight:bold\" class=\"nav-button-etnoc btn btn-lg\">\n    <span class=\"badge\" style=\"background-color:#fff;color:#000\">\n      <span v-text=\"quantity\"></span>\n    </span>\n    Cart\n  </a>\n</section>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<section>\n  <a v-if=\"hasQuantity\" href=\"/cart\" style=\"background-color:#000;color:#fff;font-weight:bold\" class=\"nav-button-etnoc btn btn-lg\">\n    <span class=\"badge\" style=\"background-color:#fff;color:#000\">\n      <span v-text=\"quantity\"></span>\n    </span>\n    Cart\n  </a>\n</section>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -16027,7 +16030,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1d30b330", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../stores/store.js":18,"vue":4,"vue-hot-reload-api":3}],9:[function(require,module,exports){
+},{"../stores/store.js":21,"vue":4,"vue-hot-reload-api":3}],9:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -18472,6 +18475,10 @@ var _addToCartButton = require('./components/add-to-cart-button.vue');
 
 var _addToCartButton2 = _interopRequireDefault(_addToCartButton);
 
+var _totalContainer = require('./shipping/components/total-container.vue');
+
+var _totalContainer2 = _interopRequireDefault(_totalContainer);
+
 var _store = require('./stores/store.js');
 
 var _store2 = _interopRequireDefault(_store);
@@ -18504,13 +18511,14 @@ var wareHouse = new Vue({
         // editProduct,
         showIndex: _showIndex2.default,
         cartIndex: _cartIndex2.default,
+        totalContainer: _totalContainer2.default,
         addToCartButton: _addToCartButton2.default
     },
     ready: function ready() {}
 
 });
 
-},{"./components/add-to-cart-button.vue":7,"./components/cart-index.vue":8,"./jquery.min.js":9,"./shows/show-index.vue":17,"./stores/store.js":18,"./vue-resource.min.js":19,"./vue-router.min.js":20,"./vue.min.js":21,"moment":1}],11:[function(require,module,exports){
+},{"./components/add-to-cart-button.vue":7,"./components/cart-index.vue":8,"./jquery.min.js":9,"./shipping/components/total-container.vue":14,"./shows/show-index.vue":20,"./stores/store.js":21,"./vue-resource.min.js":22,"./vue-router.min.js":23,"./vue.min.js":24,"moment":1}],11:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -19960,6 +19968,179 @@ var _store2 = _interopRequireDefault(_store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+exports.default = {
+	props: ['route', 'xssToken'],
+	computed: {
+		checkoutCartFormObj: function checkoutCartFormObj() {
+			return _store2.default.state.checkoutCartFormObj;
+		},
+		checking: function checking() {
+			return _store2.default.state.checkingServerForUpdate;
+		}
+	},
+	methods: {
+		checkShipping: function checkShipping() {
+			this.checkoutCartFormObj._token = this.xssToken;
+			_store2.default.dispatch('TOGGLE_CHECKING_FOR_SERVER_UPDATE');
+			var call = this.$http.post(this.route, this.checkoutCartFormObj);
+			call.then(function (response) {
+				_store2.default.dispatch('UPDATE_CHECKOUT_PRICES', response.data);
+				_store2.default.dispatch('TOGGLE_CHECKING_FOR_SERVER_UPDATE');
+			});
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\">\n\t<div class=\"form-group\">\n\t\t<div class=\"input-group\">\n\t\t\t<input class=\"form-control\" @keyup.enter=\"checkShipping\" v-model=\"checkoutCartFormObj.code\" placeholder=\"Code\">\n\t\t\t<div v-if=\"!checking\" class=\"input-group-addon\">\n\t\t\t\t<button @click=\"checkShipping\" class=\"btn btn-xs btn-primary\">\n\t\t\t\t\tUse Promo Code\n\t\t\t\t \t&nbsp;&nbsp;<i class=\"fa fa-send\"></i> \n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t<span v-if=\"checking\" class=\"input-group-addon btn btn-xs btn-info\">\n\t\t\t\t<i class=\"fa fa-spin fa-spinner\"></i>\n\t\t\t</span>\n\t\t</div>\n\t</div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-ff16908a", module.exports)
+  } else {
+    hotAPI.update("_v-ff16908a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../../stores/store.js":21,"vue":4,"vue-hot-reload-api":3}],13:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+			value: true
+});
+
+var _store = require('../../stores/store.js');
+
+var _store2 = _interopRequireDefault(_store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+			props: ['route', 'xssToken'],
+			computed: {
+						checkoutCartFormObj: function checkoutCartFormObj() {
+									return _store2.default.state.checkoutCartFormObj;
+						},
+						checking: function checking() {
+									return _store2.default.state.checkingServerForUpdate;
+						}
+			},
+			methods: {
+						checkShipping: function checkShipping() {
+									this.checkoutCartFormObj._token = this.xssToken;
+									if (this.checkoutCartFormObj.zip.length == 5) {
+												_store2.default.dispatch('TOGGLE_CHECKING_FOR_SERVER_UPDATE');
+												var call = this.$http.post(this.route, this.checkoutCartFormObj);
+												call.then(function (response) {
+															_store2.default.dispatch('UPDATE_CHECKOUT_PRICES', response.data);
+															_store2.default.dispatch('TOGGLE_CHECKING_FOR_SERVER_UPDATE');
+												});
+									}
+						}
+			}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\">\n\t<div class=\"from-group\">\n\t\t<div class=\"input-group\">\n\t\t\t<input class=\"form-control\" @keyup.enter=\"checkShipping\" v-model=\"checkoutCartFormObj.zip\" placeholder=\"Zip Code\">\n\t\t\t<div v-if=\"!checking\" class=\"input-group-addon\">\n\t\t\t\t<button @click=\"checkShipping\" class=\"btn btn-xs btn-primary\">\n\t\t\t\t\tCheck Shipping Rate\n\t\t\t\t \t&nbsp;&nbsp;<i class=\"fa fa-send\"></i> \n\t\t\t\t</button>\n\t\t\t</div>\n\t\t\t<span v-if=\"checking\" class=\"input-group-addon btn btn-xs btn-info\">\n\t\t\t\t<i class=\"fa fa-spin fa-spinner\"></i>\n\t\t\t</span>\n\t\t</div>\n\t</div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-a794fa02", module.exports)
+  } else {
+    hotAPI.update("_v-a794fa02", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../../stores/store.js":21,"vue":4,"vue-hot-reload-api":3}],14:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _store = require('../../stores/store.js');
+
+var _store2 = _interopRequireDefault(_store);
+
+var _checkShippingRate = require('./check-shipping-rate.vue');
+
+var _checkShippingRate2 = _interopRequireDefault(_checkShippingRate);
+
+var _checkPromoCode = require('./check-promo-code.vue');
+
+var _checkPromoCode2 = _interopRequireDefault(_checkPromoCode);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+
+	props: ['cartAmount', 'xssToken', 'route'],
+	components: {
+		checkShippingRate: _checkShippingRate2.default,
+		checkPromoCode: _checkPromoCode2.default
+	},
+	computed: {
+		cart: function cart() {
+			return _store2.default.state.cart;
+		},
+		checkoutCartFormObj: function checkoutCartFormObj() {
+			return _store2.default.state.checkoutCartFormObj;
+		},
+		hasShippingRate: function hasShippingRate() {
+			return this.checkoutCartFormObj.shipping_rate > 0;
+		},
+		hasPromoRate: function hasPromoRate() {
+			return this.checkoutCartFormObj.promo_rate > 0;
+		}
+	},
+	methods: {
+		logToken: function logToken() {
+			console.log(this.xssToken);
+		},
+		correctStripePrice: function correctStripePrice(price) {
+			var newprice = parseFloat(price) / 100;
+			return '$' + newprice.toFixed(2);
+		},
+		correctPrice: function correctPrice(price) {
+			var newprice = parseFloat(price);
+			return '$' + newprice.toFixed(2);
+		},
+		checkShipping: function checkShipping() {
+			this.checkoutCartFormObj._token = this.xssToken;
+			if (this.checkoutCartFormObj.zip.length == 5) {
+				var call = this.$http.post(this.route, this.checkoutCartFormObj);
+				call.then(function (response) {
+					_store2.default.dispatch('UPDATE_CHECKOUT_PRICES', response.data);
+				});
+			}
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<check-shipping-rate :route=\"route\" :xss-token=\"xssToken\"></check-shipping-rate>\n<check-promo-code :route=\"route\" :xss-token=\"xssToken\"></check-promo-code>\n<div class=\"row\">\n\t<div style=\"border-radius:35px\">\n\t\t<div class=\"col-sm-11\">\n\t\t\t<div class=\"col-xs-11 col-xs-offset-1\">\n\t\t\t\t<label>\n\t\t\t\t\tCart Total:\n\t\t\t\t</label>\n\t\t\t\t <span class=\"pull-right\">\n\t\t\t\t\t{{correctStripePrice(cartAmount)}}\n\t\t\t\t </span>\n\t\t\t</div>\n\t\t\t<div class=\"col-xs-11 col-xs-offset-1\" v-if=\"hasPromoRate\">\n\t\t\t\t<label>\n\t\t\t\t\tPromo Discount:\n\t\t\t\t</label>\n\t\t\t\t <span class=\"pull-right\" v-text=\"correctPrice(checkoutCartFormObj.promo_rate)\"></span>\n\t\t\t</div>\n\t\t\t<div class=\"col-xs-11 col-xs-offset-1\">\n\t\t\t\t<label>\n\t\t\t\t\tShipping Price:\n\t\t\t\t</label>\n\t\t\t \t<span class=\"pull-right\" v-if=\"hasShippingRate\" v-text=\"correctPrice(checkoutCartFormObj.shipping_rate)\"></span>\n\t\t\t \t<i class=\"text-danger pull-right\" v-if=\"!hasShippingRate\">Please Enter Your Zip Code Above</i>\n\t\t\t</div>\n\t\t\t<hr style=\"background-color:#000\">\n\t\t\t<div class=\"col-xs-12\" v-if=\"checkoutCartFormObj.shipping_rate > 0\">\n\t\t\t\t<h3>Total: \n\t\t\t\t\t<span class=\"pull-right\" v-text=\"correctPrice(checkoutCartFormObj.total)\"></span>\n\t\t\t\t</h3>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\t<button @click=\"checkShipping\" v-bind:class=\"['', hasShippingRate ? 'btn-info' : 'btn-default']\" v-bind:disabled=\"!hasShippingRate\" class=\"btn btn-lg col-xs-12\">\n\t\tCheckout <i v-bind:class=\"['', hasShippingRate ? 'fa-rocket' : 'fa-ban']\" class=\"fa pull-right\"></i>\n\t</button>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-51f0621d", module.exports)
+  } else {
+    hotAPI.update("_v-51f0621d", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../../stores/store.js":21,"./check-promo-code.vue":12,"./check-shipping-rate.vue":13,"vue":4,"vue-hot-reload-api":3}],15:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _store = require('../../stores/store.js');
+
+var _store2 = _interopRequireDefault(_store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var moment = require('moment');
 
 exports.default = {
@@ -19986,7 +20167,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-365fe8c9", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":18,"moment":1,"vue":4,"vue-hot-reload-api":3}],13:[function(require,module,exports){
+},{"../../stores/store.js":21,"moment":1,"vue":4,"vue-hot-reload-api":3}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20022,7 +20203,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-6325b6ec", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":18,"moment":1,"vue":4,"vue-hot-reload-api":3}],14:[function(require,module,exports){
+},{"../../stores/store.js":21,"moment":1,"vue":4,"vue-hot-reload-api":3}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20053,7 +20234,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-9e992eae", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":18,"moment":1,"vue":4,"vue-hot-reload-api":3}],15:[function(require,module,exports){
+},{"../../stores/store.js":21,"moment":1,"vue":4,"vue-hot-reload-api":3}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20091,7 +20272,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-053afad5", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":18,"moment":1,"vue":4,"vue-hot-reload-api":3}],16:[function(require,module,exports){
+},{"../../stores/store.js":21,"moment":1,"vue":4,"vue-hot-reload-api":3}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20127,7 +20308,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5a46804d", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":18,"moment":1,"vue":4,"vue-hot-reload-api":3}],17:[function(require,module,exports){
+},{"../../stores/store.js":21,"moment":1,"vue":4,"vue-hot-reload-api":3}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20189,7 +20370,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-68c591ca", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../stores/store.js":18,"./components/band-list.vue":12,"./components/header.vue":13,"./components/venue-address.vue":14,"./components/venue-contact.vue":15,"./components/venue-title.vue":16,"vue":4,"vue-hot-reload-api":3}],18:[function(require,module,exports){
+},{"../stores/store.js":21,"./components/band-list.vue":15,"./components/header.vue":16,"./components/venue-address.vue":17,"./components/venue-contact.vue":18,"./components/venue-title.vue":19,"vue":4,"vue-hot-reload-api":3}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20211,6 +20392,8 @@ var state = {
   product: [],
   products: [],
   cart: etnoc.cart,
+  checkingServerForUpdate: false,
+  checkoutCartFormObj: { zip: '', _token: '', promo_rate: 0, shipping_rate: 0, total: 0, code: '' },
   cart_quantity: etnoc.cart_quantity
 };
 
@@ -20218,6 +20401,14 @@ var mutations = {
   ADD_TO_CART: function ADD_TO_CART(state, data) {
     state.cart_quantity++;
     state.cart = data;
+  },
+  TOGGLE_CHECKING_FOR_SERVER_UPDATE: function TOGGLE_CHECKING_FOR_SERVER_UPDATE(state) {
+    state.checkingServerForUpdate = !state.checkingServerForUpdate;
+  },
+  UPDATE_CHECKOUT_PRICES: function UPDATE_CHECKOUT_PRICES(state, data) {
+    state.checkoutCartFormObj.shipping_rate = data.rate;
+    state.checkoutCartFormObj.promo_rate = data.promo_rate;
+    state.checkoutCartFormObj.total = data.total;
   }
 };
 
@@ -20231,7 +20422,7 @@ exports.default = new _vuex2.default.Store({
   mutations: mutations
 });
 
-},{"../vue.min.js":21,"vuex":5}],19:[function(require,module,exports){
+},{"../vue.min.js":24,"vuex":5}],22:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -20642,7 +20833,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }), _.actions = { get: { method: "GET" }, save: { method: "POST" }, query: { method: "GET" }, update: { method: "PUT" }, remove: { method: "DELETE" }, "delete": { method: "DELETE" } }, "undefined" != typeof window && window.Vue && window.Vue.use(K), K;
 });
 
-},{}],20:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -21269,7 +21460,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }, "undefined" != typeof window && window.Vue && window.Vue.use(ct), ct;
 });
 
-},{}],21:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -23236,6 +23427,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[10,9,21,11,20,6]);
+},{}]},{},[10,9,24,11,23,6]);
 
 //# sourceMappingURL=bundle.js.map

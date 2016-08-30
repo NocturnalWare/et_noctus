@@ -40,6 +40,8 @@
 	@endforeach
 	<div class="row">
 		<div class="col-xs-12 col-md-3 col-md-offset-6 well" style="color:#000">
+<total-container cart-amount="{{$cart_amount}}" xss-token="{{csrf_token()}}" route="{{route('shipping.rates.check')}}"></total-container>
+
 			<div id="totalContainer" class="col-md-9 col-md-offset-2" >
 				<center>
 					<div class="row">

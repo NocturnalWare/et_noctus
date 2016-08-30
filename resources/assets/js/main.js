@@ -18,6 +18,7 @@ window.moment = moment;
 import showIndex from './shows/show-index.vue';
 import cartIndex from './components/cart-index.vue';
 import addToCartButton from './components/add-to-cart-button.vue';
+import totalContainer from './shipping/components/total-container.vue';
 import dataStore from './stores/store.js';
 
 var wareHouse = new Vue({
@@ -27,6 +28,7 @@ var wareHouse = new Vue({
     	// editProduct,
     	showIndex,
     	cartIndex,
+        totalContainer,
     	addToCartButton,
     	// editContact,
     	// createProduct,

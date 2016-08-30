@@ -53,11 +53,14 @@ class ShippingController extends Controller
         $weight = $cart->getCartWeight();
         $cartprice = $cart->getBaseCartAmount()/100;
         $promo_rate = 0;
+        $rate = 0;
         
-        $shipment = Shipping::checkRate($request->get('zip'), $weight);
-        
-        $rate = $shipment->rate + (.25 * $cart->checkCart()->sum('quantity'));
-
+        if(!empty($request->get('zip'))){
+	        $shipment = Shipping::checkRate($request->get('zip'), $weight);
+	        
+	        $rate = $shipment->rate + (.25 * $cart->checkCart()->sum('quantity'));
+	    }
+	    
         if(!empty($request->get('code'))){
         	$promo = new Promotion;
         	$promo_rate = $promo->calculateRate($request->get('code'), $cartprice);
