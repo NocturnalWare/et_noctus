@@ -20379,13 +20379,13 @@ var Vue = require('../vue.min.js');
 Vue.use(_vuex2.default);
 
 var state = {
-  shows: etnoc.shows,
+  shows: [],
   product: [],
   products: [],
-  cart: etnoc.cart,
+  cart: {},
   checkingServerForUpdate: false,
   checkoutCartFormObj: { zip: '', _token: '', promo_rate: 0, shipping_rate: 0, total: 0, code: '' },
-  cart_quantity: etnoc.cart_quantity
+  cart_quantity: ''
 };
 
 var mutations = {
@@ -20403,9 +20403,20 @@ var mutations = {
   }
 };
 
-if (etnoc.products) {
-  state.product = etnoc.products;
-  state.products = etnoc.products;
+if (typeof etnoc !== 'undefined') {
+
+  if (etnoc.shows) {
+    state.shows = etnoc.shows;
+  }
+  if (etnoc.cart) {
+    state.cart = etnoc.cart;
+    state.cart_quantity = etnoc.cart_quantity;
+  }
+
+  if (etnoc.products) {
+    state.product = etnoc.products;
+    state.products = etnoc.products;
+  }
 }
 
 exports.default = new _vuex2.default.Store({

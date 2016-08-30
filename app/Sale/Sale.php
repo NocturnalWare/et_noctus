@@ -12,4 +12,8 @@ class Sale extends Model
     ];
 
     protected $table = 'sales';
+
+    public function shippingLabel(){
+    	return $this->hasOne('\App\ShippingLabel', 'cart_id', 'cart_id');
+    }
 }

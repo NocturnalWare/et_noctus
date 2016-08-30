@@ -4,13 +4,13 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-	shows: etnoc.shows,
+	shows: [],
   product: [],
 	products:[],
-	cart: etnoc.cart,
+	cart: {},
   checkingServerForUpdate: false,
   checkoutCartFormObj: {zip:'', _token : '', promo_rate : 0, shipping_rate : 0, total : 0, code : ''},
-	cart_quantity: etnoc.cart_quantity,
+	cart_quantity: '',
 }
 
 const mutations = {
@@ -28,9 +28,20 @@ const mutations = {
   }
 }
 
-if(etnoc.products){
-  state.product = etnoc.products;
-  state.products = etnoc.products;
+if(typeof etnoc !== 'undefined'){
+
+  if(etnoc.shows){
+    state.shows = etnoc.shows
+  }
+  if(etnoc.cart){
+    state.cart = etnoc.cart;
+    state.cart_quantity = etnoc.cart_quantity;
+  }
+
+  if(etnoc.products){
+    state.product = etnoc.products;
+    state.products = etnoc.products;
+  }
 }
 
 export default new Vuex.Store({

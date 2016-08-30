@@ -69,7 +69,7 @@
           @if(\Auth::check())
             <a style="background-color:#000;color:#fff" href="{{route('admin.index')}}" class="nav-button-etnoc btn btn-lg">Manage</a>
           @else
-          <a style="background-color:#000;color:#fff" class="nav-button-etnoc btn btn-lg">
+          <a style="background-color:#000;color:#fff" type="button" class="dropdown nav-button-etnoc btn btn-lg" data-toggle="modal" data-target="#Login">
                 <b>Login</b>
           </a>
           @endif
@@ -78,5 +78,5 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-
+@include('layouts.login-modal')
 <!-- Button trigger modal -->
