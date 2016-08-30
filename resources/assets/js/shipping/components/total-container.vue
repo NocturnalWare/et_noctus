@@ -34,9 +34,9 @@
 					</div>
 				</div>
 			</div>
-			<button @click="checkShipping" v-bind:class="['', hasShippingRate ? 'btn-info' : 'btn-default']" v-bind:disabled="!hasShippingRate" class="btn btn-lg col-xs-12">
+			<a href="{{checkoutRoute}}" v-bind:class="['', hasShippingRate ? 'btn-info' : 'btn-default']" v-bind:disabled="!hasShippingRate" class="btn btn-lg col-xs-12">
 				Checkout <i v-bind:class="['', hasShippingRate ? 'fa-rocket' : 'fa-ban']" class="fa pull-right"></i>
-			</button>
+			</a>
 		</div>
 	</div>
 </template>
@@ -48,7 +48,7 @@
 
 	export default{
 
-		props: ['cartAmount', 'xssToken', 'route'],
+		props: ['cartAmount', 'xssToken', 'route', 'checkoutRoute'],
 		components:{
 			checkShippingRate,
 			checkPromoCode,
@@ -78,15 +78,6 @@
 	    	correctPrice: function(price){
 	    		var newprice = parseFloat(price);
 	    		return '$'+newprice.toFixed(2)
-	    	},
-	    	checkShipping: function(){
-	    		this.checkoutCartFormObj._token = this.xssToken;
-	    		if(this.checkoutCartFormObj.zip.length == 5){
-		    		let call = this.$http.post(this.route, this.checkoutCartFormObj);
-					call.then(function(response){
-						store.dispatch('UPDATE_CHECKOUT_PRICES', response.data)
-					});
-	    		}
 	    	},
 	    }
 	}

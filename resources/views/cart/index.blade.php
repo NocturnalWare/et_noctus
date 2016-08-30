@@ -39,8 +39,8 @@
 		</div>
 	@endforeach
 	<div class="row">
-		<div class="col-xs-12 col-md-4 col-md-offset-6 well" style="color:#000;">
-			<total-container cart-amount="{{$cart_amount}}" xss-token="{{csrf_token()}}" route="{{route('shipping.rates.check')}}"></total-container>
+		<div class="col-xs-12 col-md-4 col-md-offset-6 well" style="color:#000;padding:20px;">
+			<total-container cart-amount="{{$cart_amount}}" xss-token="{{csrf_token()}}" route="{{route('shipping.rates.check')}}" checkout-route="{{route('shipping.create')}}"></total-container>
 		</div>
 	</div>
 	<br><br>

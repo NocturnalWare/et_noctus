@@ -20074,7 +20074,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
 
-	props: ['cartAmount', 'xssToken', 'route'],
+	props: ['cartAmount', 'xssToken', 'route', 'checkoutRoute'],
 	components: {
 		checkShippingRate: _checkShippingRate2.default,
 		checkPromoCode: _checkPromoCode2.default
@@ -20104,20 +20104,11 @@ exports.default = {
 		correctPrice: function correctPrice(price) {
 			var newprice = parseFloat(price);
 			return '$' + newprice.toFixed(2);
-		},
-		checkShipping: function checkShipping() {
-			this.checkoutCartFormObj._token = this.xssToken;
-			if (this.checkoutCartFormObj.zip.length == 5) {
-				var call = this.$http.post(this.route, this.checkoutCartFormObj);
-				call.then(function (response) {
-					_store2.default.dispatch('UPDATE_CHECKOUT_PRICES', response.data);
-				});
-			}
 		}
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\" col-xs-12\">\n\t<check-shipping-rate :route=\"route\" :xss-token=\"xssToken\"></check-shipping-rate>\n\t<check-promo-code :route=\"route\" :xss-token=\"xssToken\"></check-promo-code>\n\t<div class=\"row well\">\n\t\t<div style=\"border-radius:35px\">\n\t\t\t<div class=\"col-sm-11\">\n\t\t\t\t<div class=\"col-xs-11 col-xs-offset-1\">\n\t\t\t\t\t<label>\n\t\t\t\t\t\tCart Total:\n\t\t\t\t\t</label>\n\t\t\t\t\t <span class=\"pull-right\">\n\t\t\t\t\t\t{{correctStripePrice(cartAmount)}}\n\t\t\t\t\t </span>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-11 col-xs-offset-1\" v-if=\"hasPromoRate\">\n\t\t\t\t\t<label>\n\t\t\t\t\t\tPromo Discount:\n\t\t\t\t\t</label>\n\t\t\t\t\t <span class=\"pull-right\" v-text=\"correctPrice(checkoutCartFormObj.promo_rate)\"></span>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-11 col-xs-offset-1\">\n\t\t\t\t\t<label>\n\t\t\t\t\t\tShipping Price:\n\t\t\t\t\t</label>\n\t\t\t\t \t<span class=\"pull-right\" v-if=\"hasShippingRate\" v-text=\"correctPrice(checkoutCartFormObj.shipping_rate)\"></span>\n\t\t\t\t \t<i class=\"text-danger pull-right\" v-if=\"!hasShippingRate\">Please Enter Your Zip Code Above</i>\n\t\t\t\t</div>\n\t\t\t\t<hr style=\"background-color:#000\">\n\t\t\t\t<div class=\"col-xs-12\" v-if=\"checkoutCartFormObj.shipping_rate > 0\">\n\t\t\t\t\t<h3>Total: \n\t\t\t\t\t\t<span class=\"pull-right\" v-text=\"correctPrice(checkoutCartFormObj.total)\"></span>\n\t\t\t\t\t</h3>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<button @click=\"checkShipping\" v-bind:class=\"['', hasShippingRate ? 'btn-info' : 'btn-default']\" v-bind:disabled=\"!hasShippingRate\" class=\"btn btn-lg col-xs-12\">\n\t\t\tCheckout <i v-bind:class=\"['', hasShippingRate ? 'fa-rocket' : 'fa-ban']\" class=\"fa pull-right\"></i>\n\t\t</button>\n\t</div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\" col-xs-12\">\n\t<check-shipping-rate :route=\"route\" :xss-token=\"xssToken\"></check-shipping-rate>\n\t<check-promo-code :route=\"route\" :xss-token=\"xssToken\"></check-promo-code>\n\t<div class=\"row well\">\n\t\t<div style=\"border-radius:35px\">\n\t\t\t<div class=\"col-sm-11\">\n\t\t\t\t<div class=\"col-xs-11 col-xs-offset-1\">\n\t\t\t\t\t<label>\n\t\t\t\t\t\tCart Total:\n\t\t\t\t\t</label>\n\t\t\t\t\t <span class=\"pull-right\">\n\t\t\t\t\t\t{{correctStripePrice(cartAmount)}}\n\t\t\t\t\t </span>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-11 col-xs-offset-1\" v-if=\"hasPromoRate\">\n\t\t\t\t\t<label>\n\t\t\t\t\t\tPromo Discount:\n\t\t\t\t\t</label>\n\t\t\t\t\t <span class=\"pull-right\" v-text=\"correctPrice(checkoutCartFormObj.promo_rate)\"></span>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-xs-11 col-xs-offset-1\">\n\t\t\t\t\t<label>\n\t\t\t\t\t\tShipping Price:\n\t\t\t\t\t</label>\n\t\t\t\t \t<span class=\"pull-right\" v-if=\"hasShippingRate\" v-text=\"correctPrice(checkoutCartFormObj.shipping_rate)\"></span>\n\t\t\t\t \t<i class=\"text-danger pull-right\" v-if=\"!hasShippingRate\">Please Enter Your Zip Code Above</i>\n\t\t\t\t</div>\n\t\t\t\t<hr style=\"background-color:#000\">\n\t\t\t\t<div class=\"col-xs-12\" v-if=\"checkoutCartFormObj.shipping_rate > 0\">\n\t\t\t\t\t<h3>Total: \n\t\t\t\t\t\t<span class=\"pull-right\" v-text=\"correctPrice(checkoutCartFormObj.total)\"></span>\n\t\t\t\t\t</h3>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<a href=\"{{checkoutRoute}}\" v-bind:class=\"['', hasShippingRate ? 'btn-info' : 'btn-default']\" v-bind:disabled=\"!hasShippingRate\" class=\"btn btn-lg col-xs-12\">\n\t\t\tCheckout <i v-bind:class=\"['', hasShippingRate ? 'fa-rocket' : 'fa-ban']\" class=\"fa pull-right\"></i>\n\t\t</a>\n\t</div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
