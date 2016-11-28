@@ -1,7 +1,7 @@
 <div class="modal fade" id="Login" tabindex="-1" role="dialog" aria-labelledby="LoginLabel" >
   <div class="modal-dialog" role="document" >
-    <div class="modal-content" style="background-color:#transparent">
-      <div class="modal-body" style="background-color:#fff;border-radius:20px;">
+    <div class="modal-content" style="background-color:#transparent;opacity: .9">
+      <div class="modal-body" style="background-color:#000;border-radius:20px;">
         
 		<div class="row" style="@if(isset($redirected))background-color:#000;@endif color:#000">
 		    <center>

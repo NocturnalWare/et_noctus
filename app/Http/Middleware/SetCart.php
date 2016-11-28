@@ -30,6 +30,8 @@ class SetCart
         view()->share('cart_quantity', $cart->sum('quantity'));
         
         \JavaScript::put([
+            'bands' => \App\Sponsorship\BandSponsorship::all(),
+            'shows' => \App\Shows\Show::all(),
             'cart' => $cart,
             'cart_quantity' => $cart->sum('quantity'),
         ]);

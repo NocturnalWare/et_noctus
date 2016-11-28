@@ -8,12 +8,22 @@
 
 
 <center>
-	<div class="col-xs-12 col-md-7">
+	<div class="col-xs-12 col-md-5">
 		<legend style="color:#fff">
 			{{$product->name}}
 		</legend>
-		<img class="img-responsive" src="{{$product->getMainImage()}}" />
-
+		<img class="img-responsive" style="height:550px;" src="{{$product->getMainImage()}}" />
+		<div class="row">
+			<div class="col-xs-4">
+				<img class="img-responsive" style="height:150px;" src="{{$product->getMainImage()}}">
+			</div>
+			<div class="col-xs-4">
+				<img class="img-responsive" style="height:150px;" src="{{$product->getMainImage()}}">
+			</div>
+			<div class="col-xs-4">
+				<img class="img-responsive" style="height:150px;" src="{{$product->getMainImage()}}">
+			</div>
+		</div>
 	</div>
 	<div class="well col-xs-12 col-md-2" style="color:#000;">
 		{{$product->description}}
@@ -52,5 +62,4 @@
 	</div>
 	</div>
 </center>
-<div class="col-md-3"></div>
 @stop

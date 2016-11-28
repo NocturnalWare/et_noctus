@@ -15995,7 +15995,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4c203b48", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../stores/store.js":21,"vue":4,"vue-hot-reload-api":3}],8:[function(require,module,exports){
+},{"../stores/store.js":25,"vue":4,"vue-hot-reload-api":3}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -16030,7 +16030,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1d30b330", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../stores/store.js":21,"vue":4,"vue-hot-reload-api":3}],9:[function(require,module,exports){
+},{"../stores/store.js":25,"vue":4,"vue-hot-reload-api":3}],9:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -18463,6 +18463,46 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 },{}],10:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+
+var moment = require('moment');
+
+exports.default = {
+	props: ['url'],
+	data: function data() {
+		return {
+			shows: etnoc.shows,
+			bands: etnoc.bands
+		};
+	},
+
+	methods: {
+		fixDate: function fixDate(date) {
+			return moment(date).format('M/d/Y');
+		},
+		baseUrl: function baseUrl(url) {
+			return this.url + url;
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div style=\"color:#fff\">\n\t<div class=\"col-xs-12\">\n\t\t<h3>Shop</h3>\n\t\t<a class=\"btn col-xs-12\" style=\"border:1px solid #fff;font-size:1.3em;color:#fff\" :href=\"baseUrl('/products')\">Everything</a>\n\t\t<a class=\"btn col-xs-12\" style=\"border:1px solid #fff;font-size:1.3em;color:#fff\" :href=\"baseUrl('/products/sort/Tees')\">Tees</a>\n\t\t<a class=\"btn col-xs-12\" style=\"border:1px solid #fff;font-size:1.3em;color:#fff\" :href=\"baseUrl('/products/sort/Tanks')\">Tanks</a>\n\t\t<a class=\"btn col-xs-12\" style=\"border:1px solid #fff;font-size:1.3em;color:#fff\" :href=\"baseUrl('/products/sort/Hoodies')\">Hoodies</a>\n\t\t<a class=\"btn col-xs-12\" style=\"border:1px solid #fff;font-size:1.3em;color:#fff\" :href=\"baseUrl('/products/sort/Pants')\">Legwear</a>\n\t\t<a class=\"btn col-xs-12\" style=\"border:1px solid #fff;font-size:1.3em;color:#fff\" :href=\"baseUrl('/products/sort/Accessories')\">Accessories</a>\n\t\t<a class=\"btn col-xs-12\" style=\"border:1px solid #fff;font-size:1.3em;color:#fff\" :href=\"baseUrl('/products/sort/Ticket')\">Tickets</a>\n\t</div>\n\t<div class=\"col-xs-12\">\n\t\t<h3>Upcoming Shows</h3>\n\t\t<div class=\"col-xs-12\" v-for=\"show in shows\">\n\n\t\t\t{{show.name}} <span class=\"pull-right\">{{fixDate(show.event_date)}}</span>\n\t\t\n\t\t</div>\n\t</div>\n\t<div class=\"col-xs-12\">\n\t\t<h3>Sponsored Bands</h3>\n\t\t<div class=\"col-xs-12\" v-for=\"band in bands\" style=\"overflow-x:hidden\">\n\n\t\t\t{{band.band_name}}\n\t\t\n\t\t</div>\n\t</div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-a9a5f874", module.exports)
+  } else {
+    hotAPI.update("_v-a9a5f874", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"moment":1,"vue":4,"vue-hot-reload-api":3}],11:[function(require,module,exports){
+'use strict';
+
 var _showIndex = require('./shows/show-index.vue');
 
 var _showIndex2 = _interopRequireDefault(_showIndex);
@@ -18470,6 +18510,10 @@ var _showIndex2 = _interopRequireDefault(_showIndex);
 var _cartIndex = require('./components/cart-index.vue');
 
 var _cartIndex2 = _interopRequireDefault(_cartIndex);
+
+var _inventoryIndex = require('./products/inventory/inventory-index.vue');
+
+var _inventoryIndex2 = _interopRequireDefault(_inventoryIndex);
 
 var _addToCartButton = require('./components/add-to-cart-button.vue');
 
@@ -18479,9 +18523,17 @@ var _totalContainer = require('./shipping/components/total-container.vue');
 
 var _totalContainer2 = _interopRequireDefault(_totalContainer);
 
+var _edit = require('./products/edit.vue');
+
+var _edit2 = _interopRequireDefault(_edit);
+
 var _store = require('./stores/store.js');
 
 var _store2 = _interopRequireDefault(_store);
+
+var _sidebar = require('./layouts/sidebar.vue');
+
+var _sidebar2 = _interopRequireDefault(_sidebar);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -18512,13 +18564,18 @@ var wareHouse = new Vue({
         showIndex: _showIndex2.default,
         cartIndex: _cartIndex2.default,
         totalContainer: _totalContainer2.default,
-        addToCartButton: _addToCartButton2.default
+        addToCartButton: _addToCartButton2.default,
+        inventoryIndex: _inventoryIndex2.default,
+        editProduct: _edit2.default,
+        sidebar: _sidebar2.default
+        // editContact,
+        // createProduct,
     },
     ready: function ready() {}
 
 });
 
-},{"./components/add-to-cart-button.vue":7,"./components/cart-index.vue":8,"./jquery.min.js":9,"./shipping/components/total-container.vue":14,"./shows/show-index.vue":20,"./stores/store.js":21,"./vue-resource.min.js":22,"./vue-router.min.js":23,"./vue.min.js":24,"moment":1}],11:[function(require,module,exports){
+},{"./components/add-to-cart-button.vue":7,"./components/cart-index.vue":8,"./jquery.min.js":9,"./layouts/sidebar.vue":10,"./products/edit.vue":13,"./products/inventory/inventory-index.vue":14,"./shipping/components/total-container.vue":18,"./shows/show-index.vue":24,"./stores/store.js":25,"./vue-resource.min.js":26,"./vue-router.min.js":27,"./vue.min.js":28,"moment":1}],12:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -19955,7 +20012,220 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   a.version = "2.14.1", b(rb), a.fn = Se, a.min = tb, a.max = ub, a.now = Fe, a.utc = j, a.unix = Jc, a.months = Pc, a.isDate = f, a.locale = Za, a.invalid = n, a.duration = Mb, a.isMoment = r, a.weekdays = Rc, a.parseZone = Kc, a.localeData = ab, a.isDuration = wb, a.monthsShort = Qc, a.weekdaysMin = Tc, a.defineLocale = $a, a.updateLocale = _a, a.locales = bb, a.weekdaysShort = Sc, a.normalizeUnits = J, a.relativeTimeRounding = id, a.relativeTimeThreshold = jd, a.calendarFormat = Tb, a.prototype = Se;var nf = a;return nf;
 });
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _store = require('./store.js');
+
+var _store2 = _interopRequireDefault(_store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    props: ['token', 'route'],
+    computed: {
+        product: function product() {
+            return _store2.default.state.product;
+        },
+        inventory: function inventory() {
+            return _store2.default.state.inventory;
+        },
+        price: function price() {
+            return _store2.default.state.price;
+        },
+        categories: function categories() {
+            return _store2.default.state.categories;
+        }
+    },
+    methods: {
+        addProduct: function addProduct() {
+            var data = {};
+            data.product = this.product;
+            data.inventory = this.inventory;
+            data.prices = this.price;
+            data._token = this.token;
+            jQuery.ajax({
+                type: "PUT",
+                url: this.route,
+                data: data,
+                cache: false,
+                success: function success(response) {
+                    window.location.reload();
+                }
+            });
+            return false;
+        },
+        setActive: function setActive() {
+            if (this.product.active === 1) {
+                this.product.active = 0;
+            } else {
+                this.product.active = 1;
+            }
+        },
+        setOnesize: function setOnesize() {
+            if (this.product.onesize === 1) {
+                this.product.onesize = 0;
+            } else {
+                this.product.onesize = 1;
+            }
+        }
+    },
+    ready: function ready() {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>    \n    <div class=\"col-xs-12 col-md-6 col-md-offset-1 well\">\n        <h2 class=\"col-sm-3 col-xs-12\">Updating <span v-text=\"product.name\"></span></h2>\n        <div class=\"col-xs-12 col-sm-7\">\n            <div class=\"col-xs-12\">\n                <input type=\"text\" class=\"form-control\" v-model=\"product.name\" placeholder=\"Product Name\">\n            </div>\n            <div class=\"col-xs-12\">\n                <textarea class=\"form-control\" style=\"height:150px;\" v-model=\"product.description\" placeholder=\"Description\"></textarea>\n            </div>\n            <div class=\"col-xs-12\">\n                <select v-model=\"product.category\" class=\"form-control\">\n                    <option v-for=\"category in categories\" value=\"@{{category}}\" v-text=\"category\"></option>\n                </select>\n            </div>\n            <div class=\"col-xs-12 col-md-6\">\n                <input type=\"text\" class=\"form-control\" v-model=\"product.display_price_min\" placeholder=\"Minimum Display Price\">\n            </div>\n            <div class=\"col-xs-12 col-md-6\">\n                <input type=\"text\" class=\"form-control\" v-model=\"product.display_price_max\" placeholder=\"Max Display Price\">\n            </div>\n            <div class=\"col-xs-6\">\n                <i @click=\"setActive\" class=\"fa btn\" :class=\"['', product.active === 1 ? 'fa-check-square-o' : 'fa-square-o']\"></i> Active\n            </div>\n            <div class=\"col-xs-6\">\n                <i class=\"fa btn\" @click=\"setOnesize\" :class=\"['', product.onesize === 1 ? 'fa-check-square-o' : 'fa-square-o']\"></i> One Size Only\n            </div>\n        </div>\n\n        <hr>\n\n        <h3 class=\"col-xs-12\">Inventory &amp; Prices</h3>\n        <table class=\"table table-striped table-hover\" style=\"color:#000;background-color:#fff\">\n            <thead>\n                <tr>\n                    <th>Size</th>\n                    <th>Quantity</th>\n                    <th>Price</th>\n                </tr>\n            </thead>\n            <tbody v-if=\"product.onesize === 1\">\n                <tr>\n                    <td>\n                        One Size\n                    </td>\n                    <td>\n                        <input type=\"text\" v-model=\"inventory.onesize\">\n                    </td>\n                    <td>\n                        <span class=\"input-group\">\n                            <span class=\"input-group-addon\">$</span>\n                            <input type=\"text\" v-model=\"price.onesize\">\n                        </span>\n                    </td>\n                </tr>\n            </tbody>\n            <tbody v-if=\"product.onesize === 0\">\n                <tr>\n                    <td>\n                        X-small\n                    </td>\n                    <td>\n                        <input type=\"text\" v-model=\"inventory.xsmall\">\n                    </td>\n                    <td>\n                        <span class=\"input-group\">\n                            <span class=\"input-group-addon\">$</span>\n                            <input type=\"text\" v-model=\"price.xsmall\">\n                        </span>\n                    </td>\n                </tr>\n                <tr>\n                    <td>\n                        Small\n                    </td>\n                    <td>\n                        <input type=\"text\" v-model=\"inventory.small\">\n                    </td>\n                    <td>\n                        <span class=\"input-group\">\n                            <span class=\"input-group-addon\">$</span>\n                            <input type=\"text\" v-model=\"price.small\">\n                        </span>\n                    </td>\n                </tr>\n                <tr>\n                    <td>\n                        Medium\n                    </td>\n                    <td>\n                        <input type=\"text\" v-model=\"inventory.medium\">\n                    </td>\n                    <td>\n                        <span class=\"input-group\">\n                            <span class=\"input-group-addon\">$</span>\n                            <input type=\"text\" v-model=\"price.medium\">\n                        </span>\n                    </td>\n                </tr>\n                <tr>\n                    <td>\n                        Large\n                    </td>\n                    <td>\n                        <input type=\"text\" v-model=\"inventory.large\">\n                    </td>\n                    <td>\n                        <span class=\"input-group\">\n                            <span class=\"input-group-addon\">$</span>\n                            <input type=\"text\" v-model=\"price.large\">\n                        </span>\n                    </td>\n                </tr>\n                <tr>\n                    <td>\n                        X-Large\n                    </td>\n                    <td>\n                        <input type=\"text\" v-model=\"inventory.xlarge\">\n                    </td>\n                    <td>\n                        <span class=\"input-group\">\n                            <span class=\"input-group-addon\">$</span>\n                            <input type=\"text\" v-model=\"price.xlarge\">\n                        </span>\n                    </td>\n                </tr>\n                <tr>\n                    <td>\n                        XX-Large\n                    </td>\n                    <td>\n                        <input type=\"text\" v-model=\"inventory.xxlarge\">\n                    </td>\n                    <td>\n                        <span class=\"input-group\">\n                            <span class=\"input-group-addon\">$</span>\n                            <input type=\"text\" v-model=\"price.xxlarge\">\n                        </span>\n                    </td>\n                </tr>\n                <tr>\n                    <td>\n                        XXX-Large\n                    </td>\n                    <td>\n                        <input type=\"text\" v-model=\"inventory.xxxlarge\">\n                    </td>\n                    <td>\n                        <span class=\"input-group\">\n                            <span class=\"input-group-addon\">$</span>\n                            <input type=\"text\" v-model=\"price.xxxlarge\">\n                        </span>\n                    </td>\n                </tr>\n\n            </tbody>\n        </table>\n        <span @click=\"addProduct\" class=\"btn btn-lg btn-primary col-xs-12\">SAVE <i class=\"fa fa-save\"></i></span>\n    </div>\n</div>\n\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-463354ff", module.exports)
+  } else {
+    hotAPI.update("_v-463354ff", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"./store.js":15,"vue":4,"vue-hot-reload-api":3}],14:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _store = require('../../stores/store.js');
+
+var _store2 = _interopRequireDefault(_store);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var jQuery = require('../../jquery.min.js');
+exports.default = {
+    props: ['route', 'token'],
+    computed: {
+        products: function products() {
+            return _store2.default.state.products;
+        },
+        search_input: function search_input() {
+            return _store2.default.state.search_input;
+        }
+    },
+    methods: {
+        updateSearch: function updateSearch() {
+            _store2.default.dispatch('UPDATE_SEARCH');
+        },
+        updated_at: function updated_at(product) {
+            return moment(product.inventories.updated_at).format('h:mA MM/DD/YYYY');
+        },
+        showInventory: function showInventory(product) {
+            this.products.forEach(function (product) {
+                product.show_table = false;
+            });
+
+            product.show_table = !product.show_table;
+        },
+        saveInventory: function saveInventory(product) {
+            var data = {};
+            data.product = product;
+            data._token = this.token;
+            jQuery.ajax({
+                type: "POST",
+                url: this.route,
+                data: data,
+                cache: false,
+                success: function success(response) {
+                    product.updated = true;
+                }
+            });
+            return false;
+        }
+    }
+};
+
+
+jQuery(document).ready(function ($) {
+    var engine = new Bloodhound({
+        local: _store2.default.state.productNames,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        datumTokenizer: Bloodhound.tokenizers.whitespace
+    });
+
+    var promise = engine.initialize();
+
+    promise.done(function () {}).fail(function () {
+        console.log('err, something went wrong :(');
+    });
+    $(".search-input").typeahead({
+        hint: true,
+        highlight: true
+    }, {
+        name: 'my-dataset',
+        source: engine.ttAdapter(),
+        templates: {
+            empty: ['<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'],
+            header: ['<div class="list-group search-results-dropdown">'],
+            suggestion: function suggestion(data) {
+                return '<div class="row" @click="alert()" style="background-color:#fff"><button class="btn col-xs-12" style="background-color:#fff">' + data + '</button></div>';
+            }
+        }
+
+    });
+});
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"col-xs-12 col-md-3 col-md-offset-1 well\">\n    <div class=\"input-group\">\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\n        <input type=\"text\" class=\"search-input col-xs-12 form-control\" v-model=\"search_input.input\" style=\"background-color:#fff; width:100%\">\n    </div>\n    <div v-for=\"product in products\" class=\"row \" v-show=\"product.name == search_input.input || search_input.input == ''\">\n        <button class=\"col-xs-12 btn\" v-bind:class=\"['', product.updated === false ? 'btn-info' : 'btn-success']\" @click=\"showInventory(product)\">\n            <span v-text=\"product.name\"></span> <i class=\"fa fa-check fa-lg pull-right\" v-if=\"product.updated === true\"></i>\n        </button>\n        <div v-if=\"product.show_table === true\">\n            <div v-if=\"product.onesize === 1\">\n                <span class=\"col-xs-12 input-group\">\n                    <label>One Size</label>\n                    <span class=\"pull-right\" v-text=\"'Last Updated at '+updated_at(product)\"></span>\n                    <input class=\"form-control\" v-model=\"product.inventories.onesize\">\n                </span>\n            </div>\n            <div v-if=\"product.onesize === 0\">\n                <span class=\"col-xs-12 input-group\">\n                    <label>X-small</label>\n                    <span class=\"pull-right\" v-text=\"'Last Updated at '+updated_at(product)\"></span>\n                    <input class=\"form-control\" v-model=\"product.inventories.xsmall\">\n                </span>\n\n                <span class=\"col-xs-12 input-group\">\n                    <label>Small</label>\n                    <input class=\"form-control\" v-model=\"product.inventories.small\">\n                </span>\n\n                <span class=\"col-xs-12 input-group\">\n                    <label>Medium</label>\n                    <input class=\"form-control\" v-model=\"product.inventories.medium\">\n                </span>\n\n                <span class=\"col-xs-12 input-group\">\n                    <label>Large</label>\n                    <input class=\"form-control\" v-model=\"product.inventories.large\">\n                </span>\n\n                <span class=\"col-xs-12 input-group\">\n                    <label>X-Large</label>\n                    <input class=\"form-control\" v-model=\"product.inventories.xlarge\">\n                </span>\n                \n                <span class=\"col-xs-12 input-group\">\n                    <label>XX-Large</label>\n                    <input class=\"form-control\" v-model=\"product.inventories.xxlarge\">\n                </span>\n\n                <span class=\"col-xs-12 input-group\">\n                    <label>XXX-Large</label>\n                    <input class=\"form-control\" v-model=\"product.inventories.xxxlarge\">\n                </span>\n\n            </div>\n            <br>\n                <button class=\"btn btn-lg col-xs-12\" @click=\"saveInventory(product)\" v-bind:class=\"['', product.updated === false ? 'btn-warning' : 'btn-success']\"><i class=\"fa fa-save\"></i> Save</button>\n            <br>\n            <br>\n        \n        </div>\n    </div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-a609c908", module.exports)
+  } else {
+    hotAPI.update("_v-a609c908", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../../jquery.min.js":9,"../../stores/store.js":25,"vue":4,"vue-hot-reload-api":3}],15:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _vuex = require('vuex');
+
+var _vuex2 = _interopRequireDefault(_vuex);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Vue = require('../vue.min.js');
+
+Vue.use(_vuex2.default);
+
+var state = {
+  product: [],
+  inventory: {},
+  price: {},
+  categories: ['Tees', '¾ Tees', 'Tanks', 'Hoodies', 'Pants', 'Accessories', 'Ticket']
+};
+
+var mutations = {};
+
+if (typeof etnoc !== 'undefined') {
+  if (etnoc.product) {
+
+    state.product = etnoc.product;
+    state.inventory = etnoc.product.inventories;
+    state.price = etnoc.product.prices;
+  }
+}
+
+exports.default = new _vuex2.default.Store({
+  state: state,
+  mutations: mutations
+});
+
+},{"../vue.min.js":28,"vuex":5}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20002,7 +20272,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-ff16908a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":21,"vue":4,"vue-hot-reload-api":3}],13:[function(require,module,exports){
+},{"../../stores/store.js":25,"vue":4,"vue-hot-reload-api":3}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20051,7 +20321,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-a794fa02", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":21,"vue":4,"vue-hot-reload-api":3}],14:[function(require,module,exports){
+},{"../../stores/store.js":25,"vue":4,"vue-hot-reload-api":3}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20119,7 +20389,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-51f0621d", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":21,"./check-promo-code.vue":12,"./check-shipping-rate.vue":13,"vue":4,"vue-hot-reload-api":3}],15:[function(require,module,exports){
+},{"../../stores/store.js":25,"./check-promo-code.vue":16,"./check-shipping-rate.vue":17,"vue":4,"vue-hot-reload-api":3}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20158,7 +20428,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-365fe8c9", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":21,"moment":1,"vue":4,"vue-hot-reload-api":3}],16:[function(require,module,exports){
+},{"../../stores/store.js":25,"moment":1,"vue":4,"vue-hot-reload-api":3}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20194,7 +20464,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-6325b6ec", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":21,"moment":1,"vue":4,"vue-hot-reload-api":3}],17:[function(require,module,exports){
+},{"../../stores/store.js":25,"moment":1,"vue":4,"vue-hot-reload-api":3}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20225,7 +20495,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-9e992eae", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":21,"moment":1,"vue":4,"vue-hot-reload-api":3}],18:[function(require,module,exports){
+},{"../../stores/store.js":25,"moment":1,"vue":4,"vue-hot-reload-api":3}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20263,7 +20533,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-053afad5", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":21,"moment":1,"vue":4,"vue-hot-reload-api":3}],19:[function(require,module,exports){
+},{"../../stores/store.js":25,"moment":1,"vue":4,"vue-hot-reload-api":3}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20299,7 +20569,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5a46804d", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../stores/store.js":21,"moment":1,"vue":4,"vue-hot-reload-api":3}],20:[function(require,module,exports){
+},{"../../stores/store.js":25,"moment":1,"vue":4,"vue-hot-reload-api":3}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20361,7 +20631,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-68c591ca", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../stores/store.js":21,"./components/band-list.vue":15,"./components/header.vue":16,"./components/venue-address.vue":17,"./components/venue-contact.vue":18,"./components/venue-title.vue":19,"vue":4,"vue-hot-reload-api":3}],21:[function(require,module,exports){
+},{"../stores/store.js":25,"./components/band-list.vue":19,"./components/header.vue":20,"./components/venue-address.vue":21,"./components/venue-contact.vue":22,"./components/venue-title.vue":23,"vue":4,"vue-hot-reload-api":3}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20382,7 +20652,9 @@ var state = {
   shows: [],
   product: [],
   products: [],
+  productNames: [],
   cart: {},
+  search_input: { input: '' },
   checkingServerForUpdate: false,
   checkoutCartFormObj: { zip: '', _token: '', promo_rate: 0, shipping_rate: 0, total: 0, code: '' },
   cart_quantity: ''
@@ -20417,6 +20689,10 @@ if (typeof etnoc !== 'undefined') {
     state.product = etnoc.products;
     state.products = etnoc.products;
   }
+
+  if (etnoc.product_names) {
+    state.productNames = etnoc.product_names;
+  }
 }
 
 exports.default = new _vuex2.default.Store({
@@ -20424,7 +20700,7 @@ exports.default = new _vuex2.default.Store({
   mutations: mutations
 });
 
-},{"../vue.min.js":24,"vuex":5}],22:[function(require,module,exports){
+},{"../vue.min.js":28,"vuex":5}],26:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -20835,7 +21111,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }), _.actions = { get: { method: "GET" }, save: { method: "POST" }, query: { method: "GET" }, update: { method: "PUT" }, remove: { method: "DELETE" }, "delete": { method: "DELETE" } }, "undefined" != typeof window && window.Vue && window.Vue.use(K), K;
 });
 
-},{}],23:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -21462,7 +21738,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }, "undefined" != typeof window && window.Vue && window.Vue.use(ct), ct;
 });
 
-},{}],24:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -23429,6 +23705,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[10,9,24,11,23,6]);
+},{}]},{},[11,9,28,12,27,6]);
 
 //# sourceMappingURL=bundle.js.map

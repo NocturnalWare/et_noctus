@@ -17,9 +17,12 @@ window.moment = moment;
 // import contactManager from './contacts/index.js';
 import showIndex from './shows/show-index.vue';
 import cartIndex from './components/cart-index.vue';
+import inventoryIndex from './products/inventory/inventory-index.vue';
 import addToCartButton from './components/add-to-cart-button.vue';
 import totalContainer from './shipping/components/total-container.vue';
+import editProduct from './products/edit.vue';
 import dataStore from './stores/store.js';
+import sidebar from './layouts/sidebar.vue';
 
 var wareHouse = new Vue({
     el: '#wareHouse',
@@ -30,6 +33,9 @@ var wareHouse = new Vue({
     	cartIndex,
         totalContainer,
     	addToCartButton,
+        inventoryIndex,
+        editProduct,
+        sidebar
     	// editContact,
     	// createProduct,
     },

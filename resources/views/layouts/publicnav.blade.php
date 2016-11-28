@@ -15,9 +15,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-left">
-        <li class="btn btn-sm mobile-nav-button-etnoc"> <a target="_blank" style="color:#fff;font-size:2em" href="https://twitter.com/enclothingco"><i class="fa fa-twitter"></i></li></a>
-        <li class="btn btn-sm mobile-nav-button-etnoc"> <a target="_blank" style="color:#fff;font-size:2em" href="https://www.facebook.com/EternallyNocturnal"><i class="fa fa-facebook-official"></i></li></a>
-        <li class="btn btn-sm mobile-nav-button-etnoc"> <a target="_blank" style="color:#fff;font-size:2em" href="https://www.instagram.com/eternally_nocturnal"><i class="fa fa-instagram"></i></li></a>
+
         <li class="btn btn-sm mobile-nav-button-etnoc"></li>
       </ul>
       <ul class="nav navbar-nav navbar-right" style="text-align:center;padding-top:10px;">
@@ -25,7 +23,7 @@
             <cart-index></cart-index>
           </li>
 
-          <li>
+          <li class="hidden-md hidden-lg">
             <a style="background-color:#000;color:#fff" id="dLabel" type="button" class="dropdown nav-button-etnoc btn btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Shop
               <span class="caret"></span>
@@ -36,10 +34,8 @@
                 <br>
             </ul>
           </li>
-
-        <li class="btn btn-sm nav-button-etnoc hidden-xs"></li>
         <li class="btn btn-sm nav-button-etnoc hidden-xs hidden">Shows</li>
-        <li>
+        <li class="hidden-md hidden-lg">
           <a style="background-color:#000;color:#fff" id="dLabel" type="button" class="dropdown nav-button-etnoc btn btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Sponsored Bands
             <span class="caret"></span>
@@ -64,8 +60,6 @@
             <b>Contact</b>
           </a>
         </li>
-
-        <li>
           @if(\Auth::check())
             <a style="background-color:#000;color:#fff" href="{{route('admin.index')}}" class="nav-button-etnoc btn btn-lg">Manage</a>
           @else

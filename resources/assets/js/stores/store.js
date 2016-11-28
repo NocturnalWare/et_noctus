@@ -7,7 +7,9 @@ const state = {
 	shows: [],
   product: [],
 	products:[],
+  productNames: [],
 	cart: {},
+  search_input: {input : ''},
   checkingServerForUpdate: false,
   checkoutCartFormObj: {zip:'', _token : '', promo_rate : 0, shipping_rate : 0, total : 0, code : ''},
 	cart_quantity: '',
@@ -41,6 +43,10 @@ if(typeof etnoc !== 'undefined'){
   if(etnoc.products){
     state.product = etnoc.products;
     state.products = etnoc.products;
+  }
+
+  if(etnoc.product_names){
+    state.productNames = etnoc.product_names;
   }
 }
 

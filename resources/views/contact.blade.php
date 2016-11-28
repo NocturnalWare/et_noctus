@@ -3,7 +3,7 @@
 @section('content')
 
 	<div class="col-xs-12">
-		<div class="col-xs-12 col-md-4 col-md-offset-2 well" style="color:#000">
+		<div class="col-xs-12 col-md-4 col-md-offset-3 well" style="color:#000">
 			<h2>Contact Us!</h2>
 			<form action="{{route('contact.store')}}" method="POST">
 				<input type="hidden" value="{{csrf_token()}}" name="_token">

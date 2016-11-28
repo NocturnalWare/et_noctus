@@ -38,7 +38,9 @@
         </div>
     </div>
     <div class="col-xs-12">
-        @include('auth.instagram')
+        @if(env('APP_ENV') == 'production')
+            @include('auth.instagram')
+        @endif
     </div>
 
 

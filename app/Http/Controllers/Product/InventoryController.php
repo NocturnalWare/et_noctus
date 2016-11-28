@@ -13,7 +13,7 @@ class InventoryController extends Controller
     public function index(){
     	$products = Product::all();
     	\Javascript::put([
-    		'names' => $products->pluck('name'),
+    		'product_names' => $products->pluck('name'),
     		'products' => $products
     	]);
     	return view('products.inventory.index', compact('products'));
