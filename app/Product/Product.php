@@ -30,7 +30,7 @@ class Product extends Model
 		'xxxlarge',
     ];
     protected $table = 'products';
-    protected $with = ['inventories', 'prices'];
+    protected $with = ['inventories', 'prices', 'images'];
     protected $appends = [
     	'show_table',
     	'updated',
@@ -54,4 +54,15 @@ class Product extends Model
 	public function getUpdatedAttribute(){
 		return $this->attributes['updated'] = false;
 	}
+
+	/**
+	 * Description
+	 *
+	 * @return void
+	 */
+	public function images()
+	{
+		return $this->hasMany(ProductImage::class);
+	}
+	
 }

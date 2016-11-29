@@ -14,15 +14,11 @@
 		</legend>
 		<img class="img-responsive" style="height:550px;" src="{{$product->getMainImage()}}" />
 		<div class="row">
-			<div class="col-xs-4">
-				<img class="img-responsive" style="height:150px;" src="{{$product->getMainImage()}}">
-			</div>
-			<div class="col-xs-4">
-				<img class="img-responsive" style="height:150px;" src="{{$product->getMainImage()}}">
-			</div>
-			<div class="col-xs-4">
-				<img class="img-responsive" style="height:150px;" src="{{$product->getMainImage()}}">
-			</div>
+			@foreach($product->images as $image)
+				<div class="col-xs-3">
+					<img class="img-responsive" style="height:150px;" src="https://s3-us-west-2.amazonaws.com/etnoc/images/products/{{$image->url}}">
+				</div>
+			@endforeach
 		</div>
 	</div>
 	<div class="well col-xs-12 col-md-2" style="color:#000;">
