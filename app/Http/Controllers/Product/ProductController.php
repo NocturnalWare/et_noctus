@@ -65,7 +65,7 @@ class ProductController extends Controller
     		'products' => $product,
     	]);
     	
-    	return view('products.show', compact('product'));
+        return view('products.show', compact('product'));
     }
 
     public function update(Request $request, Product $product){
@@ -73,4 +73,18 @@ class ProductController extends Controller
         $product->inventories->update($request->get('inventory'));
         $product->prices->update($request->get('prices'));
     }
+
+    /**
+     * Description
+     *
+     * @return void
+     */
+    public function editimages(Product $product)
+    {
+        \JavaScript::put([
+            'products' => $product,
+        ]);
+    	return view('products.images.edit', compact('product'));
+    }
+    
 }

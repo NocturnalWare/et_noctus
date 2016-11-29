@@ -94,6 +94,7 @@ Route::group(['prefix' => 'control', 'middleware' => ['auth', 'cart']], function
 	//PRODUCT ADMIN ROUTES
 	Route::get('products/create', ['as' => 'products.create', 'uses' => 'Product\ProductController@create']);
 	Route::get('products/edit/{product}', ['as' => 'products.edit', 'uses' => 'Product\ProductController@edit']);
+	Route::get('products/edit/{product}/images', ['as' => 'products.images.edit', 'uses' => 'Product\ProductController@editimages']);
 	Route::post('products', ['as' => 'products.store', 'uses' => 'Product\ProductController@store']);
 	Route::put('products/update/{product}', ['as' => 'products.update', 'uses' => 'Product\ProductController@update']);
 	Route::get('products', ['as' => 'control.products.index', 'uses' => 'Product\ProductController@adminIndex']);
