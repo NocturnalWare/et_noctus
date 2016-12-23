@@ -8633,11 +8633,7 @@ body {
   height: 100%;
   font-family: 'Arimo', sans-serif;
   color: #000;
-  background-color: #000;
-  background-image: url('../images/background.png');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-color: #fff;
 }
 .en-content-box {
   background-color: #000;
@@ -8667,6 +8663,25 @@ body {
 }
 dd.band-members:hover {
   background-color: #b3e6ff;
+}
+.main-content-link {
+  border-radius: 3px;
+  background-color: #000;
+  cursor: pointer;
+  box-shadow: 3px 3px 5px #888888;
+  color: #fff;
+  padding: 1%;
+  transition: width 2s, height 2s, background-color 2s, transform 2s;
+}
+.main-content-link:hover {
+  background-color: fff;
+  color: #000;
+}
+.main-content-title {
+  display: table;
+  padding: 10%;
+  font-size: 6em;
+  font-weight: 700;
 }
 
 /*# sourceMappingURL=style.css.map */

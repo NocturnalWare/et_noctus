@@ -6,14 +6,7 @@ html, body {
 	height: 100%;
 	font-family: 'Arimo', sans-serif;
 	color: #000;
-	background-color: #000;
-	background-image: url('.././images/background.png');
-	background-position: center;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-	background-repeat: no-repeat;
+	background-color: #fff;
 }
 
 .en-content-box{
@@ -47,4 +40,27 @@ html, body {
 
 dd.band-members:hover{
 	background-color:#b3e6ff;
+}
+
+.main-content-link{
+	border-radius: 3px;
+	background-color:#000;
+	cursor: pointer;
+	box-shadow:3px 3px 5px #888888;
+	color:#fff;
+	padding:1%;
+	-webkit-transition: width 2s, height 2s, background-color 2s, -webkit-transform 2s;
+    transition: width 2s, height 2s, background-color 2s, transform 2s;
+}
+
+.main-content-link:hover{
+	background-color:fff;
+	color:#000;
+}
+
+.main-content-title{
+	display:table;
+	padding: 10%;
+	font-size:6em;
+	font-weight:700;
 }

@@ -5,36 +5,33 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-8 col-sm-12 en-content-box" style="max-height:650px;overflow-y:scroll">
-            <h3 class="en-blog-title" style="text-align:center">Our Mission</h3>
-            <p style="font-size:1.5em;text-align:center">
-                Here at Eternally Nocturnal we believe in dreams, we believe in passions, we believe in exploring creativity, and we believe that through such wonders, all people are drawn together.<br><br>
-
-                We are more than a clothing brand. Here at Eternally Nocturnal, we offer the greatest connection between creative individuals; we understand what it takes to live the lifestyle of a free-thinking creative mind. <br><br>
-
-                This company aims to empathize with the sleepless creative minds who will do whatever it takes to pursue the fruition of their deepest passions. <br><br>
-
-                Together we will achieve the alternative lifestyle we collectively desire. We are Eternally Nocturnal. 
-                <br><br>
-
-                <span style="font-size:1.4em">#StayAwakeToCreate</span>
-            </p>
+        <div class="col-xs-10 col-xs-offset-1" style="background-color:#aaa;padding:1%;border-radius: 3px;">
+            <div class="main-content-link">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <span class="main-content-title">
+                            NEW ARRIVALS
+                        </span>
+                    </div>
+                    <div class="col-xs-4">
+                        <img class="img-responsive" style="border-radius:12px;max-height: 250px;" src="https://scontent-ort2-1.xx.fbcdn.net/v/t31.0-8/15540926_624810791040104_1557989138155771777_o.jpg?oh=ae9481f68b5176e3f83c0fa5a2b968ea&oe=58E6ED8E">
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="hidden-sm col-md-1" style="width:40px">
-            &nbsp
-        </div>
-        <div class="col-md-3 col-sm-12 en-content-box" style="text-align:center;">
-            <h3 class="en-blog-title" style="text-align:center">Upcoming Shows</h3>
-            @include('landing.shows-carousel')
-        </div>
-    </div>
-        
-    <div class="row">
-        <div class="col-md-6 col-sm-12 en-content-box embed-responsive-16by9"style="opacity:1;text-align:center;overflow:visible;z-index:5;position:relative;">
-            <iframe style="width:100%;height:100%;max-height:675px;" src="https://www.youtube.com/embed/OukL4GLWhiE" allowfullscreen></iframe>
-        </div>
-        <div class="col-md-6 col-sm-12 en-content-box embed-responsive-16by9"style="opacity:1;text-align:center;overflow:visible;z-index:5;position:relative;">
-            @include('landing.featured-products-carousel')
+        <div class="col-xs-10 col-xs-offset-1" style="background-color:#aaa;padding:1%;margin-top:10px;border-radius: 3px;">
+            <div class="main-content-link">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <span class="main-content-title">
+                            WINTER LINE
+                        </span>
+                    </div>
+                    <div class="col-xs-4">
+                        <img class="img-responsive" style="border-radius:12px;max-height: 250px;" src="https://scontent-ort2-1.xx.fbcdn.net/v/t1.0-9/12195932_459269320927586_4558979120605616634_n.jpg?oh=fd096bcd04e124976c28370a2fb0fc3a&oe=58F175DA">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-xs-12">
