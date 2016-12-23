@@ -34,7 +34,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-12">
+    <div class="col-xs-10 col-xs-offset-1">
         @if(env('APP_ENV') == 'production')
             @include('auth.instagram')
         @endif
